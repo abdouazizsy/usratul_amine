@@ -56,7 +56,7 @@ export const translations = {
       section3Title: "Personnalité et Vertus",
       heritage: "Héritage et Réalisations",
       intro1: "Serigne Abdoul Aziz Sy Al Amine a été le Khalife général des Tidianes de mars à septembre 2017. Il a succédé à son frère Serigne Cheikh Ahmed Tidiane Sy Al Makhtoum avant d'être rappelé à Dieu 6 mois plus tard (le 22 septembre 2017).",
-      intro2: "Fils du 1er Khalife de Maodo, Serigne Babacar Sy (ra) et de Sokhna Astou Kane (ra), Serigne Abdoul Aziz Sy Amine est né en 1928 à Tivaouane et il a fait ses premières classes en même temps que ses frères, Serigne Mansour (ra) et Serigne Cheikh actuel khalife des Tidiane, auprès de Serigne Alioune Gueye (ra).",
+      intro2: "Fils du 1er Khalife de Maodo, Serigne Babacar Sy (ra) et de Sokhna Astou Kane (ra), Serigne Abdoul Aziz Sy Amine est né en 1928 à Tivaouane et il a fait ses premières classes en même temps que ses frères, Serigne Mansour (ra) et Serigne Cheikh, auprès de Serigne Alioune Gueye (ra).",
       khalifat1: "Il est le 6ème Khalife général des Tidianes, après son Illustre Père Khalifa Ababacar Sy qui le fut du 27 Juin 1922 au 25 Mars 1957, Seydi Mouhamadou Mansour Sy qui ne fut Khalife que quatre jours du 25 Mars au 29 Mars 1957, Seydi Abdoul Aziz Sy Dabbakh qui le fut du 25 Mars 1957 au 14 Septembre 1997, Serigne Mouhamadou Mansour, du 14 Septembre 1997 au 09 Décembre 2012 et Seydi Cheikh Ahmed tidianes y Al Makhtom du 09 Décembre 2012 à ce 15 Mars 2017.",
       khalifat2: "Mais au-delà de l'héritage mystique et de sa dimension d'illuminé, Serigne Abdou Aziz Al Amine est une synthèse vivante de Mame Khalifa et de son homonyme Mame Dabakh.",
       khalifat3: "Serigne Abdou Aziz Sy Al Amine succèda à Serigne Cheikh Ahmed Tidiane Al Makhtom le 15 Mars 2017. Ayant été longtemps Porte-parole des Khalifes qui se sont succédé, de Mame Dabbakh à Al Makhtom, Serigne Abdou Aziz Sy Al Amine est un mystique illuminé dont la profondeur du charisme se lit à travers son regard immuable et acéré qui rend compte d'une maîtrise absolue de tout ce qui cerne la Nation et concerne l'Homme.",
@@ -161,7 +161,7 @@ export const translations = {
         button: "Voir le programme"
       },
       copyright: "Tous droits réservés.",
-      made: "Fait avec amour et dévotion"
+      made: "Fait avec amour et dévotion par Abdou Aziz Sy NDIAYE"
     }
   },
   
@@ -222,7 +222,7 @@ export const translations = {
       section3Title: "الشخصية والفضائل",
       heritage: "الإرث والإنجازات",
       intro1: "كان الشيخ عبد العزيز سي الأمين الخليفة العام للطريقة التجانية من مارس إلى سبتمبر ٢٠١٧. خلف أخاه الشيخ أحمد التجاني سي المختوم قبل أن ينتقل إلى رحمة الله بعد ٦ أشهر (٢٢ سبتمبر ٢٠١٧).",
-      intro2: "ابن الخليفة الأول لماودو، الشيخ بابكر سي (رضي الله عنه) وسوخنا أستو كان (رضي الله عنها)، ولد الشيخ عبد العزيز سي الأمين عام ١٩٢٨ في تيواوان وتلقى تعليمه الأول مع إخوته، الشيخ منصور (رضي الله عنه) والشيخ الشيخ الخليفة الحالي للتجانية، على يد الشيخ عليون جي (رضي الله عنه).",
+      intro2: "ابن الخليفة الأول لماودو، الشيخ بابكر سي (رضي الله عنه) وسوخنا أستو كان (رضي الله عنها)، ولد الشيخ عبد العزيز سي الأمين عام ١٩٢٨ في تيواوان وتلقى تعليمه الأول مع إخوته، الشيخ منصور (رضي الله عنه) والشيخ الشيخ، على يد الشيخ عليون جي (رضي الله عنه).",
       khalifat1: "هو الخليفة السادس العام للطريقة التجانية، بعد والده الموقر الخليفة أبابكر سي الذي كان خليفة من ٢٧ يونيو ١٩٢٢ إلى ٢٥ مارس ١٩٥٧، والسيد محمدو منصور سي الذي كان خليفة لمدة أربعة أيام فقط من ٢٥ مارس إلى ٢٩ مارس ١٩٥٧، والسيد عبد العزيز سي دابخ الذي كان خليفة من ٢٥ مارس ١٩٥٧ إلى ١٤ سبتمبر ١٩٩٧، والشيخ محمدو منصور من ١٤ سبتمبر ١٩٩٧ إلى ٩ ديسمبر ٢٠١٢، والسيد الشيخ أحمد التجاني المختوم من ٩ ديسمبر ٢٠١٢ إلى ١٥ مارس ٢٠١٧.",
       khalifat2: "لكن بعيداً عن الإرث الصوفي وبعده كمستنير، فإن الشيخ عبد العزيز الأمين هو تجسيد حي لمامي خليفة ونظيره مامي دابخ.",
       khalifat3: "خلف الشيخ عبد العزيز سي الأمين الشيخ أحمد التجاني المختوم في ١٥ مارس ٢٠١٧. كونه لفترة طويلة المتحدث باسم الخلفاء المتعاقبين، من مامي دابخ إلى المختوم، فإن الشيخ عبد العزيز سي الأمين هو صوفي مستنير يمكن قراءة عمق كاريزمته من خلال نظرته الثابتة والحادة التي تعكس إتقاناً مطلقاً لكل ما يتعلق بالأمة والإنسان.",
@@ -388,7 +388,7 @@ export const translations = {
       section3Title: "Personality and Virtues",
       heritage: "Legacy and Achievements",
       intro1: "Serigne Abdoul Aziz Sy Al Amine was the General Khalife of the Tijaniyya from March to September 2017. He succeeded his brother Serigne Cheikh Ahmed Tidiane Sy Al Makhtoum before being called to God 6 months later (September 22, 2017).",
-      intro2: "Son of the 1st Khalife of Maodo, Serigne Babacar Sy (may God have mercy on him) and Sokhna Astou Kane (may God have mercy on her), Serigne Abdoul Aziz Sy Amine was born in 1928 in Tivaouane and received his early education alongside his brothers, Serigne Mansour (may God have mercy on him) and Serigne Cheikh, the current Khalife of the Tijaniyya, under Serigne Alioune Gueye (may God have mercy on him).",
+      intro2: "Son of the 1st Khalife of Maodo, Serigne Babacar Sy (may God have mercy on him) and Sokhna Astou Kane (may God have mercy on her), Serigne Abdoul Aziz Sy Amine was born in 1928 in Tivaouane and received his early education alongside his brothers, Serigne Mansour (may God have mercy on him) and Serigne Cheikh, under Serigne Alioune Gueye (may God have mercy on him).",
       khalifat1: "He is the 6th General Khalife of the Tijaniyya, after his Illustrious Father Khalifa Ababacar Sy who was Khalife from June 27, 1922 to March 25, 1957, Seydi Mouhamadou Mansour Sy who was Khalife for only four days from March 25 to March 29, 1957, Seydi Abdoul Aziz Sy Dabbakh who was Khalife from March 25, 1957 to September 14, 1997, Serigne Mouhamadou Mansour from September 14, 1997 to December 9, 2012, and Seydi Cheikh Ahmed Tidianes y Al Makhtom from December 9, 2012 to March 15, 2017.",
       khalifat2: "But beyond the mystical heritage and his dimension as an enlightened being, Serigne Abdou Aziz Al Amine is a living synthesis of Mame Khalifa and his namesake Mame Dabakh.",
       khalifat3: "Serigne Abdou Aziz Sy Al Amine succeeded Serigne Cheikh Ahmed Tidiane Al Makhtom on March 15, 2017. Having long been the Spokesperson for the successive Khalifes, from Mame Dabbakh to Al Makhtom, Serigne Abdou Aziz Sy Al Amine is an enlightened mystic whose depth of charisma can be read through his unwavering and sharp gaze that reflects an absolute mastery of everything that surrounds the Nation and concerns Humanity.",

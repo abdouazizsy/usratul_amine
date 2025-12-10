@@ -65,15 +65,31 @@ const Message = () => {
               </p>
             </div>
 
-            <div className="mt-10 pt-8 border-t border-white/20 flex items-center gap-4">
-              <Heart className="w-6 h-6 text-gold-400 flex-shrink-0" />
-              <div>
-                <p className={`text-gold-300 font-semibold text-lg ${
-                  language === 'ar' ? 'font-arabic' : ''
-                }`}>Serigne Sidy Ahmed Sy Al Amine</p>
-                <p className={`text-emerald-200 ${
-                  language === 'ar' ? 'font-arabic' : ''
-                }`}>{t('message.signature')}</p>
+            <div className="mt-10 pt-8 border-t border-white/20 flex items-center justify-between gap-6">
+              <div className="flex items-center gap-4 flex-1">
+                <Heart className="w-6 h-6 text-gold-400 flex-shrink-0" />
+                <div>
+                  <p className={`text-gold-300 font-semibold text-lg ${
+                    language === 'ar' ? 'font-arabic' : ''
+                  }`}>Serigne Sidy Ahmed Sy Al Amine</p>
+                  <p className={`text-emerald-200 ${
+                    language === 'ar' ? 'font-arabic' : ''
+                  }`}>{t('message.signature')}</p>
+                </div>
+              </div>
+              
+              {/* Photo de Sidy alignée à droite */}
+              <div className="flex-shrink-0">
+                <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-4 border-gold-400 shadow-xl">
+                  <img 
+                    src="/sidy.png" 
+                    alt="Serigne Sidy Ahmed Sy Al Amine" 
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.style.display = 'none'
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </div>

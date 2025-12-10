@@ -41,11 +41,11 @@ const Footer = () => {
               className="lg:col-span-2"
             >
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center p-2 shadow-lg">
+                <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center p-2 shadow-lg overflow-hidden">
                   <img 
                     src="/logo.jpeg" 
                     alt="Logo" 
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-cover rounded-full"
                     onError={(e) => e.target.style.display = 'none'}
                   />
                 </div>
