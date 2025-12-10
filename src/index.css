@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-slate-50 via-emerald-50 to-slate-100;
+  }
+  
+  /* Support pour la langue arabe */
+  [lang="ar"] {
+    direction: rtl;
+  }
+  
+  [lang="ar"] .font-arabic {
+    font-family: 'Amiri', serif;
+    text-align: right;
+  }
+}
+
+.islamic-pattern {
+  background-image: 
+    repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(16, 185, 129, 0.03) 35px, rgba(16, 185, 129, 0.03) 70px),
+    repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(184, 134, 11, 0.03) 35px, rgba(184, 134, 11, 0.03) 70px);
+}
+
+.elegant-shadow {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #047857 0%, #10b981 50%, #B8860B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dome-shape {
+  clip-path: polygon(0 20%, 10% 10%, 20% 5%, 30% 2%, 40% 0, 50% 0, 60% 0, 70% 2%, 80% 5%, 90% 10%, 100% 20%, 100% 100%, 0 100%);
+}

@@ -1,0 +1,15 @@
+📸 GUIDE - Ajouter les images
+
+Veuillez copier les images suivantes dans le dossier /public/ :
+
+1. Logo Usratul Amine
+   - Nom du fichier : logo.png
+   - Emplacement : /public/logo.png
+   - Source : Image 1 que vous avez fournie (logo avec le dôme et les branches)
+
+2. Photo de Serigne Abdou Aziz Sy Al Amine
+   - Nom du fichier : serigne-al-amine.jpg
+   - Emplacement : /public/serigne-al-amine.jpg
+   - Source : Image 2 que vous avez fournie (photo du guide spirituel)
+
+Le site est déjà configuré pour utiliser ces images aux bons emplacements !
