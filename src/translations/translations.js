@@ -5,6 +5,7 @@ export const translations = {
       presentation: "Présentation",
       biography: "Biographie",
       program: "Programme",
+      library: "Bibliothèque",
       message: "Message",
       contact: "Contact"
     },
@@ -90,6 +91,51 @@ export const translations = {
       }
     },
     
+    // Library
+    library: {
+      title: "Bibliothèque de Serign Abdou Aziz Sy Al Amine",
+      subtitle: "Découvrez notre collection d'ouvrages islamiques organisée par rayons",
+      section: "Rayon",
+      shelves: {
+        tafsir: {
+          number: "1",
+          titleAr: "التفسير القرآن الكريم وعلومه",
+          titleFr: "Tafsir du Saint Coran et Ses Sciences",
+          description: "Interprétation et exégèse du Saint Coran"
+        },
+        hadith: {
+          number: "2",
+          titleAr: "الحديث النبوي وعلومه",
+          titleFr: "Les Récits Prophétiques et Ses Sciences",
+          description: "Collection complète des hadiths et sciences prophétiques"
+        },
+        fiqh: {
+          number: "3",
+          titleAr: "الفقه الإسلامي وأصوله",
+          titleFr: "Sciences des principes fondamentaux de la jurisprudence musulmane",
+          description: "Études approfondies du droit islamique et ses fondements"
+        },
+        sufism: {
+          number: "4",
+          titleAr: "التصوف الإسلامي ومشاربه",
+          titleFr: "Le Soufisme et Ses Écoles",
+          description: "Exploration du mysticisme islamique et ses différentes voies"
+        },
+        language: {
+          number: "5",
+          titleAr: "اللغة العربية وأدبها",
+          titleFr: "Langue et littératures arabes",
+          description: "Ouvrages sur la langue arabe et sa littérature"
+        },
+        magazines: {
+          number: "7",
+          titleAr: "الصحف والمجلات",
+          titleFr: "Revues",
+          description: "Collection de périodiques et publications islamiques"
+        }
+      }
+    },
+    
     // Program
     program: {
       title: "Programme 2025",
@@ -171,6 +217,7 @@ export const translations = {
       presentation: "التقديم",
       biography: "السيرة الذاتية",
       program: "البرنامج",
+      library: "المكتبة",
       message: "الرسالة",
       contact: "اتصل بنا"
     },
@@ -256,6 +303,51 @@ export const translations = {
       }
     },
     
+    // Library
+    library: {
+      title: "مكتبة الأمين",
+      subtitle: "اكتشف مجموعتنا من الكتب الإسلامية منظمة حسب الأقسام",
+      section: "الرف",
+      shelves: {
+        tafsir: {
+          number: "١",
+          titleAr: "التفسير القرآن الكريم وعلومه",
+          titleFr: "Tafsir du Saint Coran et Ses Sciences",
+          description: "تفسير وتأويل القرآن الكريم"
+        },
+        hadith: {
+          number: "٢",
+          titleAr: "الحديث النبوي وعلومه",
+          titleFr: "Les Récits Prophétiques et Ses Sciences",
+          description: "مجموعة كاملة من الأحاديث والعلوم النبوية"
+        },
+        fiqh: {
+          number: "٣",
+          titleAr: "الفقه الإسلامي وأصوله",
+          titleFr: "Sciences des principes fondamentaux de la jurisprudence musulmane",
+          description: "دراسات معمقة في الفقه الإسلامي وأصوله"
+        },
+        sufism: {
+          number: "٤",
+          titleAr: "التصوف الإسلامي ومشاربه",
+          titleFr: "Le Soufisme et Ses Écoles",
+          description: "استكشاف التصوف الإسلامي ومختلف مدارسه"
+        },
+        language: {
+          number: "٥",
+          titleAr: "اللغة العربية وأدبها",
+          titleFr: "Langue et littératures arabes",
+          description: "كتب عن اللغة العربية وآدابها"
+        },
+        magazines: {
+          number: "٧",
+          titleAr: "الصحف والمجلات",
+          titleFr: "Revues",
+          description: "مجموعة من الدوريات والمنشورات الإسلامية"
+        }
+      }
+    },
+    
     // Program
     program: {
       title: "برنامج ٢٠٢٥",
@@ -337,6 +429,7 @@ export const translations = {
       presentation: "About",
       biography: "Biography",
       program: "Program",
+      library: "Library",
       message: "Message",
       contact: "Contact"
     },
@@ -419,6 +512,51 @@ export const translations = {
         birth: "Birth in Tivaouane",
         coskas: "Creation of COSKAS",
         khalife: "General Khalife of Tijaniyya (March-September)"
+      }
+    },
+    
+    // Library
+    library: {
+      title: "Al Amine Library",
+      subtitle: "Discover our collection of Islamic books organized by sections",
+      section: "Shelf",
+      shelves: {
+        tafsir: {
+          number: "1",
+          titleAr: "التفسير القرآن الكريم وعلومه",
+          titleFr: "Exegesis of the Holy Quran and Its Sciences",
+          description: "Interpretation and commentary of the Holy Quran"
+        },
+        hadith: {
+          number: "2",
+          titleAr: "الحديث النبوي وعلومه",
+          titleFr: "Prophetic Narrations and Its Sciences",
+          description: "Complete collection of hadiths and prophetic sciences"
+        },
+        fiqh: {
+          number: "3",
+          titleAr: "الفقه الإسلامي وأصوله",
+          titleFr: "Sciences of fundamental principles of Muslim jurisprudence",
+          description: "In-depth studies of Islamic law and its foundations"
+        },
+        sufism: {
+          number: "4",
+          titleAr: "التصوف الإسلامي ومشاربه",
+          titleFr: "Sufism and Its Schools",
+          description: "Exploration of Islamic mysticism and its various paths"
+        },
+        language: {
+          number: "5",
+          titleAr: "اللغة العربية وأدبها",
+          titleFr: "Arabic Language and Literature",
+          description: "Books on Arabic language and its literature"
+        },
+        magazines: {
+          number: "7",
+          titleAr: "الصحف والمجلات",
+          titleFr: "Magazines",
+          description: "Collection of Islamic periodicals and publications"
+        }
       }
     },
     

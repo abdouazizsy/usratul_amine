@@ -60,6 +60,7 @@ const Navigation = ({ scrolled }) => {
               { id: 'about', key: 'nav.presentation' },
               { id: 'biography', key: 'nav.biography' },
               { id: 'program', key: 'nav.program' },
+              { id: 'library', key: 'nav.library' },
               { id: 'message', key: 'nav.message' },
               { id: 'contact', key: 'nav.contact' }
             ].map((item) => (
@@ -119,6 +120,7 @@ const Navigation = ({ scrolled }) => {
                     { id: 'about', key: 'nav.presentation' },
                     { id: 'biography', key: 'nav.biography' },
                     { id: 'program', key: 'nav.program' },
+                    { id: 'library', key: 'nav.library' },
                     { id: 'message', key: 'nav.message' },
                     { id: 'contact', key: 'nav.contact' }
                   ].map((item) => (
