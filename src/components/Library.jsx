@@ -190,12 +190,11 @@ const Library = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-16 text-center"
         >
-          <div className="inline-flex items-center gap-2 text-gray-600">
-            <Sparkles className="w-5 h-5 text-amber-500" />
-            <p className="text-lg">
-              Plus de ressources disponibles bientôt
+          <div className="flex flex-col items-center gap-3 text-gray-600">
+            <Sparkles className="w-6 h-6 text-amber-500" />
+            <p className="text-lg text-center max-w-3xl">
+              {t('library.comingSoon')}
             </p>
-            <Sparkles className="w-5 h-5 text-amber-500" />
           </div>
         </motion.div>
       </div>

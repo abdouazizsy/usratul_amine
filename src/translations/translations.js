@@ -93,9 +93,10 @@ export const translations = {
     
     // Library
     library: {
-      title: "Bibliothèque de Serign Abdou Aziz Sy Al Amine",
+      title: "Bibliothèque de Serigne Abdou Aziz Sy Al Amine",
       subtitle: "Découvrez notre collection d'ouvrages islamiques organisée par rayons",
       section: "Rayon",
+      comingSoon: "Le site de la bibliothèque officielle de Serigne Abdou Aziz Sy Al Amine sera disponible très prochainement, in shā' Allāh.",
       shelves: {
         tafsir: {
           number: "1",
@@ -308,6 +309,7 @@ export const translations = {
       title: "مكتبة الأمين",
       subtitle: "اكتشف مجموعتنا من الكتب الإسلامية منظمة حسب الأقسام",
       section: "الرف",
+      comingSoon: "موقع المكتبة الرسمية للسيرين عبد العزيز سي الأمين سيكون متاحاً قريباً جداً، إن شاء الله.",
       shelves: {
         tafsir: {
           number: "١",
@@ -520,6 +522,7 @@ export const translations = {
       title: "Al Amine Library",
       subtitle: "Discover our collection of Islamic books organized by sections",
       section: "Shelf",
+      comingSoon: "The official library website of Serigne Abdou Aziz Sy Al Amine will be available very soon, in shā' Allāh.",
       shelves: {
         tafsir: {
           number: "1",
