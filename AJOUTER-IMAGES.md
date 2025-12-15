@@ -12,9 +12,9 @@ Le dossier `public` se trouve ici:
 Vous devez copier **2 images** dans ce dossier:
 
 ### Image 1: Le Logo
-- **Nom du fichier**: `logo.jpeg` (ou `logo.png`)
+- **Nom du fichier**: `logo.png` (ou `logo.png`)
 - **Image**: Le logo avec le dôme et les branches d'olivier (première image que vous avez envoyée)
-- **Emplacement final**: `/Users/abdouazizsyndiaye/CascadeProjects/usratul-amine/public/logo.jpeg`
+- **Emplacement final**: `/Users/abdouazizsyndiaye/CascadeProjects/usratul-amine/public/logo.png`
 - **Note**: Le logo est maintenant affiché avec un fond blanc circulaire pour une meilleure visibilité
 
 ### Image 2: Photo de Serigne Al Amine

@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { BookOpen, Heart, Users, Star } from 'lucide-react'
+import { GraduationCap, BookOpen, Heart, Scale, Flag } from 'lucide-react'
 import { useTranslation } from '../hooks/useTranslation'
 
 const About = () => {
@@ -8,24 +8,29 @@ const About = () => {
   
   const values = [
     {
+      icon: GraduationCap,
+      titleKey: "about.values.youth.title",
+      descKey: "about.values.youth.desc"
+    },
+    {
       icon: BookOpen,
-      titleKey: "about.values.education.title",
-      descKey: "about.values.education.desc"
+      titleKey: "about.values.knowledge.title",
+      descKey: "about.values.knowledge.desc"
     },
     {
       icon: Heart,
-      titleKey: "about.values.heritage.title",
-      descKey: "about.values.heritage.desc"
+      titleKey: "about.values.togetherness.title",
+      descKey: "about.values.togetherness.desc"
     },
     {
-      icon: Users,
-      titleKey: "about.values.community.title",
-      descKey: "about.values.community.desc"
+      icon: Scale,
+      titleKey: "about.values.governance.title",
+      descKey: "about.values.governance.desc"
     },
     {
-      icon: Star,
-      titleKey: "about.values.excellence.title",
-      descKey: "about.values.excellence.desc"
+      icon: Flag,
+      titleKey: "about.values.citizenship.title",
+      descKey: "about.values.citizenship.desc"
     }
   ]
 
@@ -75,7 +80,21 @@ const About = () => {
           </div>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="text-center mb-12"
+        >
+          <h3 className={`text-2xl md:text-3xl font-semibold text-emerald-800 max-w-4xl mx-auto ${
+            language === 'ar' ? 'font-arabic' : ''
+          }`}>
+            {t('about.valuesTitle')}
+          </h3>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
           {values.map((value, index) => (
             <motion.div
               key={index}

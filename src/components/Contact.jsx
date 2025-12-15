@@ -10,8 +10,8 @@ const Contact = () => {
     {
       icon: Phone,
       titleKey: "contact.phone",
-      value: "77 874 62 82",
-      link: "tel:+221778746282"
+      valueKey: "contact.phoneNumber",
+      link: "tel:+221771082626"
     },
     {
       icon: Globe,
@@ -121,7 +121,7 @@ const Contact = () => {
               {t('contact.cta.desc')}
             </p>
             <motion.a
-              href="tel:+221778746282"
+              href="tel:+221771082626"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className={`inline-flex items-center gap-2 px-8 py-4 bg-gold-500 text-white rounded-full font-semibold text-lg shadow-xl hover:bg-gold-600 transition-colors ${

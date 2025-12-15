@@ -28,24 +28,39 @@ export const translations = {
       intro1: "Nous sommes réunis au sein de l'association «Usratul Amine» pour célébrer et préserver l'héritage exceptionnel de Serigne Abdou Aziz Sy Al Amine, digne héritier de Khalifa Ababacar Sy.",
       intro2: "Serigne Abdou Aziz Sy Al Amine a marqué son époque par la revivification de l'héritage de Seydi Hadji Malick Sy. Son riche parcours et sa solide formation intellectuelle lui ont permis d'éduquer et de former des millions de personnes.",
       intro3: "Afin de préserver et honorer sa mémoire, nous avons formé l'association «Usratul Amine» dédiée à perpétuer l'impact positif de Al Amine dans la vie de tout un chacun.",
+      valuesTitle: "À travers ces « 72 heures », Usratul Amine réaffirme son engagement autour de cinq (5) axes majeurs :",
       values: {
-        education: {
-          title: "Éducation",
-          desc: "Former et éduquer des millions de personnes dans la tradition spirituelle"
+        youth: {
+          title: "Formation de la jeunesse",
+          desc: "La formation morale et spirituelle de la jeunesse"
         },
-        heritage: {
-          title: "Héritage",
-          desc: "Préserver la mémoire et l'enseignement de Al Amine pour les générations futures"
+        knowledge: {
+          title: "Transmission du savoir",
+          desc: "La transmission du savoir"
         },
-        community: {
-          title: "Communauté",
-          desc: "Unir les disciples et sympathisants autour d'une vision commune"
+        togetherness: {
+          title: "Vivre-ensemble",
+          desc: "La consolidation du vivre-ensemble"
         },
-        excellence: {
-          title: "Excellence",
-          desc: "Maintenir les standards d'excellence spirituelle et intellectuelle"
+        governance: {
+          title: "Bonne gouvernance",
+          desc: "La promotion de la bonne gouvernance sociale"
+        },
+        citizenship: {
+          title: "Engagement citoyen",
+          desc: "L'engagement citoyen au service de la Nation"
         }
       }
+    },
+    
+    // Pins
+    pins: {
+      slogan: "Mon pins, mon engagement",
+      title: "Pins Usratul Amine",
+      description: "Les pins de l'association Usratul Amine sont disponibles",
+      price: "Prix : 3 000 FCFA",
+      order: "Pour commander, appelez le",
+      phoneNumber: "77 108 26 26"
     },
     
     // Biography
@@ -179,6 +194,7 @@ export const translations = {
       title: "Contactez-nous",
       subtitle: "Rejoignez-nous dans notre mission de préserver cet héritage exceptionnel",
       phone: "Téléphone",
+      phoneNumber: "+221 77 108 26 26",
       website: "Site Web",
       address: "Adresse",
       zawiya: "Suivez-nous en direct",
@@ -241,24 +257,39 @@ export const translations = {
       intro1: "نجتمع في جمعية «أسرة الأمين» للاحتفال والحفاظ على الإرث الاستثنائي للشيخ عبد العزيز سي الأمين، الوريث الجدير للخليفة أبا بكر سي.",
       intro2: "لقد ميز الشيخ عبد العزيز سي الأمين عصره بإحياء إرث السيد الحاج مالك سي. مسيرته الغنية وتكوينه الفكري المتين مكنه من تعليم وتكوين الملايين من الناس.",
       intro3: "من أجل الحفاظ على ذكراه وتكريمها، أنشأنا جمعية «أسرة الأمين» المخصصة لإدامة الأثر الإيجابي للأمين في حياة الجميع.",
+      valuesTitle: "من خلال هذه «الـ 72 ساعة»، تؤكد أسرة الأمين التزامها حول خمسة (٥) محاور رئيسية:",
       values: {
-        education: {
-          title: "التعليم",
-          desc: "تكوين وتعليم الملايين من الناس في التقاليد الروحية"
+        youth: {
+          title: "تكوين الشباب",
+          desc: "التكوين الأخلاقي والروحي للشباب"
         },
-        heritage: {
-          title: "الإرث",
-          desc: "الحفاظ على ذاكرة وتعليم الأمين للأجيال القادمة"
+        knowledge: {
+          title: "نقل المعرفة",
+          desc: "نقل المعرفة"
         },
-        community: {
-          title: "المجتمع",
-          desc: "توحيد التلاميذ والمتعاطفين حول رؤية مشتركة"
+        togetherness: {
+          title: "العيش المشترك",
+          desc: "تعزيز العيش المشترك"
         },
-        excellence: {
-          title: "التميز",
-          desc: "الحفاظ على معايير التميز الروحي والفكري"
+        governance: {
+          title: "الحكامة الرشيدة",
+          desc: "الترويج للحكامة الاجتماعية الرشيدة"
+        },
+        citizenship: {
+          title: "المواطنة المشاركة",
+          desc: "المشاركة المواطنة في خدمة الأمة"
         }
       }
+    },
+    
+    // Pins
+    pins: {
+      slogan: "دبوسي، التزامي",
+      title: "دبوس أسرة الأمين",
+      description: "دبابيس جمعية أسرة الأمين متوفرة",
+      price: "السعر: ٣٠٠٠ فرنك أفريقي",
+      order: "للطلب، اتصل بـ",
+      phoneNumber: "٧٧ ١٠٨ ٢٦ ٢٦"
     },
     
     // Biography
@@ -392,6 +423,7 @@ export const translations = {
       title: "اتصل بنا",
       subtitle: "انضم إلينا في مهمتنا للحفاظ على هذا الإرث الاستثنائي",
       phone: "الهاتف",
+      phoneNumber: "+٢٢١ ٧٧ ١٠٨ ٢٦ ٢٦",
       website: "الموقع الإلكتروني",
       address: "العنوان",
       zawiya: "تابعنا مباشرة",
@@ -454,24 +486,39 @@ export const translations = {
       intro1: "We gather within the «Usratul Amine» association to celebrate and preserve the exceptional legacy of Serigne Abdou Aziz Sy Al Amine, worthy heir of Khalifa Ababacar Sy.",
       intro2: "Serigne Abdou Aziz Sy Al Amine marked his era by reviving the legacy of Seydi Hadji Malick Sy. His rich journey and solid intellectual training enabled him to educate and train millions of people.",
       intro3: "To preserve and honor his memory, we formed the «Usratul Amine» association dedicated to perpetuating Al Amine's positive impact in everyone's life.",
+      valuesTitle: "Through these \"72 hours\", Usratul Amine reaffirms its commitment around five (5) major axes:",
       values: {
-        education: {
-          title: "Education",
-          desc: "Training and educating millions in spiritual tradition"
+        youth: {
+          title: "Youth Training",
+          desc: "The moral and spiritual training of youth"
         },
-        heritage: {
-          title: "Heritage",
-          desc: "Preserving Al Amine's memory and teachings for future generations"
+        knowledge: {
+          title: "Knowledge Transmission",
+          desc: "The transmission of knowledge"
         },
-        community: {
-          title: "Community",
-          desc: "Uniting disciples and sympathizers around a common vision"
+        togetherness: {
+          title: "Living Together",
+          desc: "The consolidation of living together"
         },
-        excellence: {
-          title: "Excellence",
-          desc: "Maintaining standards of spiritual and intellectual excellence"
+        governance: {
+          title: "Good Governance",
+          desc: "The promotion of good social governance"
+        },
+        citizenship: {
+          title: "Civic Engagement",
+          desc: "Civic engagement in service of the Nation"
         }
       }
+    },
+    
+    // Pins
+    pins: {
+      slogan: "My pin, my commitment",
+      title: "Usratul Amine Pin",
+      description: "Usratul Amine association pins are available",
+      price: "Price: 3,000 FCFA",
+      order: "To order, call",
+      phoneNumber: "77 108 26 26"
     },
     
     // Biography
@@ -605,6 +652,7 @@ export const translations = {
       title: "Contact Us",
       subtitle: "Join us in our mission to preserve this exceptional legacy",
       phone: "Phone",
+      phoneNumber: "+221 77 108 26 26",
       website: "Website",
       address: "Address",
       zawiya: "Follow us live",

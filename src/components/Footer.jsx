@@ -118,7 +118,7 @@ const Footer = () => {
               </h4>
               <div className="space-y-4">
                 <a 
-                  href="tel:+221778746282"
+                  href="tel:+221771082626"
                   className="flex items-start gap-3 text-emerald-200 hover:text-gold-300 transition-colors group"
                 >
                   <div className="w-10 h-10 rounded-lg bg-emerald-800/30 flex items-center justify-center group-hover:bg-gold-600/20 transition-colors">
@@ -128,7 +128,9 @@ const Footer = () => {
                     <p className={`text-xs text-emerald-400 mb-1 ${
                       language === 'ar' ? 'font-arabic' : ''
                     }`}>{t('footer.phone')}</p>
-                    <p className="font-semibold">77 874 62 82</p>
+                    <p className={`font-semibold ${
+                      language === 'ar' ? 'font-arabic' : ''
+                    }`}>{t('contact.phoneNumber')}</p>
                   </div>
                 </a>
 

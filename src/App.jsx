@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { BookOpen, Heart, Users, Calendar, Mail, Phone, MapPin, Star, Sparkles } from 'lucide-react'
 import Hero from './components/Hero'
 import About from './components/About'
+import Pins from './components/Pins'
 import Biography from './components/Biography'
 import Program from './components/Program'
 import Library from './components/Library'
@@ -27,6 +28,7 @@ function App() {
       <Navigation scrolled={scrolled} />
       <Hero />
       <About />
+      <Pins />
       <Biography />
       <Program />
       <Library />
