@@ -58,7 +58,7 @@ Voir le fichier [TRADUCTIONS.md](./TRADUCTIONS.md) pour plus de détails.
 
 ## 📝 Notes
 
-Pour ajouter le logo officiel, placez l'image dans le dossier `/public/logo.png`.
+Pour ajouter le logo officiel, placez l'image dans le dossier `/public/logo-og-v3.png`.
 
 ---
 

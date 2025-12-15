@@ -3,8 +3,8 @@
 Veuillez copier les images suivantes dans le dossier /public/ :
 
 1. Logo Usratul Amine
-   - Nom du fichier : logo.png
-   - Emplacement : /public/logo.png
+   - Nom du fichier : logo-og-v3.png
+   - Emplacement : /public/logo-og-v3.png
    - Source : Image 1 que vous avez fournie (logo avec le dôme et les branches)
 
 2. Photo de Serigne Abdou Aziz Sy Al Amine
