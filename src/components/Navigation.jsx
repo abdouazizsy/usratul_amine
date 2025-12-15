@@ -37,7 +37,7 @@ const Navigation = ({ scrolled }) => {
           >
             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center p-1.5 shadow-md overflow-hidden">
               <img 
-                src="/logo-og-v3.png" 
+                src="/logo-og-v2.png" 
                 alt="Usratul Amine Logo" 
                 className="w-full h-full object-cover rounded-full"
                 onError={(e) => {

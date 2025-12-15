@@ -12,9 +12,9 @@ Le dossier `public` se trouve ici:
 Vous devez copier **2 images** dans ce dossier:
 
 ### Image 1: Le Logo
-- **Nom du fichier**: `logo-og-v3.png` (ou `logo-og-v3.png`)
+- **Nom du fichier**: `logo-og-v2.png` (ou `logo-og-v2.png`)
 - **Image**: Le logo avec le dôme et les branches d'olivier (première image que vous avez envoyée)
-- **Emplacement final**: `/Users/abdouazizsyndiaye/CascadeProjects/usratul-amine/public/logo-og-v3.png`
+- **Emplacement final**: `/Users/abdouazizsyndiaye/CascadeProjects/usratul-amine/public/logo-og-v2.png`
 - **Note**: Le logo est maintenant affiché avec un fond blanc circulaire pour une meilleure visibilité
 
 ### Image 2: Photo de Serigne Al Amine
@@ -28,7 +28,7 @@ Vous devez copier **2 images** dans ce dossier:
 2. Allez dans: **CascadeProjects** → **usratul-amine** → **public**
 3. Glissez-déposez les 2 images dans ce dossier
 4. Renommez-les:
-   - Logo → `logo-og-v3.png`
+   - Logo → `logo-og-v2.png`
    - Photo → `serigne-al-amine.jpg`
 
 ## Étape 4: Vérification
@@ -49,7 +49,7 @@ Si vous préférez utiliser le terminal:
 cd /Users/abdouazizsyndiaye/CascadeProjects/usratul-amine/public/
 
 # Copier vos images (adaptez les chemins selon où se trouvent vos images)
-cp /chemin/vers/votre/logo-og-v3.png ./logo-og-v3.png
+cp /chemin/vers/votre/logo-og-v2.png ./logo-og-v2.png
 cp /chemin/vers/votre/photo.jpg ./serigne-al-amine.jpg
 ```
 

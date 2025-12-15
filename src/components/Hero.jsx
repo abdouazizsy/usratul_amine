@@ -130,7 +130,7 @@ const Hero = () => {
               {/* Logo container */}
               <div className="relative w-44 h-44 rounded-full bg-white backdrop-blur-sm border-4 border-gold-400 flex items-center justify-center elegant-shadow p-6 shadow-2xl shadow-gold-500/50">
                 <img 
-                  src="/logo-og-v3.png" 
+                  src="/logo-og-v2.png" 
                   alt="Usratul Amine Logo" 
                   className="w-full h-full object-contain"
                   onError={(e) => {

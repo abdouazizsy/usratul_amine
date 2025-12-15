@@ -37,7 +37,7 @@ Les fichiers optimisés seront générés dans le dossier `dist/`
 ## 🎨 Personnalisation
 
 ### Ajouter le logo officiel
-Placez votre logo dans `/public/logo-og-v3.png`
+Placez votre logo dans `/public/logo-og-v2.png`
 
 ### Modifier les couleurs
 Éditez `tailwind.config.js` pour ajuster les couleurs personnalisées.
