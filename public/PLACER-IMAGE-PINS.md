@@ -1,16 +1,16 @@
-# Image du Pins à placer
+# Image du Pin's à placer
 
 ## 📍 Emplacement
-Placez l'image du pins que vous avez fournie à cet emplacement :
+Placez l'image du pin's que vous avez fournie à cet emplacement :
 
 ```
 public/pins.jpg
 ```
 
 ## 📝 Instructions
-1. Sauvegardez l'image du pins sous le nom : **pins.jpg**
+1. Sauvegardez l'image du pin's sous le nom : **pins.jpg**
 2. Placez-la dans le dossier **public** à la racine du projet
-3. L'image s'affichera automatiquement sur la section Pins du site
+3. L'image s'affichera automatiquement sur la section Pin's du site
 
 ## ℹ️ Format recommandé
 - Format : JPG ou PNG

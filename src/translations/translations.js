@@ -55,9 +55,9 @@ export const translations = {
     
     // Pins
     pins: {
-      slogan: "Mon pins, mon engagement",
-      title: "Pins Usratul Amine",
-      description: "Les pins de l'association Usratul Amine sont disponibles",
+      slogan: "Mon pin's, mon engagement",
+      title: "Pin's Usratul Amine",
+      description: "Les pin's de l'association Usratul Amine sont disponibles",
       price: "Prix : 3 000 FCFA",
       order: "Pour commander, appelez le",
       phoneNumber: "77 108 26 26"
@@ -513,9 +513,9 @@ export const translations = {
     
     // Pins
     pins: {
-      slogan: "My pin, my commitment",
-      title: "Usratul Amine Pin",
-      description: "Usratul Amine association pins are available",
+      slogan: "My pin's, my commitment",
+      title: "Usratul Amine Pin's",
+      description: "Usratul Amine association pin's are available",
       price: "Price: 3,000 FCFA",
       order: "To order, call",
       phoneNumber: "77 108 26 26"
