@@ -11,6 +11,7 @@ import Message from './components/Message'
 import Contact from './components/Contact'
 import Navigation from './components/Navigation'
 import Footer from './components/Footer'
+import Chatbot from './components/Chatbot'
 
 function App() {
   const [scrolled, setScrolled] = useState(false)
@@ -35,6 +36,7 @@ function App() {
       <Message />
       <Contact />
       <Footer />
+      <Chatbot />
     </div>
   )
 }
