@@ -16,26 +16,18 @@ const Program = () => {
       { time: '', activity: 'Hadaratul Jumaa', participants: 'Public' }
     ],
     samedi: [
-      { time: '09h00', activity: 'Accueil et installation des invités à la grande salle du complexe Seydil Hadji', participants: 'COF' },
-      { time: '09h00', activity: 'Mise en place au Stade Elhadji Moustapha Niang', participants: 'Hadaratul Jumaa' },
-      { time: '09h30', activity: 'Allocution du Khalife général des Tidianes', participants: '' },
-      { time: '10h00', activity: 'Présentation des activités de Usratul Amine', participants: '' },
-      { time: '10h30', activity: 'Récital Coran', participants: '' },
-      { time: '11h30', activity: 'Adh Sy Al Amine (DFAA)', participants: '' },
-      { time: '12h00', activity: 'Récitation sur la vie et l\'œuvre de Serigne Abdou Aziz Sy Al Amine', participants: '' },
-      { time: '12h20', activity: 'Présentation des délégations présentes', participants: '' },
-      { time: '13h20', activity: 'Présentation des activités de Usratul Amine', participants: 'COF, ABNA\'U, MUQTAFINA, FEDKAS' }
+      { time: '09h00 - 10h00', activity: 'Accueil et installation des invités à la grande salle du complexe Seydil Hadji Malick SY', participants: '' },
+      { time: '10h00 - 11h00', activity: 'Récital Coran', participants: '' },
+      { time: '11h00', activity: 'Mot de bienvenue', participants: '' },
+      { time: '11h00 - 11h20', activity: 'Réalisation sur la vie et l\'œuvre de Serigne Abdoul Aziz Sy Al Amine (RTA)', participants: '' },
+      { time: '11h20 - 12h20', activity: 'Présentation des délégations présentes', participants: '' },
+      { time: '12h20', activity: 'Présentation des activités de Usratul amine', participants: '' },
+      { time: '14h00', activity: 'Allocution du Khalife général des Tidianes', participants: '' }
     ],
     dimanche: [
-      { time: '09h00', activity: 'Recommandations suivies des prières', participants: '' },
-      { time: '11h00', activity: 'Prières et déjeuner', participants: '' },
-      { time: '14h00', activity: 'Recommandations et Clôture', participants: 'Le Responsable moral Usratul Amine' },
-      { time: '14h30', activity: 'Mise en Place au Stade Elhadji Moustapha Niang', participants: '' },
-      { time: '17h00', activity: 'Récital Coran', participants: '' },
-      { time: '18h00', activity: 'Activités de recherches et l\'exposition à la bibliothèque "Al Amine"', participants: '' },
-      { time: '18h00', activity: 'Final Gamou', participants: '' },
-      { time: '21h00', activity: 'Rencontre de tous les membres des USRATUL', participants: 'CSSC' },
-      { time: '22h20', activity: 'Location du Khalife fédéral des Tidianes', participants: '' }
+      { time: '09h00 - 17h00', activity: 'Activités de recherches, débats et d\'exposition à la bibliothèque "Al Amine"', participants: '' },
+      { time: '17h00', activity: 'Final génie en herbe des dahiras', participants: '' },
+      { time: '18h00 - 22h00', activity: 'Rencontre de tous les membres de USRATUL AMINE avec le Responsable Moral à la salle Serigne Babacar Sy (salle rouge)', participants: '' }
     ]
   }
   

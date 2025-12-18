@@ -140,18 +140,18 @@ const Chatbot = () => {
 - Hadaratul Jumaa (COF, ABNA'U, MUQTAFINA, FEDKAS)
 
 **Programme Samedi 20 Décembre:**
-- 09h00: Accueil invités au complexe Seydil Hadji
-- 09h30: Allocution du Khalife général des Tidianes
-- 10h00: Présentation activités Usratul Amine
-- 11h30: Adh Sy Al Amine (DFAA)
-- 12h00: Récitation sur la vie et l'œuvre de Serigne Abdou Aziz Sy
+- 09h00-10h00: Accueil et installation des invités à la grande salle du complexe Seydil Hadji Malick SY
+- 10h00-11h00: Récital Coran
+- 11h00: Mot de bienvenue
+- 11h00-11h20: Réalisation sur la vie et l'œuvre de Serigne Abdoul Aziz Sy Al Amine (RTA)
+- 11h20-12h20: Présentation des délégations présentes
+- 12h20: Présentation des activités de Usratul amine
+- 14h00: Allocution du Khalife général des Tidianes
 
 **Programme Dimanche 21 Décembre:**
-- 09h00: Recommandations et prières
-- 14h00: Recommandations et Clôture
-- 18h00: Activités bibliothèque "Al Amine"
-- 18h00: Final Gamou
-- 21h00: Rencontre des membres USRATUL
+- 09h00-17h00: Activités de recherches, débats et d'exposition à la bibliothèque "Al Amine"
+- 17h00: Final génie en herbe des dahiras
+- 18h00-22h00: Rencontre de tous les membres de USRATUL AMINE avec le Responsable Moral à la salle Serigne Babacar Sy (salle rouge)
 
 **Diffusion en direct:** Zawiya TV (www.zawiya.sn) - Contact: 77 874 62 82
 
