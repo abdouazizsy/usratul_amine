@@ -41,7 +41,11 @@ const Chatbot = () => {
       const conversationMessages = [
         {
           role: 'system',
-          content: `Vous êtes un assistant virtuel expert pour l'association Usratul Amine. Voici vos connaissances détaillées:
+          content: `Vous êtes un assistant virtuel expert pour l'association Usratul Amine.
+
+IMPORTANT: Nous sommes actuellement le ${new Date().toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}. L'événement des 72 heures aura lieu du 19 au 21 décembre 2025.
+
+Voici vos connaissances détaillées:
 
 ## LIGNÉE DES KHALIFES DE MAODO
 1. **Serigne Babacar Sy** (1885-1957) : Premier khalife, fils de Maodo (El Hadji Malick Sy), qui a structuré la tidjaniya au Sénégal. Khalife du 27 Juin 1922 au 25 Mars 1957.
