@@ -1,10 +1,41 @@
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Award, BookOpen, Heart, Crown, Users, Star } from 'lucide-react'
+import { Award, BookOpen, Heart, Crown, Users, Star, Play, X } from 'lucide-react'
 import { useTranslation } from '../hooks/useTranslation'
 
 const Biography = () => {
   const { t, language } = useTranslation()
+  const [isDocumentaryOpen, setIsDocumentaryOpen] = useState(false)
+
+  const documentaryVideoId = '6pOuakMf3Dw'
+  const documentaryTitle = 'DOCUMENTAIRE AL AMINE : LE KHALIF TÉMOIN'
+  const documentaryUrl = `https://www.youtube.com/watch?v=${documentaryVideoId}`
+  const documentaryEmbedUrl = useMemo(() => {
+    const params = new URLSearchParams({
+      autoplay: '1',
+      rel: '0',
+      modestbranding: '1'
+    })
+    return `https://www.youtube-nocookie.com/embed/${documentaryVideoId}?${params.toString()}`
+  }, [])
+  const documentaryThumbnail = `https://i.ytimg.com/vi/${documentaryVideoId}/maxresdefault.jpg`
+
+  useEffect(() => {
+    if (!isDocumentaryOpen) return
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') setIsDocumentaryOpen(false)
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [isDocumentaryOpen])
   
   const achievements = [
     {
@@ -139,6 +170,123 @@ const Biography = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mb-20"
         >
+          <div className="max-w-5xl mx-auto mb-10">
+            <motion.button
+              type="button"
+              onClick={() => setIsDocumentaryOpen(true)}
+              whileHover={{ y: -4 }}
+              className="w-full text-left bg-white rounded-3xl overflow-hidden elegant-shadow hover:shadow-2xl transition-shadow"
+            >
+              <div className="relative w-full aspect-video bg-black">
+                <img
+                  src={documentaryThumbnail}
+                  alt={documentaryTitle}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  loading="lazy"
+                  onError={(e) => {
+                    e.target.src = `https://i.ytimg.com/vi/${documentaryVideoId}/hqdefault.jpg`
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
+
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="relative">
+                    <div className="absolute -inset-6 rounded-full bg-white/10 blur-xl" />
+                    <div className="w-20 h-20 rounded-full bg-white/15 backdrop-blur-sm border border-white/30 flex items-center justify-center shadow-xl">
+                      <Play className="w-9 h-9 text-white" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="absolute top-5 left-5">
+                  <div className={`inline-flex items-center gap-2 rounded-full px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm font-semibold ${
+                    language === 'ar' ? 'font-arabic' : ''
+                  }`}>
+                    <span className="w-2 h-2 rounded-full bg-red-500" />
+                    Documentaire
+                  </div>
+                </div>
+
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                  <h3 className={`text-2xl md:text-3xl font-elegant font-bold text-white ${
+                    language === 'ar' ? 'font-arabic' : ''
+                  }`}>
+                    {documentaryTitle}
+                  </h3>
+                  <p className={`text-white/85 mt-2 max-w-3xl ${
+                    language === 'ar' ? 'font-arabic' : ''
+                  }`}>
+                    Un film à regarder absolument — cliquez pour lancer le mode cinéma.
+                  </p>
+
+                  <div className="mt-5 flex flex-col sm:flex-row gap-3 sm:items-center">
+                    <div className="inline-flex items-center gap-2 rounded-2xl px-5 py-3 bg-gradient-to-r from-emerald-600 to-gold-600 text-white font-semibold shadow-lg">
+                      <Play className="w-5 h-5" />
+                      Lancer le documentaire
+                    </div>
+                    <a
+                      href={documentaryUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center justify-center rounded-2xl px-5 py-3 bg-white/10 text-white font-semibold border border-white/20 hover:bg-white/15 transition-colors"
+                    >
+                      Ouvrir sur YouTube
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </motion.button>
+          </div>
+
+          {isDocumentaryOpen && (
+            <div
+              className="fixed inset-0 z-[9999]"
+              role="dialog"
+              aria-modal="true"
+              aria-label={documentaryTitle}
+            >
+              <button
+                type="button"
+                className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+                aria-label="Fermer"
+                onClick={() => setIsDocumentaryOpen(false)}
+              />
+
+              <div className="relative z-10 h-full w-full flex items-center justify-center p-4 sm:p-6">
+                <div className="w-full max-w-5xl">
+                  <div className="bg-black rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+                    <div className="flex items-center justify-between px-4 sm:px-6 py-4 bg-gradient-to-r from-black via-black to-black/80">
+                      <div className="min-w-0">
+                        <div className="text-white font-semibold truncate">{documentaryTitle}</div>
+                        <div className="text-white/70 text-sm truncate">Mode cinéma</div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setIsDocumentaryOpen(false)}
+                        className="inline-flex items-center justify-center w-11 h-11 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white transition-colors"
+                        aria-label="Fermer"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    <div className="relative w-full aspect-video bg-black">
+                      <iframe
+                        className="absolute inset-0 w-full h-full"
+                        src={documentaryEmbedUrl}
+                        title={documentaryTitle}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           <h3 className={`text-3xl font-elegant font-bold text-center text-emerald-800 mb-10 ${
             language === 'ar' ? 'font-arabic' : ''
           }`}>
