@@ -6,6 +6,7 @@ import About from './components/About'
 import Pins from './components/Pins'
 import Biography from './components/Biography'
 import Program from './components/Program'
+import Memories from './components/Memories'
 import Library from './components/Library'
 import Message from './components/Message'
 import Contact from './components/Contact'
@@ -32,6 +33,7 @@ function App() {
       <Pins />
       <Biography />
       <Program />
+      <Memories />
       <Library />
       <Message />
       <Contact />

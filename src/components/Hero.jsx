@@ -88,33 +88,6 @@ const Hero = () => {
           transition={{ duration: 0.8 }}
           className="space-y-8"
         >
-          {/* Bannière d'événement animée */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ 
-              opacity: [0, 1, 1, 0],
-              y: [-20, 0, 0, -20],
-              scale: [0.95, 1, 1, 0.95]
-            }}
-            transition={{ 
-              duration: 4,
-              repeat: Infinity,
-              repeatDelay: 2,
-              ease: "easeInOut"
-            }}
-            className="mb-6"
-          >
-            <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-gold-500 via-gold-400 to-gold-500 rounded-full shadow-2xl shadow-gold-500/50 border-2 border-white/30">
-              <Sparkles className="w-5 h-5 text-white animate-pulse" />
-              <span className={`text-white font-bold text-lg tracking-wide ${
-                language === 'ar' ? 'font-arabic' : ''
-              }`}>
-                {t('hero.eventBanner')}
-              </span>
-              <Sparkles className="w-5 h-5 text-white animate-pulse" style={{ animationDelay: '0.5s' }} />
-            </div>
-          </motion.div>
-
           {/* Logo with glow effect */}
           <motion.div
             initial={{ scale: 0, rotate: -180 }}

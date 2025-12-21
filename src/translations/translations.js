@@ -154,16 +154,16 @@ export const translations = {
     
     // Program
     program: {
-      title: "Programme 2025",
-      subtitle: "Événement commémoratif à Tivaouane",
+      title: "Programme",
+      subtitle: "Les prochains événements seront annoncés ici, in shā' Allāh.",
       dates: "Dates",
       location: "Lieu",
       locationDesc: "Ville spirituelle et centre religieux",
       schedule: "Programme",
-      detailedSchedule: "Programme Détaillé des 72h",
-      friday: "Vendredi 19 Décembre 2025",
-      saturday: "Samedi 20 Décembre 2025",
-      sunday: "Dimanche 21 Décembre 2025",
+      detailedSchedule: "Programme détaillé",
+      friday: "Vendredi",
+      saturday: "Samedi",
+      sunday: "Dimanche",
       activities: {
         conferences: "Conférences spirituelles et éducatives",
         recitations: "Récitations et chants religieux",
@@ -219,8 +219,8 @@ export const translations = {
         community: "Communauté"
       },
       event: {
-        title: "Événement 2025",
-        dates: "19-20-21 Décembre • Tivaouane",
+        title: "Événements",
+        dates: "Programme terminé pour cette année",
         button: "Voir le programme"
       },
       copyright: "Tous droits réservés.",
@@ -612,16 +612,16 @@ export const translations = {
     
     // Program
     program: {
-      title: "2025 Program",
-      subtitle: "Commemorative event in Tivaouane",
+      title: "Program",
+      subtitle: "Updates on upcoming events will appear here, in shā' Allāh.",
       dates: "Dates",
       location: "Location",
       locationDesc: "Spiritual city and religious center",
       schedule: "Schedule",
-      detailedSchedule: "Detailed 72-hour Program",
-      friday: "Friday, December 19, 2025",
-      saturday: "Saturday, December 20, 2025",
-      sunday: "Sunday, December 21, 2025",
+      detailedSchedule: "Detailed Program",
+      friday: "Friday",
+      saturday: "Saturday",
+      sunday: "Sunday",
       activities: {
         conferences: "Spiritual and educational conferences",
         recitations: "Religious recitations and chants",
@@ -677,8 +677,8 @@ export const translations = {
         community: "Community"
       },
       event: {
-        title: "2025 Event",
-        dates: "December 19-20-21 • Tivaouane",
+        title: "Events",
+        dates: "Program completed for this year",
         button: "View program"
       },
       copyright: "All rights reserved.",
