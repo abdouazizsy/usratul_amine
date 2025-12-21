@@ -107,7 +107,7 @@ const Biography = () => {
             <div className="relative rounded-3xl overflow-hidden elegant-shadow">
               <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/20 to-gold-600/20"></div>
               <img 
-                src="/serigne-al-amine.png" 
+                src="/serigne.jpeg" 
                 alt="Serigne Abdou Aziz Sy Al Amine" 
                 className="w-full h-[600px] object-cover"
                 onError={(e) => {
