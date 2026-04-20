@@ -129,7 +129,7 @@ const Navigation = ({ scrolled }) => {
                           <BookOpen className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                          <p className="font-semibold text-gray-900 group-hover:text-emerald-700">Programmes Usratul de Amine</p>
+                          <p className="font-semibold text-gray-900 group-hover:text-emerald-700">Programmes de Usratul Amine</p>
                           <p className="text-xs text-gray-500">Nos activités et événements</p>
                         </div>
                       </Link>
