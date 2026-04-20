@@ -1,45 +1,59 @@
-import React, { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { BookOpen, Heart, Users, Calendar, Mail, Phone, MapPin, Star, Sparkles } from 'lucide-react'
-import Hero from './components/Hero'
-import About from './components/About'
-import Pins from './components/Pins'
-import Biography from './components/Biography'
-import Program from './components/Program'
-import Memories from './components/Memories'
-import Library from './components/Library'
-import Message from './components/Message'
-import Contact from './components/Contact'
-import Navigation from './components/Navigation'
-import Footer from './components/Footer'
-import Chatbot from './components/Chatbot'
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import HomePage from './pages/HomePage'
+import ProgrammePage from './pages/ProgrammePage'
+import CalendrierTariqaPage from './pages/CalendrierTariqaPage'
+import AdminLogin from './components/AdminLogin'
+import AdminDashboard from './components/AdminDashboard'
+import { AdminProvider, useAdmin } from './contexts/AdminContext'
+
+// Composant pour protéger les routes admin
+function ProtectedAdminRoute({ children }) {
+  const { user, loading, isAdmin } = useAdmin()
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-gray-500">Chargement...</div>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return <AdminLogin />
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-red-600">Accès non autorisé</div>
+      </div>
+    )
+  }
+
+  return children
+}
 
 function App() {
-  const [scrolled, setScrolled] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
   return (
-    <div className="min-h-screen">
-      <Navigation scrolled={scrolled} />
-      <Hero />
-      <About />
-      <Pins />
-      <Biography />
-      <Program />
-      <Memories />
-      <Library />
-      <Message />
-      <Contact />
-      <Footer />
-      <Chatbot />
-    </div>
+    <AdminProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/programme" element={<ProgrammePage />} />
+          <Route path="/calendrier-tariqa" element={<CalendrierTariqaPage />} />
+          <Route 
+            path="/admin" 
+            element={
+              <ProtectedAdminRoute>
+                <AdminDashboard />
+              </ProtectedAdminRoute>
+            } 
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Router>
+    </AdminProvider>
   )
 }
 

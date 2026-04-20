@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Phone, MapPin, Mail, Globe, Heart, Book, Users, Calendar } from 'lucide-react'
 import { useTranslation } from '../hooks/useTranslation'
@@ -7,11 +8,11 @@ const Footer = () => {
   const { t, language } = useTranslation()
   
   const quickLinks = [
-    { nameKey: 'nav.presentation', href: '#about' },
-    { nameKey: 'nav.biography', href: '#biography' },
-    { nameKey: 'nav.program', href: '#program' },
-    { nameKey: 'nav.message', href: '#message' },
-    { nameKey: 'nav.contact', href: '#contact' }
+    { nameKey: 'nav.presentation', href: '/#about', isRoute: true },
+    { nameKey: 'nav.biography', href: '/#biography', isRoute: true },
+    { nameKey: 'nav.program', href: '/programme', isRoute: true },
+    { nameKey: 'nav.message', href: '/#message', isRoute: true },
+    { nameKey: 'nav.contact', href: '/#contact', isRoute: true }
   ]
 
   const values = [
@@ -89,15 +90,15 @@ const Footer = () => {
               <ul className="space-y-3">
                 {quickLinks.map((link, index) => (
                   <li key={index}>
-                    <a
-                      href={link.href}
+                    <Link
+                      to={link.href}
                       className={`text-emerald-200 hover:text-gold-300 transition-colors flex items-center gap-2 group ${
                         language === 'ar' ? 'font-arabic' : ''
                       }`}
                     >
                       <span className="w-1.5 h-1.5 bg-gold-500 rounded-full group-hover:scale-150 transition-transform"></span>
                       {t(link.nameKey)}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -188,14 +189,14 @@ const Footer = () => {
                   }`}>{t('footer.event.dates')}</p>
                 </div>
               </div>
-              <a
-                href="#program"
+              <Link
+                to="/programme"
                 className={`px-6 py-3 bg-white text-gold-700 rounded-full font-semibold hover:bg-emerald-50 transition-colors shadow-lg ${
                   language === 'ar' ? 'font-arabic' : ''
                 }`}
               >
                 {t('footer.event.button')}
-              </a>
+              </Link>
             </div>
           </motion.div>
         </div>

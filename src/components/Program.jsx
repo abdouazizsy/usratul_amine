@@ -71,7 +71,7 @@ const Program = () => {
                   Usratul Amine
                 </p>
                 <p className="text-white text-2xl md:text-3xl font-elegant font-bold">
-                  Aucun programme prévu pour la fin de l'année
+                  Aucun programme prévu actuellement
                 </p>
                 <p className="text-emerald-100 mt-3 max-w-xl mx-auto">
                   Les grands événements des 19, 20 et 21 décembre sont désormais terminés. De nouveaux programmes seront

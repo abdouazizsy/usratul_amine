@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import LanguageSelector from './LanguageSelector'
@@ -9,13 +10,27 @@ const Navigation = ({ scrolled }) => {
   const { language } = useLanguage()
   const t = (key) => getTranslation(language, key)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const location = useLocation()
+  const navigate = useNavigate()
   
   const scrollToSection = (id) => {
-    const element = document.getElementById(id)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-      setMobileMenuOpen(false) // Fermer le menu après navigation
+    // Si on n'est pas sur la page d'accueil, naviguer d'abord vers la page d'accueil
+    if (location.pathname !== '/') {
+      navigate('/')
+      // Attendre que la navigation soit terminée avant de scroller
+      setTimeout(() => {
+        const element = document.getElementById(id)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' })
+        }
+      }, 100)
+    } else {
+      const element = document.getElementById(id)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
     }
+    setMobileMenuOpen(false)
   }
 
   return (
@@ -30,11 +45,11 @@ const Navigation = ({ scrolled }) => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <motion.div 
-            className="flex items-center gap-3 cursor-pointer"
-            onClick={() => scrollToSection('hero')}
-            whileHover={{ scale: 1.05 }}
+          <Link 
+            to="/"
+            className="flex items-center gap-3"
           >
+            <motion.div whileHover={{ scale: 1.05 }}>
             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center p-1.5 shadow-md overflow-hidden">
               <img 
                 src="/logo-og-v2.png" 
@@ -52,17 +67,17 @@ const Navigation = ({ scrolled }) => {
             }`}>
               Usratul Amine
             </span>
-          </motion.div>
+            </motion.div>
+          </Link>
           
           {/* Menu desktop */}
           <div className="hidden md:flex items-center gap-6">
             {[
-              { id: 'about', key: 'nav.presentation' },
-              { id: 'biography', key: 'nav.biography' },
-              { id: 'program', key: 'nav.program' },
-              { id: 'library', key: 'nav.library' },
-              { id: 'message', key: 'nav.message' },
-              { id: 'contact', key: 'nav.contact' }
+              { id: 'about', key: 'nav.presentation', scroll: true },
+              { id: 'biography', key: 'nav.biography', scroll: true },
+              { id: 'library', key: 'nav.library', scroll: true },
+              { id: 'message', key: 'nav.message', scroll: true },
+              { id: 'contact', key: 'nav.contact', scroll: true }
             ].map((item) => (
               <button
                 key={item.id}
@@ -76,6 +91,28 @@ const Navigation = ({ scrolled }) => {
                 {t(item.key)}
               </button>
             ))}
+            
+            <Link
+              to="/programme"
+              className={`font-medium transition-colors ${
+                scrolled 
+                  ? 'text-emerald-700 hover:text-gold-600' 
+                  : 'text-white hover:text-gold-300'
+              }`}
+            >
+              {t('nav.program')}
+            </Link>
+
+            <Link
+              to="/calendrier-tariqa"
+              className={`font-medium transition-colors ${
+                scrolled 
+                  ? 'text-emerald-700 hover:text-gold-600' 
+                  : 'text-white hover:text-gold-300'
+              }`}
+            >
+              Calendrier Hadara
+            </Link>
             
             <LanguageSelector scrolled={scrolled} />
           </div>
