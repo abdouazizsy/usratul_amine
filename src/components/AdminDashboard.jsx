@@ -446,102 +446,103 @@ const AdminDashboard = () => {
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-gold-50">
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <h1 className="text-2xl font-bold text-emerald-800">
+          <div className="flex flex-col sm:flex-row justify-between sm:items-center py-4 gap-3">
+            <h1 className="text-lg sm:text-2xl font-bold text-emerald-800">
               Administration Usratul Amine
             </h1>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-600">
+            <div className="flex items-center justify-between sm:justify-end gap-4">
+              <span className="text-xs sm:text-sm text-gray-600 truncate max-w-[180px] sm:max-w-none">
                 {user?.email}
               </span>
               <button
                 onClick={logout}
-                className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                className="flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0"
               >
                 <LogOut className="w-4 h-4" />
-                Déconnexion
+                <span className="hidden sm:inline">Déconnexion</span>
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex gap-6">
-          <div className="w-64 bg-white rounded-xl shadow-sm p-6">
-            <nav className="space-y-2">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+        <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
+          {/* Sidebar desktop / Tabs horizontaux mobile */}
+          <div className="lg:w-64 bg-white rounded-xl shadow-sm p-3 lg:p-6">
+            <nav className="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-visible lg:space-y-2 scrollbar-hide">
               <button
                 onClick={() => setActiveTab('programs')}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                className={`flex-shrink-0 lg:w-full flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2 lg:py-3 rounded-lg transition-colors whitespace-nowrap text-sm lg:text-base ${
                   activeTab === 'programs'
                     ? 'bg-emerald-100 text-emerald-700'
                     : 'text-gray-600 hover:bg-gray-50'
                 }`}
               >
-                <Calendar className="w-5 h-5" />
+                <Calendar className="w-5 h-5 flex-shrink-0" />
                 Programmes
               </button>
               <button
                 onClick={() => setActiveTab('tariqa')}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                className={`flex-shrink-0 lg:w-full flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2 lg:py-3 rounded-lg transition-colors whitespace-nowrap text-sm lg:text-base ${
                   activeTab === 'tariqa'
                     ? 'bg-emerald-100 text-emerald-700'
                     : 'text-gray-600 hover:bg-gray-50'
                 }`}
               >
-                <Calendar className="w-5 h-5" />
+                <Calendar className="w-5 h-5 flex-shrink-0" />
                 Calendrier Hadara
               </button>
               <button
                 onClick={() => setActiveTab('hadara-djouma')}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                className={`flex-shrink-0 lg:w-full flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2 lg:py-3 rounded-lg transition-colors whitespace-nowrap text-sm lg:text-base ${
                   activeTab === 'hadara-djouma'
-                    ? 'bg-purple-100 text-purple-700'
+                    ? 'bg-emerald-100 text-emerald-700'
                     : 'text-gray-600 hover:bg-gray-50'
                 }`}
               >
-                <Sparkles className="w-5 h-5" />
+                <Sparkles className="w-5 h-5 flex-shrink-0" />
                 Hadara Djouma
               </button>
               <button
                 onClick={() => setActiveTab('users')}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                className={`flex-shrink-0 lg:w-full flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2 lg:py-3 rounded-lg transition-colors whitespace-nowrap text-sm lg:text-base ${
                   activeTab === 'users'
                     ? 'bg-emerald-100 text-emerald-700'
                     : 'text-gray-600 hover:bg-gray-50'
                 }`}
               >
-                <Users className="w-5 h-5" />
+                <Users className="w-5 h-5 flex-shrink-0" />
                 Utilisateurs
               </button>
               <button
                 onClick={() => setActiveTab('settings')}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                className={`flex-shrink-0 lg:w-full flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2 lg:py-3 rounded-lg transition-colors whitespace-nowrap text-sm lg:text-base ${
                   activeTab === 'settings'
                     ? 'bg-emerald-100 text-emerald-700'
                     : 'text-gray-600 hover:bg-gray-50'
                 }`}
               >
-                <SettingsIcon className="w-5 h-5" />
+                <SettingsIcon className="w-5 h-5 flex-shrink-0" />
                 Paramètres
               </button>
             </nav>
           </div>
 
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             {activeTab === 'programs' && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white rounded-xl shadow-sm p-6"
+                className="bg-white rounded-xl shadow-sm p-4 sm:p-6"
               >
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-bold text-gray-800">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-3">
+                  <h2 className="text-lg sm:text-xl font-bold text-gray-800">
                     Gestion des programmes
                   </h2>
                   <button
                     onClick={() => setShowAddForm(true)}
-                    className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
+                    className="flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm"
                   >
                     <Plus className="w-4 h-4" />
                     Ajouter un programme
@@ -834,20 +835,21 @@ const AdminDashboard = () => {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white rounded-xl shadow-sm p-6"
+                className="bg-white rounded-xl shadow-sm p-4 sm:p-6"
               >
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-bold text-gray-800">
-                    Calendrier de la Hadara 2025-2026
-                  </h2>
-                  <div className="flex items-center gap-4">
+                <div className="flex flex-col gap-3 mb-6">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                    <h2 className="text-lg sm:text-xl font-bold text-gray-800">
+                      Calendrier de la Hadara 2025-2026
+                    </h2>
                     <div className="text-sm text-gray-600">
                       {tariqaEvents.length} événements
                     </div>
-                    <div className="flex gap-2">
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-2">
                       <button
                         onClick={() => setShowTariqaForm(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                        className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
                       >
                         <Plus className="w-4 h-4" />
                         Ajouter un événement
@@ -856,13 +858,12 @@ const AdminDashboard = () => {
                         <button
                           onClick={handleImportTariqaEvents}
                           disabled={importing}
-                          className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50"
+                          className="flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50 text-sm"
                         >
                           <Plus className="w-4 h-4" />
                           {importing ? 'Importation...' : 'Importer COSKAS'}
                         </button>
                       )}
-                    </div>
                   </div>
                 </div>
 
@@ -1079,40 +1080,40 @@ const AdminDashboard = () => {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white rounded-xl shadow-sm p-6"
+                className="bg-white rounded-xl shadow-sm p-4 sm:p-6"
               >
-                <div className="flex justify-between items-center mb-6">
-                  <div>
-                    <h2 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                      Hadaras Djouma 2026/2027
-                    </h2>
-                    <p className="text-sm text-gray-500 mt-1">
-                      Calendrier annuel des Hadaratoul Jumu'ah
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-4">
+                <div className="flex flex-col gap-3 mb-6">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                    <div>
+                      <h2 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-emerald-700 to-gold-600 bg-clip-text text-transparent">
+                        Hadaras Djouma 2026/2027
+                      </h2>
+                      <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                        Calendrier annuel des Hadaratoul Jumu'ah
+                      </p>
+                    </div>
                     <div className="text-sm text-gray-600">
                       {hadaraDjoumaEvents.length} Hadaras Djouma
                     </div>
-                    <div className="flex gap-2">
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <button
+                      onClick={() => setShowHadaraDjoumaForm(true)}
+                      className="flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-700 to-gold-600 text-white rounded-lg hover:shadow-lg transition-all text-sm"
+                    >
+                      <Plus className="w-4 h-4" />
+                      Ajouter une Hadara
+                    </button>
+                    {hadaraDjoumaEvents.length === 0 && (
                       <button
-                        onClick={() => setShowHadaraDjoumaForm(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:shadow-lg transition-all"
+                        onClick={handleImportHadaraDjouma}
+                        disabled={importingHadara}
+                        className="flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-gold-500 text-gray-900 rounded-lg hover:shadow-lg transition-all disabled:opacity-50 font-semibold text-sm"
                       >
-                        <Plus className="w-4 h-4" />
-                        Ajouter une Hadara
+                        <Sparkles className="w-4 h-4" />
+                        {importingHadara ? 'Importation...' : 'Importer 70 Hadaras'}
                       </button>
-                      {hadaraDjoumaEvents.length === 0 && (
-                        <button
-                          onClick={handleImportHadaraDjouma}
-                          disabled={importingHadara}
-                          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-gold-500 text-gray-900 rounded-lg hover:shadow-lg transition-all disabled:opacity-50 font-semibold"
-                        >
-                          <Sparkles className="w-4 h-4" />
-                          {importingHadara ? 'Importation...' : 'Importer 70 Hadaras'}
-                        </button>
-                      )}
-                    </div>
+                    )}
                   </div>
                 </div>
 
@@ -1120,7 +1121,7 @@ const AdminDashboard = () => {
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="mb-6 p-6 bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg border border-purple-200"
+                    className="mb-6 p-4 sm:p-6 bg-gradient-to-br from-emerald-50 to-gold-50 rounded-lg border border-emerald-200"
                   >
                     <div className="flex justify-between items-center mb-4">
                       <h3 className="text-lg font-semibold text-gray-800">
@@ -1144,7 +1145,7 @@ const AdminDashboard = () => {
                     </div>
 
                     <form onSubmit={handleHadaraDjoumaSubmit} className="space-y-4">
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">
                             Nom de la Hadara
@@ -1153,7 +1154,7 @@ const AdminDashboard = () => {
                             type="text"
                             value={hadaraDjoumaFormData.title}
                             onChange={(e) => setHadaraDjoumaFormData({...hadaraDjoumaFormData, title: e.target.value})}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                             placeholder="ex: Tabaski, Gamou Tivaouine..."
                             required
                           />
@@ -1166,7 +1167,7 @@ const AdminDashboard = () => {
                             type="date"
                             value={hadaraDjoumaFormData.date}
                             onChange={(e) => setHadaraDjoumaFormData({...hadaraDjoumaFormData, date: e.target.value})}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                             required
                           />
                         </div>
@@ -1180,7 +1181,7 @@ const AdminDashboard = () => {
                           type="text"
                           value={hadaraDjoumaFormData.location}
                           onChange={(e) => setHadaraDjoumaFormData({...hadaraDjoumaFormData, location: e.target.value})}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                           placeholder="ex: Tivaouine, National, Dakar..."
                         />
                       </div>
@@ -1192,16 +1193,16 @@ const AdminDashboard = () => {
                         <textarea
                           value={hadaraDjoumaFormData.description}
                           onChange={(e) => setHadaraDjoumaFormData({...hadaraDjoumaFormData, description: e.target.value})}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                           rows={3}
                           placeholder="Description de la Hadara..."
                         />
                       </div>
 
-                      <div className="flex gap-3">
+                      <div className="flex flex-col sm:flex-row gap-3">
                         <button
                           type="submit"
-                          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:shadow-lg transition-all"
+                          className="flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-700 to-gold-600 text-white rounded-lg hover:shadow-lg transition-all"
                         >
                           <Save className="w-4 h-4" />
                           {editingHadaraDjouma ? 'Mettre à jour' : 'Enregistrer'}
@@ -1244,12 +1245,12 @@ const AdminDashboard = () => {
                           key={event.id}
                           className={`border rounded-lg p-4 transition-all ${
                             isFuture 
-                              ? 'bg-gradient-to-r from-purple-50 via-blue-50 to-pink-50 border-purple-200 hover:shadow-md' 
+                              ? 'bg-gradient-to-r from-emerald-50 to-gold-50 border-emerald-200 hover:shadow-md' 
                               : 'border-gray-100 bg-gray-50'
                           }`}
                         >
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
+                          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                            <div className="flex-1 min-w-0">
                               <div className="flex items-start gap-2 mb-2">
                                 <h3 className="font-semibold text-gray-800">
                                   {event.title}
@@ -1278,7 +1279,7 @@ const AdminDashboard = () => {
                                 </p>
                               )}
                             </div>
-                            <div className="flex items-center gap-2 ml-4">
+                            <div className="flex items-center gap-2 sm:ml-4 flex-shrink-0">
                               {isFuture && (
                                 <span className="px-2 py-1 text-xs font-medium bg-emerald-100 text-emerald-700 rounded">
                                   À venir
@@ -1286,7 +1287,7 @@ const AdminDashboard = () => {
                               )}
                               <button
                                 onClick={() => handleEditHadaraDjouma(event)}
-                                className="p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+                                className="p-2 text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors"
                                 title="Modifier"
                               >
                                 <Edit className="w-4 h-4" />
