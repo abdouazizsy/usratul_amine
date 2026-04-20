@@ -70,7 +70,7 @@ const HadaraDjoumaPage = () => {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-900 via-emerald-800 to-gold-700">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-gold-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-white text-lg">Chargement des Hadaras Djouma...</p>
+          <p className="text-white text-lg">Chargement des Abna'u Hadara Tidiani...</p>
         </div>
       </div>
     )
@@ -312,7 +312,7 @@ const HadaraDjoumaPage = () => {
                     </div>
                     <div>
                       <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-white/20 text-white backdrop-blur-sm">
-                        HADARA DJOUMA
+                        ABNA'U HADARA TIDIANI
                       </span>
                     </div>
                   </div>

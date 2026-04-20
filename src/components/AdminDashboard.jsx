@@ -136,8 +136,8 @@ const AdminDashboard = () => {
     setConfirmModal({
       isOpen: true,
       type: 'import',
-      title: 'Importer le calendrier Hadara Djouma',
-      message: 'Voulez-vous importer les 70 Hadaras Djouma 2026/2027 ? Cette action ajoutera tous les événements du calendrier annuel officiel.',
+      title: 'Importer le calendrier Abna\'u Hadara Tidiani',
+      message: 'Voulez-vous importer les 70 Abna\'u Hadara Tidiani 2026/2027 ? Cette action ajoutera tous les événements du calendrier annuel officiel.',
       onConfirm: async () => {
         setImportingHadara(true)
         try {
@@ -171,7 +171,7 @@ const AdminDashboard = () => {
           isOpen: true,
           type: 'success',
           title: 'Hadara modifiée',
-          message: 'La Hadara Djouma a été modifiée avec succès.'
+          message: 'L\'Abna\'u Hadara Tidiani a été modifiée avec succès.'
         })
       } else {
         await addDoc(collection(db, 'hadara_djouma_events'), {
@@ -183,7 +183,7 @@ const AdminDashboard = () => {
           isOpen: true,
           type: 'success',
           title: 'Hadara ajoutée',
-          message: 'La Hadara Djouma a été ajoutée avec succès.'
+          message: 'L\'Abna\'u Hadara Tidiani a été ajoutée avec succès.'
         })
       }
       
@@ -202,7 +202,7 @@ const AdminDashboard = () => {
         isOpen: true,
         type: 'error',
         title: 'Erreur',
-        message: 'Impossible d\'enregistrer la Hadara Djouma.'
+        message: 'Impossible d\'enregistrer l\'Abna\'u Hadara Tidiani.'
       })
     }
   }
@@ -222,8 +222,8 @@ const AdminDashboard = () => {
     setConfirmModal({
       isOpen: true,
       type: 'danger',
-      title: 'Supprimer la Hadara Djouma',
-      message: 'Êtes-vous sûr de vouloir supprimer cette Hadara Djouma ? Cette action est irréversible.',
+      title: 'Supprimer l\'Abna\'u Hadara Tidiani',
+      message: 'Êtes-vous sûr de vouloir supprimer cette Abna\'u Hadara Tidiani ? Cette action est irréversible.',
       onConfirm: async () => {
         try {
           await deleteDoc(doc(db, 'hadara_djouma_events', id))
@@ -231,7 +231,7 @@ const AdminDashboard = () => {
             isOpen: true,
             type: 'success',
             title: 'Hadara supprimée',
-            message: 'La Hadara Djouma a été supprimée avec succès.'
+            message: 'L\'Abna\'u Hadara Tidiani a été supprimée avec succès.'
           })
           fetchHadaraDjoumaEvents()
         } catch (error) {
@@ -240,7 +240,7 @@ const AdminDashboard = () => {
             isOpen: true,
             type: 'error',
             title: 'Erreur',
-            message: 'Impossible de supprimer la Hadara Djouma.'
+            message: 'Impossible de supprimer l\'Abna\'u Hadara Tidiani.'
           })
         }
       }
@@ -502,7 +502,7 @@ const AdminDashboard = () => {
                 }`}
               >
                 <Sparkles className="w-5 h-5 flex-shrink-0" />
-                Hadara Djouma
+                Abna'u Hadara Tidiani
               </button>
               <button
                 onClick={() => setActiveTab('users')}
@@ -1086,14 +1086,14 @@ const AdminDashboard = () => {
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                     <div>
                       <h2 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-emerald-700 to-gold-600 bg-clip-text text-transparent">
-                        Hadaras Djouma 2026/2027
+                        Abna'u Hadara Tidiani 2026/2027
                       </h2>
                       <p className="text-xs sm:text-sm text-gray-500 mt-1">
                         Calendrier annuel des Hadaratoul Jumu'ah
                       </p>
                     </div>
                     <div className="text-sm text-gray-600">
-                      {hadaraDjoumaEvents.length} Hadaras Djouma
+                      {hadaraDjoumaEvents.length} Abna'u Hadara Tidiani
                     </div>
                   </div>
                   <div className="flex flex-col sm:flex-row gap-2">
@@ -1102,7 +1102,7 @@ const AdminDashboard = () => {
                       className="flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-700 to-gold-600 text-white rounded-lg hover:shadow-lg transition-all text-sm"
                     >
                       <Plus className="w-4 h-4" />
-                      Ajouter une Hadara
+                      Ajouter une Abna'u
                     </button>
                     {hadaraDjoumaEvents.length === 0 && (
                       <button
@@ -1111,7 +1111,7 @@ const AdminDashboard = () => {
                         className="flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-gold-500 text-gray-900 rounded-lg hover:shadow-lg transition-all disabled:opacity-50 font-semibold text-sm"
                       >
                         <Sparkles className="w-4 h-4" />
-                        {importingHadara ? 'Importation...' : 'Importer 70 Hadaras'}
+                        {importingHadara ? 'Importation...' : 'Importer 70 événements'}
                       </button>
                     )}
                   </div>
@@ -1125,7 +1125,7 @@ const AdminDashboard = () => {
                   >
                     <div className="flex justify-between items-center mb-4">
                       <h3 className="text-lg font-semibold text-gray-800">
-                        {editingHadaraDjouma ? 'Modifier la Hadara' : 'Nouvelle Hadara Djouma'}
+                        {editingHadaraDjouma ? 'Modifier l\'Abna\'u Hadara Tidiani' : 'Nouvelle Abna\'u Hadara Tidiani'}
                       </h3>
                       <button
                         onClick={() => {
@@ -1148,7 +1148,7 @@ const AdminDashboard = () => {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Nom de la Hadara
+                            Nom de l'Abna'u Hadara Tidiani
                           </label>
                           <input
                             type="text"
@@ -1224,14 +1224,14 @@ const AdminDashboard = () => {
 
                 {hadaraDjoumaEvents.length === 0 ? (
                   <div className="text-center py-12">
-                    <div className="inline-block p-6 bg-gradient-to-br from-purple-100 to-blue-100 rounded-full mb-4">
-                      <Sparkles className="w-16 h-16 text-purple-600" />
+                    <div className="inline-block p-6 bg-gradient-to-br from-emerald-100 to-gold-100 rounded-full mb-4">
+                      <Sparkles className="w-16 h-16 text-emerald-700" />
                     </div>
                     <h3 className="text-xl font-bold text-gray-800 mb-2">
-                      Aucune Hadara Djouma enregistrée
+                      Aucune Abna'u Hadara Tidiani enregistrée
                     </h3>
                     <p className="text-gray-500 mb-4 max-w-md mx-auto">
-                      Cliquez sur "Importer 70 Hadaras" pour ajouter automatiquement le calendrier annuel 2026/2027 avec toutes les Hadaras Djouma.
+                      Cliquez sur "Importer 70 événements" pour ajouter automatiquement le calendrier annuel 2026/2027 avec toutes les Abna'u Hadara Tidiani.
                     </p>
                   </div>
                 ) : (

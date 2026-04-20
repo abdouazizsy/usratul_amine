@@ -155,7 +155,7 @@ const Navigation = ({ scrolled }) => {
                           <Sparkles className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                          <p className="font-semibold text-gray-900 group-hover:text-emerald-700">Hadara Djouma</p>
+                          <p className="font-semibold text-gray-900 group-hover:text-emerald-700">Abna'u Hadara Tidiani</p>
                           <p className="text-xs text-gray-500">70 Hadaratoul Jumu'ah 2026/2027</p>
                         </div>
                       </Link>
@@ -265,7 +265,7 @@ const Navigation = ({ scrolled }) => {
                           className="flex items-center gap-3 px-8 py-3 text-gray-700 hover:bg-white transition-colors"
                         >
                           <Sparkles className="w-4 h-4 text-emerald-700" />
-                          <span className="text-sm">Hadara Djouma</span>
+                          <span className="text-sm">Abna'u Hadara Tidiani</span>
                         </Link>
                       </motion.div>
                     )}
