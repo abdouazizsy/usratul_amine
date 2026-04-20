@@ -153,10 +153,10 @@ const Navigation = ({ scrolled }) => {
                 className="md:hidden absolute left-0 right-0 top-full z-50"
               >
                 <div className="mx-4 mt-2 py-4 space-y-1 bg-white rounded-2xl shadow-2xl border border-gray-200">
+                  {/* Liens avec scroll */}
                   {[
                     { id: 'about', key: 'nav.presentation' },
                     { id: 'biography', key: 'nav.biography' },
-                    { id: 'program', key: 'nav.program' },
                     { id: 'library', key: 'nav.library' },
                     { id: 'message', key: 'nav.message' },
                     { id: 'contact', key: 'nav.contact' }
@@ -171,6 +171,28 @@ const Navigation = ({ scrolled }) => {
                       {t(item.key)}
                     </button>
                   ))}
+                  
+                  {/* Lien Programme */}
+                  <Link
+                    to="/programme"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`block w-full text-left px-6 py-3 text-emerald-700 hover:bg-emerald-50 hover:text-gold-600 font-medium transition-colors ${
+                      language === 'ar' ? 'font-arabic text-right' : ''
+                    }`}
+                  >
+                    {t('nav.program')}
+                  </Link>
+
+                  {/* Lien Calendrier Hadara */}
+                  <Link
+                    to="/calendrier-tariqa"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`block w-full text-left px-6 py-3 text-emerald-700 hover:bg-emerald-50 hover:text-gold-600 font-medium transition-colors ${
+                      language === 'ar' ? 'font-arabic text-right' : ''
+                    }`}
+                  >
+                    Calendrier Hadara
+                  </Link>
                   
                   {/* Sélecteur de langue pour mobile */}
                   <div className="px-6 py-3 border-t border-gray-200 mt-2">
