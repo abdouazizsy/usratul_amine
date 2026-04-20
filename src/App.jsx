@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import HomePage from './pages/HomePage'
 import ProgrammePage from './pages/ProgrammePage'
 import CalendrierTariqaPage from './pages/CalendrierTariqaPage'
+import HadaraDjoumaPage from './pages/HadaraDjoumaPage'
 import AdminLogin from './components/AdminLogin'
 import AdminDashboard from './components/AdminDashboard'
 import { AdminProvider, useAdmin } from './contexts/AdminContext'
@@ -42,6 +43,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/programme" element={<ProgrammePage />} />
           <Route path="/calendrier-tariqa" element={<CalendrierTariqaPage />} />
+          <Route path="/hadara-djouma" element={<HadaraDjoumaPage />} />
           <Route 
             path="/admin" 
             element={

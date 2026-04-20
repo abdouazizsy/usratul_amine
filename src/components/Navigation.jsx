@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, ChevronDown, Calendar, Sparkles, BookOpen } from 'lucide-react'
 import LanguageSelector from './LanguageSelector'
 import { useLanguage } from '../contexts/LanguageContext'
 import { getTranslation } from '../translations/translations'
@@ -10,6 +10,8 @@ const Navigation = ({ scrolled }) => {
   const { language } = useLanguage()
   const t = (key) => getTranslation(language, key)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [calendarsOpen, setCalendarsOpen] = useState(false)
+  const [mobileCalendarsOpen, setMobileCalendarsOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
   
@@ -92,27 +94,76 @@ const Navigation = ({ scrolled }) => {
               </button>
             ))}
             
-            <Link
-              to="/programme"
-              className={`font-medium transition-colors ${
-                scrolled 
-                  ? 'text-emerald-700 hover:text-gold-600' 
-                  : 'text-white hover:text-gold-300'
-              }`}
+            {/* Dropdown Calendriers */}
+            <div 
+              className="relative"
+              onMouseEnter={() => setCalendarsOpen(true)}
+              onMouseLeave={() => setCalendarsOpen(false)}
             >
-              {t('nav.program')}
-            </Link>
+              <button
+                className={`flex items-center gap-1 font-medium transition-colors ${
+                  scrolled 
+                    ? 'text-emerald-700 hover:text-gold-600' 
+                    : 'text-white hover:text-gold-300'
+                }`}
+              >
+                Calendriers
+                <ChevronDown className={`w-4 h-4 transition-transform ${calendarsOpen ? 'rotate-180' : ''}`} />
+              </button>
 
-            <Link
-              to="/calendrier-tariqa"
-              className={`font-medium transition-colors ${
-                scrolled 
-                  ? 'text-emerald-700 hover:text-gold-600' 
-                  : 'text-white hover:text-gold-300'
-              }`}
-            >
-              Calendrier Hadara
-            </Link>
+              <AnimatePresence>
+                {calendarsOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-full right-0 pt-3 w-72"
+                  >
+                    <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
+                      <Link
+                        to="/programme"
+                        className="flex items-start gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-gold-50 transition-all group"
+                      >
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                          <BookOpen className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-900 group-hover:text-emerald-700">Programmes Usratul de Amine</p>
+                          <p className="text-xs text-gray-500">Nos activités et événements</p>
+                        </div>
+                      </Link>
+
+                      <Link
+                        to="/calendrier-tariqa"
+                        className="flex items-start gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-gold-50 transition-all group"
+                      >
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-500 to-amber-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                          <Calendar className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-900 group-hover:text-emerald-700">Calendrier Hadara</p>
+                          <p className="text-xs text-gray-500">Calendrier officiel de la Tariqa</p>
+                        </div>
+                      </Link>
+
+                      <Link
+                        to="/hadara-djouma"
+                        className="flex items-start gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-gold-50 transition-all group"
+                      >
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-700 via-emerald-600 to-gold-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                          <Sparkles className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-900 group-hover:text-emerald-700">Hadara Djouma</p>
+                          <p className="text-xs text-gray-500">70 Hadaratoul Jumu'ah 2026/2027</p>
+                        </div>
+                      </Link>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
             
             <LanguageSelector scrolled={scrolled} />
           </div>
@@ -172,27 +223,53 @@ const Navigation = ({ scrolled }) => {
                     </button>
                   ))}
                   
-                  {/* Lien Programme */}
-                  <Link
-                    to="/programme"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`block w-full text-left px-6 py-3 text-emerald-700 hover:bg-emerald-50 hover:text-gold-600 font-medium transition-colors ${
+                  {/* Section Calendriers - Mobile Accordion */}
+                  <button
+                    onClick={() => setMobileCalendarsOpen(!mobileCalendarsOpen)}
+                    className={`flex items-center justify-between w-full px-6 py-3 text-emerald-700 hover:bg-emerald-50 hover:text-gold-600 font-medium transition-colors ${
                       language === 'ar' ? 'font-arabic text-right' : ''
                     }`}
                   >
-                    {t('nav.program')}
-                  </Link>
-
-                  {/* Lien Calendrier Hadara */}
-                  <Link
-                    to="/calendrier-tariqa"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`block w-full text-left px-6 py-3 text-emerald-700 hover:bg-emerald-50 hover:text-gold-600 font-medium transition-colors ${
-                      language === 'ar' ? 'font-arabic text-right' : ''
-                    }`}
-                  >
-                    Calendrier Hadara
-                  </Link>
+                    <span>Calendriers</span>
+                    <ChevronDown className={`w-4 h-4 transition-transform ${mobileCalendarsOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  
+                  <AnimatePresence>
+                    {mobileCalendarsOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden bg-gray-50"
+                      >
+                        <Link
+                          to="/programme"
+                          onClick={() => { setMobileMenuOpen(false); setMobileCalendarsOpen(false) }}
+                          className="flex items-center gap-3 px-8 py-3 text-gray-700 hover:bg-white transition-colors"
+                        >
+                          <BookOpen className="w-4 h-4 text-emerald-600" />
+                          <span className="text-sm">Programmes de Usratul Amine</span>
+                        </Link>
+                        <Link
+                          to="/calendrier-tariqa"
+                          onClick={() => { setMobileMenuOpen(false); setMobileCalendarsOpen(false) }}
+                          className="flex items-center gap-3 px-8 py-3 text-gray-700 hover:bg-white transition-colors"
+                        >
+                          <Calendar className="w-4 h-4 text-gold-600" />
+                          <span className="text-sm">Calendrier Hadara</span>
+                        </Link>
+                        <Link
+                          to="/hadara-djouma"
+                          onClick={() => { setMobileMenuOpen(false); setMobileCalendarsOpen(false) }}
+                          className="flex items-center gap-3 px-8 py-3 text-gray-700 hover:bg-white transition-colors"
+                        >
+                          <Sparkles className="w-4 h-4 text-emerald-700" />
+                          <span className="text-sm">Hadara Djouma</span>
+                        </Link>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                   
                   {/* Sélecteur de langue pour mobile */}
                   <div className="px-6 py-3 border-t border-gray-200 mt-2">

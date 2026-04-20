@@ -38,3 +38,32 @@
 .dome-shape {
   clip-path: polygon(0 20%, 10% 10%, 20% 5%, 30% 2%, 40% 0, 50% 0, 60% 0, 70% 2%, 80% 5%, 90% 10%, 100% 20%, 100% 100%, 0 100%);
 }
+
+/* Animations pour Hadara Djouma */
+@keyframes blob {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+@keyframes tilt {
+  0%, 100% { transform: rotate(-1deg); }
+  50% { transform: rotate(1deg); }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animate-tilt {
+  animation: tilt 10s infinite linear;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}

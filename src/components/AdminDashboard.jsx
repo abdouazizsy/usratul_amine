@@ -14,11 +14,14 @@ import {
   Clock,
   MapPin,
   AlertTriangle,
-  CheckCircle
+  CheckCircle,
+  Star,
+  Sparkles
 } from 'lucide-react'
 import { collection, addDoc, updateDoc, deleteDoc, doc, getDocs, query, orderBy } from 'firebase/firestore'
 import { db } from '../firebase/config'
 import { importTariqaEvents } from '../utils/importTariqaEvents'
+import { importHadaraDjoumaToFirebase } from '../utils/importHadaraDjouma'
 import ConfirmModal from './ConfirmModal'
 import NotificationToast from './NotificationToast'
 import UserManagement from './UserManagement'
@@ -57,10 +60,23 @@ const AdminDashboard = () => {
     description: ''
   })
 
+  // État Hadara Djouma
+  const [hadaraDjoumaEvents, setHadaraDjoumaEvents] = useState([])
+  const [showHadaraDjoumaForm, setShowHadaraDjoumaForm] = useState(false)
+  const [editingHadaraDjouma, setEditingHadaraDjouma] = useState(null)
+  const [importingHadara, setImportingHadara] = useState(false)
+  const [hadaraDjoumaFormData, setHadaraDjoumaFormData] = useState({
+    title: '',
+    date: '',
+    location: '',
+    description: ''
+  })
+
   useEffect(() => {
     if (isAdmin) {
       fetchPrograms()
       fetchTariqaEvents()
+      fetchHadaraDjoumaEvents()
     }
   }, [isAdmin])
 
@@ -100,6 +116,135 @@ const AdminDashboard = () => {
     } catch (error) {
       console.error('Error fetching tariqa events:', error)
     }
+  }
+
+  const fetchHadaraDjoumaEvents = async () => {
+    try {
+      const eventsQuery = query(collection(db, 'hadara_djouma_events'), orderBy('date', 'asc'))
+      const querySnapshot = await getDocs(eventsQuery)
+      const eventsData = querySnapshot.docs.map(doc => ({
+        ...doc.data(),
+        id: doc.id
+      }))
+      setHadaraDjoumaEvents(eventsData)
+    } catch (error) {
+      console.error('Error fetching hadara djouma events:', error)
+    }
+  }
+
+  const handleImportHadaraDjouma = () => {
+    setConfirmModal({
+      isOpen: true,
+      type: 'import',
+      title: 'Importer le calendrier Hadara Djouma',
+      message: 'Voulez-vous importer les 70 Hadaras Djouma 2026/2027 ? Cette action ajoutera tous les événements du calendrier annuel officiel.',
+      onConfirm: async () => {
+        setImportingHadara(true)
+        try {
+          const result = await importHadaraDjoumaToFirebase()
+          setNotification({
+            isOpen: true,
+            type: 'success',
+            title: 'Importation réussie !',
+            message: `${result.imported} Hadaras importées avec succès (${result.skipped} déjà existantes).`
+          })
+          fetchHadaraDjoumaEvents()
+        } catch (error) {
+          setNotification({
+            isOpen: true,
+            type: 'error',
+            title: 'Erreur d\'importation',
+            message: 'Une erreur est survenue lors de l\'importation.'
+          })
+        }
+        setImportingHadara(false)
+      }
+    })
+  }
+
+  const handleHadaraDjoumaSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      if (editingHadaraDjouma) {
+        await updateDoc(doc(db, 'hadara_djouma_events', editingHadaraDjouma.id), hadaraDjoumaFormData)
+        setNotification({
+          isOpen: true,
+          type: 'success',
+          title: 'Hadara modifiée',
+          message: 'La Hadara Djouma a été modifiée avec succès.'
+        })
+      } else {
+        await addDoc(collection(db, 'hadara_djouma_events'), {
+          ...hadaraDjoumaFormData,
+          category: 'HADARA_DJOUMA',
+          createdAt: new Date().toISOString()
+        })
+        setNotification({
+          isOpen: true,
+          type: 'success',
+          title: 'Hadara ajoutée',
+          message: 'La Hadara Djouma a été ajoutée avec succès.'
+        })
+      }
+      
+      setHadaraDjoumaFormData({
+        title: '',
+        date: '',
+        location: '',
+        description: ''
+      })
+      setShowHadaraDjoumaForm(false)
+      setEditingHadaraDjouma(null)
+      fetchHadaraDjoumaEvents()
+    } catch (error) {
+      console.error('Error saving hadara djouma:', error)
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: 'Erreur',
+        message: 'Impossible d\'enregistrer la Hadara Djouma.'
+      })
+    }
+  }
+
+  const handleEditHadaraDjouma = (event) => {
+    setEditingHadaraDjouma(event)
+    setHadaraDjoumaFormData({
+      title: event.title,
+      date: event.date,
+      location: event.location || '',
+      description: event.description || ''
+    })
+    setShowHadaraDjoumaForm(true)
+  }
+
+  const handleDeleteHadaraDjouma = (id) => {
+    setConfirmModal({
+      isOpen: true,
+      type: 'danger',
+      title: 'Supprimer la Hadara Djouma',
+      message: 'Êtes-vous sûr de vouloir supprimer cette Hadara Djouma ? Cette action est irréversible.',
+      onConfirm: async () => {
+        try {
+          await deleteDoc(doc(db, 'hadara_djouma_events', id))
+          setNotification({
+            isOpen: true,
+            type: 'success',
+            title: 'Hadara supprimée',
+            message: 'La Hadara Djouma a été supprimée avec succès.'
+          })
+          fetchHadaraDjoumaEvents()
+        } catch (error) {
+          console.error('Error deleting hadara djouma:', error)
+          setNotification({
+            isOpen: true,
+            type: 'error',
+            title: 'Erreur',
+            message: 'Impossible de supprimer la Hadara Djouma.'
+          })
+        }
+      }
+    })
   }
 
   const checkDateConflict = (selectedDate) => {
@@ -346,6 +491,17 @@ const AdminDashboard = () => {
               >
                 <Calendar className="w-5 h-5" />
                 Calendrier Hadara
+              </button>
+              <button
+                onClick={() => setActiveTab('hadara-djouma')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  activeTab === 'hadara-djouma'
+                    ? 'bg-purple-100 text-purple-700'
+                    : 'text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                <Sparkles className="w-5 h-5" />
+                Hadara Djouma
               </button>
               <button
                 onClick={() => setActiveTab('users')}
@@ -904,6 +1060,239 @@ const AdminDashboard = () => {
                               </button>
                               <button
                                 onClick={() => handleDeleteTariqaEvent(event.id)}
+                                className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                title="Supprimer"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </motion.div>
+            )}
+
+            {activeTab === 'hadara-djouma' && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white rounded-xl shadow-sm p-6"
+              >
+                <div className="flex justify-between items-center mb-6">
+                  <div>
+                    <h2 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                      Hadaras Djouma 2026/2027
+                    </h2>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Calendrier annuel des Hadaratoul Jumu'ah
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="text-sm text-gray-600">
+                      {hadaraDjoumaEvents.length} Hadaras Djouma
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setShowHadaraDjoumaForm(true)}
+                        className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:shadow-lg transition-all"
+                      >
+                        <Plus className="w-4 h-4" />
+                        Ajouter une Hadara
+                      </button>
+                      {hadaraDjoumaEvents.length === 0 && (
+                        <button
+                          onClick={handleImportHadaraDjouma}
+                          disabled={importingHadara}
+                          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 to-gold-500 text-gray-900 rounded-lg hover:shadow-lg transition-all disabled:opacity-50 font-semibold"
+                        >
+                          <Sparkles className="w-4 h-4" />
+                          {importingHadara ? 'Importation...' : 'Importer 70 Hadaras'}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {showHadaraDjoumaForm && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="mb-6 p-6 bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg border border-purple-200"
+                  >
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-lg font-semibold text-gray-800">
+                        {editingHadaraDjouma ? 'Modifier la Hadara' : 'Nouvelle Hadara Djouma'}
+                      </h3>
+                      <button
+                        onClick={() => {
+                          setShowHadaraDjoumaForm(false)
+                          setEditingHadaraDjouma(null)
+                          setHadaraDjoumaFormData({
+                            title: '',
+                            date: '',
+                            location: '',
+                            description: ''
+                          })
+                        }}
+                        className="text-gray-500 hover:text-gray-700"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    <form onSubmit={handleHadaraDjoumaSubmit} className="space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Nom de la Hadara
+                          </label>
+                          <input
+                            type="text"
+                            value={hadaraDjoumaFormData.title}
+                            onChange={(e) => setHadaraDjoumaFormData({...hadaraDjoumaFormData, title: e.target.value})}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                            placeholder="ex: Tabaski, Gamou Tivaouine..."
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Date
+                          </label>
+                          <input
+                            type="date"
+                            value={hadaraDjoumaFormData.date}
+                            onChange={(e) => setHadaraDjoumaFormData({...hadaraDjoumaFormData, date: e.target.value})}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Lieu
+                        </label>
+                        <input
+                          type="text"
+                          value={hadaraDjoumaFormData.location}
+                          onChange={(e) => setHadaraDjoumaFormData({...hadaraDjoumaFormData, location: e.target.value})}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                          placeholder="ex: Tivaouine, National, Dakar..."
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Description (optionnel)
+                        </label>
+                        <textarea
+                          value={hadaraDjoumaFormData.description}
+                          onChange={(e) => setHadaraDjoumaFormData({...hadaraDjoumaFormData, description: e.target.value})}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                          rows={3}
+                          placeholder="Description de la Hadara..."
+                        />
+                      </div>
+
+                      <div className="flex gap-3">
+                        <button
+                          type="submit"
+                          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:shadow-lg transition-all"
+                        >
+                          <Save className="w-4 h-4" />
+                          {editingHadaraDjouma ? 'Mettre à jour' : 'Enregistrer'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowHadaraDjoumaForm(false)
+                            setEditingHadaraDjouma(null)
+                          }}
+                          className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                        >
+                          Annuler
+                        </button>
+                      </div>
+                    </form>
+                  </motion.div>
+                )}
+
+                {hadaraDjoumaEvents.length === 0 ? (
+                  <div className="text-center py-12">
+                    <div className="inline-block p-6 bg-gradient-to-br from-purple-100 to-blue-100 rounded-full mb-4">
+                      <Sparkles className="w-16 h-16 text-purple-600" />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">
+                      Aucune Hadara Djouma enregistrée
+                    </h3>
+                    <p className="text-gray-500 mb-4 max-w-md mx-auto">
+                      Cliquez sur "Importer 70 Hadaras" pour ajouter automatiquement le calendrier annuel 2026/2027 avec toutes les Hadaras Djouma.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {hadaraDjoumaEvents.map((event) => {
+                      const eventDate = new Date(event.date)
+                      const isFuture = eventDate > new Date()
+                      
+                      return (
+                        <div
+                          key={event.id}
+                          className={`border rounded-lg p-4 transition-all ${
+                            isFuture 
+                              ? 'bg-gradient-to-r from-purple-50 via-blue-50 to-pink-50 border-purple-200 hover:shadow-md' 
+                              : 'border-gray-100 bg-gray-50'
+                          }`}
+                        >
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <div className="flex items-start gap-2 mb-2">
+                                <h3 className="font-semibold text-gray-800">
+                                  {event.title}
+                                </h3>
+                              </div>
+                              <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+                                <div className="flex items-center gap-1">
+                                  <Calendar className="w-4 h-4" />
+                                  {eventDate.toLocaleDateString('fr-FR', { 
+                                    weekday: 'long', 
+                                    year: 'numeric', 
+                                    month: 'long', 
+                                    day: 'numeric' 
+                                  })}
+                                </div>
+                                {event.location && (
+                                  <div className="flex items-center gap-1">
+                                    <MapPin className="w-4 h-4" />
+                                    {event.location}
+                                  </div>
+                                )}
+                              </div>
+                              {event.description && (
+                                <p className="mt-2 text-sm text-gray-700">
+                                  {event.description}
+                                </p>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-2 ml-4">
+                              {isFuture && (
+                                <span className="px-2 py-1 text-xs font-medium bg-emerald-100 text-emerald-700 rounded">
+                                  À venir
+                                </span>
+                              )}
+                              <button
+                                onClick={() => handleEditHadaraDjouma(event)}
+                                className="p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+                                title="Modifier"
+                              >
+                                <Edit className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => handleDeleteHadaraDjouma(event.id)}
                                 className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                                 title="Supprimer"
                               >

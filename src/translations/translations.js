@@ -4,7 +4,7 @@ export const translations = {
     nav: {
       presentation: "Présentation",
       biography: "Biographie",
-      program: "Programme de Usratul Amine",
+      program: "Programme Usratul Amine",
       library: "Bibliothèque",
       message: "Message",
       contact: "Contact"
