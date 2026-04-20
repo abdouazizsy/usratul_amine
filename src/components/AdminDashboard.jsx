@@ -1102,7 +1102,7 @@ const AdminDashboard = () => {
                       className="flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-700 to-gold-600 text-white rounded-lg hover:shadow-lg transition-all text-sm"
                     >
                       <Plus className="w-4 h-4" />
-                      Ajouter une Abna'u
+                      Ajouter une Hadara
                     </button>
                     {hadaraDjoumaEvents.length === 0 && (
                       <button
@@ -1125,7 +1125,7 @@ const AdminDashboard = () => {
                   >
                     <div className="flex justify-between items-center mb-4">
                       <h3 className="text-lg font-semibold text-gray-800">
-                        {editingHadaraDjouma ? 'Modifier l\'Abna\'u Hadara Tidiani' : 'Nouvelle Abna\'u Hadara Tidiani'}
+                        {editingHadaraDjouma ? 'Modifier la Hadara' : 'Nouvelle Hadara Abna\'u Hadara Tidiani'}
                       </h3>
                       <button
                         onClick={() => {
@@ -1148,7 +1148,7 @@ const AdminDashboard = () => {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Nom de l'Abna'u Hadara Tidiani
+                            Nom de la Hadara
                           </label>
                           <input
                             type="text"
