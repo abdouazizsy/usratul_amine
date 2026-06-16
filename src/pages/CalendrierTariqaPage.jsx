@@ -7,6 +7,17 @@ import Navigation from '../components/Navigation'
 import Footer from '../components/Footer'
 import Chatbot from '../components/Chatbot'
 
+const getHijriYearLabel = () => {
+  try {
+    const fmt = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', { year: 'numeric' }).format(new Date())
+    const y = parseInt(fmt.replace(/[٠-٩]/g, d => String(d.charCodeAt(0) - 0x0660)))
+    return `${y}/${y + 1}`
+  } catch {
+    const approx = Math.floor((new Date().getFullYear() - 622) * (365.25 / 354.37))
+    return `${approx}/${approx + 1}`
+  }
+}
+
 const CalendrierTariqaPage = () => {
   const [tariqaEvents, setTariqaEvents] = useState([])
   const [programs, setPrograms] = useState([])
@@ -102,6 +113,9 @@ const CalendrierTariqaPage = () => {
               Calendrier de la Hadara
             </h1>
             <div className="w-24 h-1 bg-gradient-to-r from-emerald-600 to-gold-600 mx-auto mb-8"></div>
+            <p className="text-xl font-semibold text-emerald-700 mb-2">
+              {getHijriYearLabel()} H
+            </p>
             <p className="text-xl text-gray-700 max-w-2xl mx-auto">
               Découvrez les événements officiels de la Hadara Tijaniyya
             </p>

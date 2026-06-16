@@ -148,7 +148,7 @@ const Footer = () => {
                 </div>
 
                 <a
-                  href="https://www.zawiya.sn"
+                  href="https://usratulamine.sn"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-start gap-3 text-emerald-200 hover:text-gold-300 transition-colors group"
@@ -160,7 +160,7 @@ const Footer = () => {
                     <p className={`text-xs text-emerald-400 mb-1 ${
                       language === 'ar' ? 'font-arabic' : ''
                     }`}>{t('footer.website')}</p>
-                    <p className="font-semibold">www.zawiya.sn</p>
+                    <p className="font-semibold">usratulamine.sn</p>
                   </div>
                 </a>
               </div>

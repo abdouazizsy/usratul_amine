@@ -6,6 +6,11 @@ import LanguageSelector from './LanguageSelector'
 import { useLanguage } from '../contexts/LanguageContext'
 import { getTranslation } from '../translations/translations'
 
+const getGregorianYearLabel = () => {
+  const y = new Date().getFullYear()
+  return `${y}/${y + 1}`
+}
+
 const Navigation = ({ scrolled }) => {
   const { language } = useLanguage()
   const t = (key) => getTranslation(language, key)
@@ -156,7 +161,7 @@ const Navigation = ({ scrolled }) => {
                         </div>
                         <div>
                           <p className="font-semibold text-gray-900 group-hover:text-emerald-700">Abna'u Hadara Tidiani</p>
-                          <p className="text-xs text-gray-500">70 Hadaratoul Jumu'ah 2026/2027</p>
+                          <p className="text-xs text-gray-500">70 Hadaratoul Jumu'ah {getGregorianYearLabel()}</p>
                         </div>
                       </Link>
                     </div>

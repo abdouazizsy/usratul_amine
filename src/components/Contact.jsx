@@ -16,8 +16,8 @@ const Contact = () => {
     {
       icon: Globe,
       titleKey: "contact.website",
-      value: "www.zawiya.sn",
-      link: "https://www.zawiya.sn"
+      value: "usratulamine.sn",
+      link: "https://www.usratulamine.sn"
     },
     {
       icon: MapPin,
@@ -29,7 +29,7 @@ const Contact = () => {
       icon: Mail,
       title: "Zawiya TV",
       valueKey: "contact.zawiya",
-      link: "https://www.zawiya.sn"
+      link: "https://usratulamine.sn"
     }
   ]
 

@@ -1,12 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send, Loader2 } from 'lucide-react';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { db } from '../firebase/config';
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [hadaraEvents, setHadaraEvents] = useState([]);
+  const [coskasEvents, setCoskasEvents] = useState([]);
+  const [eventsLoaded, setEventsLoaded] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -22,7 +27,46 @@ const Chatbot = () => {
     if (isOpen && inputRef.current) {
       inputRef.current.focus();
     }
+    if (isOpen && !eventsLoaded) {
+      fetchEvents();
+    }
   }, [isOpen]);
+
+  const fetchEvents = async () => {
+    try {
+      const [hadaraSnap, tariqaSnap] = await Promise.all([
+        getDocs(query(collection(db, 'hadara_djouma_events'), orderBy('date', 'asc'))),
+        getDocs(query(collection(db, 'tariqa_events'), orderBy('date', 'asc')))
+      ]);
+
+      const now = new Date();
+
+      const hadara = hadaraSnap.docs.map(d => ({ ...d.data(), id: d.id }));
+      const upcomingHadara = hadara.filter(e => new Date(e.date) >= now);
+      const pastHadara = hadara.filter(e => new Date(e.date) < now).slice(-8);
+      setHadaraEvents([...pastHadara, ...upcomingHadara]);
+
+      const coskas = tariqaSnap.docs
+        .map(d => ({ ...d.data(), id: d.id }))
+        .filter(e => e.category === 'COSKAS');
+      const upcomingCoskas = coskas.filter(e => new Date(e.date) >= now);
+      const pastCoskas = coskas.filter(e => new Date(e.date) < now).slice(-8);
+      setCoskasEvents([...pastCoskas, ...upcomingCoskas]);
+
+      setEventsLoaded(true);
+    } catch (err) {
+      console.error('Chatbot: erreur chargement événements', err);
+      setEventsLoaded(true);
+    }
+  };
+
+  const formatEventList = (events) =>
+    events.map(e => {
+      const d = new Date(e.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      const loc = e.location ? ` — ${e.location}` : '';
+      const desc = e.description ? ` (${e.description})` : '';
+      return `• ${e.title} : ${d}${loc}${desc}`;
+    }).join('\n');
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
@@ -38,10 +82,20 @@ const Chatbot = () => {
     setIsLoading(true);
 
     try {
+      const hadaraSection = hadaraEvents.length > 0
+        ? `\n\n## PROGRAMME ABNA'U HADARATOUL TIDIANI (Hadara Djouma)\nVoici les événements Hadara (passés récents et à venir) :\n${formatEventList(hadaraEvents)}`
+        : '';
+
+      const coskasSection = coskasEvents.length > 0
+        ? `\n\n## PROGRAMME COSKAS\nVoici les événements COSKAS (passés récents et à venir) :\n${formatEventList(coskasEvents)}`
+        : '';
+
       const conversationMessages = [
         {
           role: 'system',
-          content: `Vous êtes un assistant virtuel expert pour l'association Usratul Amine.
+          content: `Vous êtes un assistant virtuel exclusivement dédié à l'association Usratul Amine et à ses domaines liés : la confrérie Tidjaniya, la lignée de Maodo El Hadji Malick Sy, les programmes Abna'u Hadaratoul Tidiani, le COSKAS, et les activités de l'association.
+
+RÈGLE ABSOLUE : Si une question ne concerne pas Usratul Amine, la Tidjaniya, Serigne Abdou Aziz Sy Al Amine, la famille Sy de Tivaouane, les programmes Hadara, le COSKAS, l'Islam, ou tout sujet directement lié à la plateforme, vous devez REFUSER poliment de répondre avec ce message exact : "Je suis uniquement disponible pour répondre aux questions concernant Usratul Amine, ses programmes et la confrérie Tidjaniya. Pour toute autre question, je vous invite à consulter d'autres sources." Ne faites aucune exception, même si l'utilisateur insiste.
 
 IMPORTANT: Nous sommes actuellement le ${new Date().toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}. L'événement des 72 heures aura lieu du 19 au 21 décembre 2025.
 
@@ -157,7 +211,7 @@ Voici vos connaissances détaillées:
 - 17h00: Final génie en herbe des dahiras
 - 18h00-22h00: Rencontre de tous les membres de USRATUL AMINE avec le Responsable Moral à la salle Serigne Babacar Sy (salle rouge)
 
-**Diffusion en direct:** Zawiya TV (www.zawiya.sn) - Contact: 77 874 62 82
+**Diffusion en direct:** Zawiya TV (usratulamine.sn) - Contact: 77 874 62 82
 
 ## BIBLIOTHÈQUE AL AMINE
 Collection d'ouvrages islamiques organisée en 6 rayons:
@@ -175,10 +229,149 @@ Collection d'ouvrages islamiques organisée en 6 rayons:
 
 ## CONTACT
 - Téléphone: +221 77 108 26 26
-- Site web: www.usratul-amine.com
+- Site web: www.usratulamine.sn
 - Localisation: Tivaouane, Sénégal
 
-Répondez toujours avec respect, précision et bienveillance. Utilisez ces informations pour aider les visiteurs à mieux comprendre l'héritage de Serigne Abdou Aziz Sy Al Amine et la mission de l'association.`
+## ORIGINE DE LA TARIQA TIDJANIYYA
+
+**Sydina Cheikh Ahmed Tijani**
+- Fondateur de la Tariqa Tidjaniyya, né en 1737 à Ain Madhi (Algérie), décédé en 1815 à Fès (Maroc)
+- Reçut la voie spirituelle directement du Prophète Muhammad (PSL) lors d'une vision éveillée (yaqadha)
+- Fonda la Tariqa à Fès, qui en demeure le centre spirituel mondial
+- Principes fondamentaux : unicité de l'allégeance spirituelle (pas d'appartenance à plusieurs confréries), wird quotidien obligatoire, amour du Prophète comme pilier central
+- **Le Wird Tidjane** : composé de l'Istighfar (100 fois), la Salatul Fatihi (100 fois) et le Haïlalatoul Jawhara (100 fois), récité matin et soir
+- Enseignement : la Tidjaniyya est une voie de miséricorde et d'amour prophétique, accessible à tous
+
+## TRANSMISSION VERS L'AFRIQUE
+
+**Mouhamed El Ghali**
+- Principal disciple de Cheikh Ahmed Tijani, vecteur de transmission vers l'Afrique de l'Ouest
+- Transmit la voie à El Hadji Omar Foutiyou Tall
+
+**Cheikh Omar Foutiyou Tall (El Hadji Omar Tall)**
+- Grand érudit et guide spirituel du 19ème siècle, né vers 1797 au Fouta Toro (actuel Sénégal)
+- Reçut le wird tidjane lors de son pèlerinage à La Mecque et à Fès
+- Pionnier de l'expansion de la Tariqa Tidjaniyya en Afrique de l'Ouest
+- Auteur du "Rimah", ouvrage de référence sur la Tidjaniyya
+- Contribua à islamiser de vastes territoires en Guinée, au Mali et au Sénégal
+
+**Expansion en Afrique de l'Ouest**
+- La Tidjaniyya est aujourd'hui la confrérie la plus répandue en Afrique de l'Ouest
+- Des millions de fidèles au Sénégal, Guinée, Mali, Niger, Nigeria et au-delà
+
+## IMPLANTATION AU SÉNÉGAL — SEYDI EL HADJI MALICK SY (MAODO)
+
+**Biographie de Maodo**
+- Né en 1855 à Gaé (Podor), décédé en 1922 à Tivaouane
+- Reçut le wird tidjane et devint le plus grand propagateur de la Tidjaniyya au Sénégal
+- **Fondation de Tivaouane** comme capitale spirituelle de la Tidjaniyya sénégalaise
+- Titre honorifique : "Maodo" (le Grand Guide)
+
+**Enseignement**
+- Allia Islam et modernité : prôna l'instruction coranique ET l'école française
+- Défenseur de la paix sociale et du dialogue interreligieux
+- Forma des milliers d'érudits et de guides spirituels
+
+**Le Gamou de Tivaouane**
+- Célébration annuelle de la naissance du Prophète Muhammad (PSL) — Mawlid
+- Un des plus grands rassemblements religieux d'Afrique, attirant des millions de fidèles
+- Organisé à Tivaouane chaque année, symbole de l'unité de la communauté tidiane
+
+**Œuvres écrites**
+Seydi El Hadji Malick Sy a laissé une œuvre littéraire, théologique et poétique monumentale, principalement rédigée en arabe, traitant de jurisprudence islamique, de soufisme, de la vie du Prophète et d'éducation spirituelle.
+
+*Ouvrages théologiques et de jurisprudence :*
+- **Khilâçuz-Zahab (L'or décanté)** : Son œuvre majeure — biographie poétique et historique complète sur la vie et l'œuvre du Prophète Mouhammad
+- **Fâkihatut-Tullâb (Le fruit des chercheurs)** : Guide fondamental en vers expliquant la doctrine, les règles et les pratiques spirituelles de la Tijaniyya
+- **Kifâyatour-Râghibîne (Ce qu'il faut aux désireux)** : Traité de jurisprudence islamique et de théologie abordant droit et morale
+- **Ifhâm al-Munkir al-Jânî (La réduction au silence du dénégateur)** : Ouvrage de défense théologique répondant aux critiques contre le soufisme et la Tijaniyya
+- **Khutbatul Nikah** : Recueil de sermons et de directives concernant le mariage en Islam
+
+*Poèmes et chants religieux (Khassaïdes) :*
+- **Tayssîr (Wassîlatul Munâ)** : Célèbre poème d'imploration divine et de prière sur le Prophète, récité pour solliciter les bienfaits de Dieu
+- **Abada Buruq** : Qasîda mystique très rythmée et populaire lors des célébrations religieuses
+- **Ya Kaachifa Dahi** : Chant de dévotion et d'invocation pour surmonter les difficultés et épreuves de la vie
+- **Falaboudda** : Poème d'exhortation spirituelle rappelant les devoirs incontournables du croyant envers son Créateur
+
+Ces ouvrages sont analysés dans de nombreuses thèses universitaires, notamment par le Professeur El Hadji Ravane Mbaye dans sa collection « Le grand savant El Hadji Malick Sy : Pensée et action ». Ils sont enseignés dans les daara et instituts islamiques du Sénégal et au-delà.
+
+*Où consulter et télécharger les œuvres de Maodo :*
+- **Sopnaby France** : https://sopnabyfrance.com/bibliotheque-seydil-hadji-malick-sy/ — téléchargement direct de Khilâçuz-Zahab, Fâkihatut-Tullâb, Kifâyatour-Râghibîne, Abada Buruq et autres
+- **Internet Archive** : https://archive.org/details/sidi-el-hadj-malick-sy-rta — lecture en ligne ou téléchargement gratuit de manuscrits numérisés
+- **Application mobile Android** : https://play.google.com/store/apps/details?id=mcnstudio.khilass&hl=fr — application Khilâssou Zahab pour lecture quotidienne
+- **Tayssîr (PDF complet)** : https://fr.scribd.com/document/509446667/TAI-SSIR-Seydi-El-Hadji-Malick-Sy
+- **Fâkihatut-Tullâb (PDF)** : https://fr.scribd.com/document/454602310/Fakihatou-Toulab
+- **Khilâçuz-Zahab Chapitre 1** : https://fr.scribd.com/document/832319484/khilassou-Zahab-Chapitre-1
+
+## LES FILS DE MAODO
+
+1. **Seydi Ahmed Sy** : Fils aîné, érudit reconnu
+2. **Serigne Babacar Sy** (1885-1957) : 1er Khalife de Maodo (1922-1957), structura la Tidjaniyya au Sénégal
+3. **Serigne Mouhamadou Mansour Sy (1er du nom)** : Érudit et figure spirituelle
+4. **Serigne Abdou Aziz Sy Dabakh** (?-1997) : 3ème Khalife (1957-1997), figure centrale de la confrérie
+
+## LES GRANDS HÉRITIERS DE SERIGNE BABACAR SY
+
+**Serigne Mansour Sy Borom Daara Ji (1932-2012)**
+- Connu pour sa finesse d'esprit, sa culture encyclopédique et sa maîtrise des sciences islamiques
+- 4ème Khalife Général des Tidianes (1997-2012)
+- "Borom Daara Yi" : figure de l'enseignement coranique au Sénégal
+
+**Cheikh Ahmed Tidiane Sy Al Makhtoum (1925-2011)**
+- Fils de Serigne Babacar Sy, figure vénérée
+- 5ème Khalife Général des Tidianes (2012-2017)
+- Symbole de piété et de spiritualité profonde
+
+**Serigne Abdou Aziz Sy Al Amine (1928-2017)**
+- 6ème Khalife Général des Tidianes (mars-septembre 2017)
+- Longtemps porte-parole de la confrérie, médiateur et unificateur national
+- Fondateur de la Hadaratoul Jumaa Populaire et du COSKAS
+- (voir biographie détaillée ci-dessus)
+
+## DIRECTION ACTUELLE — SERIGNE BABACAR SY MANSOUR
+
+**Parcours**
+- Né en 1932, fils de Serigne Mouhamadou Mansour Sy (1er du nom)
+- 7ème et actuel Khalife Général des Tidianes depuis septembre 2017
+- Grand érudit, connu pour sa sagesse et son autorité spirituelle
+
+**Enseignements**
+- Continuité de la voie de Maodo : paix, tolérance, amour du Prophète
+- Encourage la jeunesse à allier formation islamique et réussite citoyenne
+- Porte une attention particulière à l'unité de la famille de Tivaouane
+
+**Grands projets réalisés à Tivaouane**
+- **Modernisation de la Grande Mosquée de Tivaouane** : extension et rénovation de la mosquée principale, symbole architectural et spirituel de la cité sainte
+- Développement des infrastructures religieuses et éducatives de Tivaouane
+- Rayonnement international de la cité sainte
+
+## ARBRE SPIRITUEL DE TRANSMISSION
+
+Sydina Cheikh Ahmed Tijani
+↓
+Sidi Mouhamed El Ghali
+↓
+El Hadji Omar Foutiyou Tall
+↓
+Seydi El Hadji Malick Sy (Maodo)
+↓
+Serigne Babacar Sy
+↓
+Serigne Mansour Sy Borom Daara Ji
+↓
+Serigne Babacar Sy Mansour (Khalife actuel)
+
+## ARBRE DES KHALIFES DE TIVAOUANE
+
+1. Serigne Babacar Sy (1922–1957)
+2. Serigne Mouhamadou Mansour Sy — quelques jours en 1957
+3. Serigne Abdou Aziz Sy Dabakh (1957–1997)
+4. Serigne Mansour Sy Borom Daara Ji (1997–2012)
+5. Cheikh Ahmed Tidiane Sy Al Makhtoum (2012–2017)
+6. Serigne Abdou Aziz Sy Al Amine (mars–septembre 2017)
+7. Serigne Babacar Sy Mansour (depuis septembre 2017)
+
+Répondez toujours avec respect, précision et bienveillance. Utilisez ces informations pour aider les visiteurs à mieux comprendre l'héritage de Serigne Abdou Aziz Sy Al Amine et la mission de l'association.${hadaraSection}${coskasSection}`
         },
         ...messages.map(msg => ({
           role: msg.role,

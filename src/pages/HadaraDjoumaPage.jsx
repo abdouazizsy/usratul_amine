@@ -7,6 +7,11 @@ import Navigation from '../components/Navigation'
 import Footer from '../components/Footer'
 import Chatbot from '../components/Chatbot'
 
+const getGregorianYearLabel = () => {
+  const y = new Date().getFullYear()
+  return `${y}/${y + 1}`
+}
+
 const HadaraDjoumaPage = () => {
   const [hadaraEvents, setHadaraEvents] = useState([])
   const [loading, setLoading] = useState(true)
@@ -108,7 +113,7 @@ const HadaraDjoumaPage = () => {
             <div className="w-32 h-1.5 bg-gradient-to-r from-emerald-700 via-emerald-600 to-gold-600 mx-auto mb-8 rounded-full"></div>
             
             <p className="text-2xl text-gray-700 max-w-3xl mx-auto mb-4 font-medium">
-              Calendrier Annuel 2026/2027
+              Calendrier Annuel {getGregorianYearLabel()}
             </p>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               ABNAA-UL HADARATI-T - TIJAANIYATI NATIONAL
