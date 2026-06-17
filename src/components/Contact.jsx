@@ -27,9 +27,9 @@ const Contact = () => {
     },
     {
       icon: Mail,
-      title: "Zawiya TV",
+      title: "USRA TV",
       valueKey: "contact.zawiya",
-      link: "https://usratulamine.sn"
+      link: "https://www.youtube.com/channel/UCxnUQvUEGFPuT3f1q8EeIlg"
     }
   ]
 

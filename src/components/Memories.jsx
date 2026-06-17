@@ -4,7 +4,7 @@ import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useTranslation } from '../hooks/useTranslation'
 
 const Memories = () => {
-  const { language } = useTranslation()
+  const { t, language } = useTranslation()
   const [selected, setSelected] = useState(null)
 
   const photos = [
@@ -59,7 +59,7 @@ const Memories = () => {
               language === 'ar' ? 'font-arabic' : ''
             }`}
           >
-            Souvenirs des 72h
+            {t('memories.title')}
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-emerald-600 to-gold-600 mx-auto mb-6" />
           <p
@@ -67,7 +67,7 @@ const Memories = () => {
               language === 'ar' ? 'font-arabic' : ''
             }`}
           >
-            Quelques instants capturés pour revivre l’ambiance spirituelle et fraternelle de ces journées bénies.
+            {t('memories.subtitle')}
           </p>
         </motion.div>
 
@@ -102,9 +102,9 @@ const Memories = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
 
               <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white">
-                <p className="text-sm md:text-base font-medium line-clamp-2">Souvenir des 72h</p>
+                <p className="text-sm md:text-base font-medium line-clamp-2">{t('memories.photoLabel')}</p>
                 <span className="text-xs px-2 py-1 rounded-full bg-white/15 border border-white/25 backdrop-blur-sm">
-                  Voir
+                  {t('memories.view')}
                 </span>
               </div>
             </motion.button>
@@ -141,14 +141,14 @@ const Memories = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
 
                   <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white">
-                    <p className="text-sm font-medium line-clamp-2">Souvenir des 72h</p>
+                    <p className="text-sm font-medium line-clamp-2">{t('memories.photoLabel')}</p>
                     {isLastVisible && remaining > 0 ? (
                       <span className="text-xs px-3 py-1 rounded-full bg-white/20 border border-white/30 backdrop-blur-sm font-semibold">
                         +{remaining}
                       </span>
                     ) : (
                       <span className="text-xs px-2 py-1 rounded-full bg-white/15 border border-white/25 backdrop-blur-sm">
-                        Voir
+                        {t('memories.view')}
                       </span>
                     )}
                   </div>

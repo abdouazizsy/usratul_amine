@@ -6,6 +6,9 @@ import { db } from '../firebase/config'
 import Navigation from '../components/Navigation'
 import Footer from '../components/Footer'
 import Chatbot from '../components/Chatbot'
+import { useTranslation } from '../hooks/useTranslation'
+
+const LOCALE_MAP = { fr: 'fr-FR', ar: 'ar-MA', en: 'en-US' }
 
 const getGregorianYearLabel = () => {
   const y = new Date().getFullYear()
@@ -13,6 +16,7 @@ const getGregorianYearLabel = () => {
 }
 
 const HadaraDjoumaPage = () => {
+  const { t, language } = useTranslation()
   const [hadaraEvents, setHadaraEvents] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
@@ -38,13 +42,15 @@ const HadaraDjoumaPage = () => {
     }
   }
 
+  const locale = LOCALE_MAP[language] || 'fr-FR'
+
   const formatDate = (dateString) => {
     const date = new Date(dateString)
-    return date.toLocaleDateString('fr-FR', { 
-      weekday: 'long', 
-      day: 'numeric', 
-      month: 'long', 
-      year: 'numeric' 
+    return date.toLocaleDateString(locale, {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
     })
   }
 
@@ -52,9 +58,9 @@ const HadaraDjoumaPage = () => {
     const date = new Date(dateString)
     return {
       day: date.getDate(),
-      month: date.toLocaleDateString('fr-FR', { month: 'short' }).toUpperCase(),
+      month: date.toLocaleDateString(locale, { month: 'short' }).toUpperCase(),
       year: date.getFullYear(),
-      weekday: date.toLocaleDateString('fr-FR', { weekday: 'short' }).toUpperCase()
+      weekday: date.toLocaleDateString(locale, { weekday: 'short' }).toUpperCase()
     }
   }
 
@@ -75,7 +81,7 @@ const HadaraDjoumaPage = () => {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-900 via-emerald-800 to-gold-700">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-gold-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-white text-lg">Chargement des Abna'u Hadara Tidiani...</p>
+          <p className="text-white text-lg">{t('hadara.loading')}</p>
         </div>
       </div>
     )
@@ -113,7 +119,7 @@ const HadaraDjoumaPage = () => {
             <div className="w-32 h-1.5 bg-gradient-to-r from-emerald-700 via-emerald-600 to-gold-600 mx-auto mb-8 rounded-full"></div>
             
             <p className="text-2xl text-gray-700 max-w-3xl mx-auto mb-4 font-medium">
-              Calendrier Annuel {getGregorianYearLabel()}
+              {t('hadara.calendarSubtitle')} {getGregorianYearLabel()}
             </p>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               ABNAA-UL HADARATI-T - TIJAANIYATI NATIONAL
@@ -135,7 +141,7 @@ const HadaraDjoumaPage = () => {
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-emerald-400 w-5 h-5" />
                 <input
                   type="text"
-                  placeholder="Rechercher une Hadara..."
+                  placeholder={t('hadara.search')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-12 pr-4 py-3 border-2 border-emerald-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white/50"
@@ -146,7 +152,7 @@ const HadaraDjoumaPage = () => {
                   <span className="font-bold text-emerald-700">{filteredEvents.length}</span> Hadara{filteredEvents.length > 1 ? 's' : ''} 
                   {futureEvents.length > 0 && (
                     <span className="ml-2">
-                      • <span className="font-bold text-emerald-600">{futureEvents.length}</span> à venir
+                      • <span className="font-bold text-emerald-600">{futureEvents.length}</span> {t('hadara.upcoming')}
                     </span>
                   )}
                 </p>
@@ -165,7 +171,7 @@ const HadaraDjoumaPage = () => {
               <div className="flex items-center justify-center gap-3 mb-10">
                 <Sparkles className="w-6 h-6 text-gold-600 animate-pulse" />
                 <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-emerald-700 via-emerald-600 to-gold-600 bg-clip-text text-transparent">
-                  Hadaras à venir
+                  {t('hadara.upcomingTitle')}
                 </h2>
                 <Sparkles className="w-6 h-6 text-gold-600 animate-pulse" />
               </div>
@@ -227,7 +233,7 @@ const HadaraDjoumaPage = () => {
 
                           {/* Bouton */}
                           <button className="w-full mt-3 py-2 px-4 bg-gradient-to-r from-emerald-700 to-gold-600 text-white rounded-xl font-semibold text-sm opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0">
-                            Voir les détails
+                            {t('hadara.viewDetails')}
                           </button>
                         </div>
                       </div>
@@ -246,7 +252,7 @@ const HadaraDjoumaPage = () => {
               transition={{ duration: 0.6, delay: 0.6 }}
             >
               <h2 className="text-2xl font-bold text-center mb-6 text-gray-600">
-                Hadaras Passées
+                {t('hadara.pastTitle')}
               </h2>
               <div className="bg-white/60 backdrop-blur-sm rounded-2xl shadow-lg p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -280,10 +286,10 @@ const HadaraDjoumaPage = () => {
                 <Sparkles className="w-16 h-16 text-emerald-700" />
               </div>
               <h3 className="text-2xl font-bold text-gray-800 mb-2">
-                Aucune Hadara trouvée
+                {t('hadara.noResults')}
               </h3>
               <p className="text-gray-500">
-                {searchTerm ? 'Essayez avec un autre terme de recherche' : 'Les Hadaras seront bientôt disponibles'}
+                {searchTerm ? t('hadara.tryOther') : t('hadara.comingSoon')}
               </p>
             </motion.div>
           )}
@@ -342,7 +348,7 @@ const HadaraDjoumaPage = () => {
                       <Calendar className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <p className="text-xs text-emerald-700 font-medium uppercase">Date</p>
+                      <p className="text-xs text-emerald-700 font-medium uppercase">{t('hadara.date') || 'Date'}</p>
                       <p className="text-sm font-bold text-gray-900">{formatDate(selectedEvent.date)}</p>
                     </div>
                   </div>
@@ -353,7 +359,7 @@ const HadaraDjoumaPage = () => {
                         <MapPin className="w-6 h-6 text-white" />
                       </div>
                       <div>
-                        <p className="text-xs text-gold-700 font-medium uppercase">Lieu</p>
+                        <p className="text-xs text-gold-700 font-medium uppercase">{t('hadara.location')}</p>
                         <p className="text-sm font-bold text-gray-900">{selectedEvent.location}</p>
                       </div>
                     </div>
@@ -362,7 +368,7 @@ const HadaraDjoumaPage = () => {
 
                 {selectedEvent.description && (
                   <div className="mb-6">
-                    <h3 className="text-lg font-bold text-gray-900 mb-3">Description</h3>
+                    <h3 className="text-lg font-bold text-gray-900 mb-3">{t('hadara.description')}</h3>
                     <div className="p-6 bg-gray-50 rounded-xl border border-gray-100">
                       <p className="text-gray-700 leading-relaxed">
                         {selectedEvent.description}
@@ -375,7 +381,7 @@ const HadaraDjoumaPage = () => {
                   onClick={() => setSelectedEvent(null)}
                   className="w-full py-3 bg-gradient-to-r from-emerald-700 via-emerald-600 to-gold-600 text-white rounded-xl font-semibold hover:shadow-2xl transition-all shadow-lg"
                 >
-                  Fermer
+                  {t('hadara.close')}
                 </button>
               </div>
             </motion.div>

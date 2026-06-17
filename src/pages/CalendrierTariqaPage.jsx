@@ -6,6 +6,9 @@ import { db } from '../firebase/config'
 import Navigation from '../components/Navigation'
 import Footer from '../components/Footer'
 import Chatbot from '../components/Chatbot'
+import { useTranslation } from '../hooks/useTranslation'
+
+const LOCALE_MAP = { fr: 'fr-FR', ar: 'ar-MA', en: 'en-US' }
 
 const getHijriYearLabel = () => {
   try {
@@ -19,6 +22,7 @@ const getHijriYearLabel = () => {
 }
 
 const CalendrierTariqaPage = () => {
+  const { t, language } = useTranslation()
   const [tariqaEvents, setTariqaEvents] = useState([])
   const [programs, setPrograms] = useState([])
   const [loading, setLoading] = useState(true)
@@ -56,13 +60,15 @@ const CalendrierTariqaPage = () => {
     }
   }
 
+  const locale = LOCALE_MAP[language] || 'fr-FR'
+
   const formatDate = (dateString) => {
     const date = new Date(dateString)
-    return date.toLocaleDateString('fr-FR', { 
-      weekday: 'long', 
-      day: 'numeric', 
-      month: 'long', 
-      year: 'numeric' 
+    return date.toLocaleDateString(locale, {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
     })
   }
 
@@ -89,7 +95,7 @@ const CalendrierTariqaPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-gray-500">Chargement du calendrier...</div>
+        <div className="text-gray-500">{t('tariqa.loading')}</div>
       </div>
     )
   }
@@ -110,14 +116,14 @@ const CalendrierTariqaPage = () => {
             className="text-center mb-12"
           >
             <h1 className="text-4xl md:text-5xl font-elegant font-bold text-gradient mb-6">
-              Calendrier de la Hadara
+              {t('tariqa.title')}
             </h1>
             <div className="w-24 h-1 bg-gradient-to-r from-emerald-600 to-gold-600 mx-auto mb-8"></div>
             <p className="text-xl font-semibold text-emerald-700 mb-2">
               {getHijriYearLabel()} H
             </p>
             <p className="text-xl text-gray-700 max-w-2xl mx-auto">
-              Découvrez les événements officiels de la Hadara Tijaniyya
+              {t('tariqa.subtitle')}
             </p>
           </motion.div>
 
@@ -135,7 +141,7 @@ const CalendrierTariqaPage = () => {
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                   <input
                     type="text"
-                    placeholder="Rechercher un événement..."
+                    placeholder={t('tariqa.search')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
@@ -154,7 +160,7 @@ const CalendrierTariqaPage = () => {
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                     >
-                      {category === 'all' ? 'Tous' : category}
+                      {category === 'all' ? t('tariqa.all') : category}
                     </button>
                   ))}
                 </div>
@@ -162,7 +168,7 @@ const CalendrierTariqaPage = () => {
 
               {/* Compteur */}
               <div className="mt-4 text-sm text-gray-600 text-center">
-                {filteredEvents.length} événement{filteredEvents.length > 1 ? 's' : ''} trouvé{filteredEvents.length > 1 ? 's' : ''}
+                {filteredEvents.length} {t('tariqa.eventsFound')}
               </div>
             </div>
           </motion.div>
@@ -178,7 +184,7 @@ const CalendrierTariqaPage = () => {
               <div className="flex items-center justify-center gap-3 mb-8">
                 <Sparkles className="w-6 h-6 text-emerald-600" />
                 <h2 className="text-3xl font-bold text-emerald-800">
-                  Événements à venir
+                  {t('tariqa.upcomingTitle')}
                 </h2>
                 <Sparkles className="w-6 h-6 text-emerald-600" />
               </div>
@@ -206,7 +212,7 @@ const CalendrierTariqaPage = () => {
                         <div className="flex justify-between items-start mb-4">
                           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-emerald-600 text-white">
                             <Sparkles className="w-3 h-3 mr-1" />
-                            À VENIR
+                            {t('tariqa.upcomingBadge')}
                           </span>
                           {event.category && (
                             <span className="px-2 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
@@ -220,7 +226,7 @@ const CalendrierTariqaPage = () => {
                           <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl flex items-start gap-2">
                             <AlertTriangle className="w-4 h-4 text-red-600 flex-shrink-0 mt-0.5" />
                             <p className="text-xs text-red-700 font-medium">
-                              Conflit avec un programme Usratul Amine
+                              {t('tariqa.conflict')}
                             </p>
                           </div>
                         )}
@@ -264,7 +270,7 @@ const CalendrierTariqaPage = () => {
                           onClick={() => setSelectedEvent(event)}
                           className="mt-4 w-full flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-colors"
                         >
-                          <span className="text-sm font-semibold">Voir les détails</span>
+                          <span className="text-sm font-semibold">{t('tariqa.viewDetails')}</span>
                         </button>
                       </div>
 
@@ -285,7 +291,7 @@ const CalendrierTariqaPage = () => {
               transition={{ duration: 0.6, delay: 0.6 }}
             >
               <h2 className="text-2xl font-bold text-gray-600 mb-6 text-center">
-                Événements passés
+                {t('tariqa.pastTitle')}
               </h2>
               <div className="bg-white rounded-2xl shadow-lg p-6">
                 <div className="space-y-3">
@@ -324,8 +330,8 @@ const CalendrierTariqaPage = () => {
               className="text-center py-12"
             >
               <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500 text-lg">Aucun événement trouvé</p>
-              <p className="text-gray-400 text-sm mt-2">Essayez de modifier vos filtres</p>
+              <p className="text-gray-500 text-lg">{t('tariqa.noResults')}</p>
+              <p className="text-gray-400 text-sm mt-2">{t('tariqa.modifyFilters')}</p>
             </motion.div>
           )}
         </div>
@@ -373,7 +379,7 @@ const CalendrierTariqaPage = () => {
                     <Calendar className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <p className="text-xs text-emerald-600 font-medium uppercase">Date</p>
+                    <p className="text-xs text-emerald-600 font-medium uppercase">{t('hadara.date') || 'Date'}</p>
                     <p className="text-sm font-bold text-gray-900">{formatDate(selectedEvent.date)}</p>
                   </div>
                 </div>
@@ -384,7 +390,7 @@ const CalendrierTariqaPage = () => {
                       <MapPin className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <p className="text-xs text-purple-600 font-medium uppercase">Lieu</p>
+                      <p className="text-xs text-purple-600 font-medium uppercase">{t('tariqa.location')}</p>
                       <p className="text-sm font-bold text-gray-900">{selectedEvent.location}</p>
                     </div>
                   </div>
@@ -393,7 +399,7 @@ const CalendrierTariqaPage = () => {
 
               {selectedEvent.description && (
                 <div className="mb-6">
-                  <h3 className="text-lg font-bold text-gray-900 mb-3">Description</h3>
+                  <h3 className="text-lg font-bold text-gray-900 mb-3">{t('tariqa.description')}</h3>
                   <div className="p-6 bg-gray-50 rounded-xl border border-gray-100">
                     <p className="text-gray-700 leading-relaxed whitespace-pre-line">
                       {selectedEvent.description}
@@ -406,7 +412,7 @@ const CalendrierTariqaPage = () => {
                 onClick={() => setSelectedEvent(null)}
                 className="w-full py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-xl font-semibold hover:from-emerald-700 hover:to-emerald-800 transition-all shadow-lg"
               >
-                Fermer
+                {t('tariqa.close')}
               </button>
             </div>
           </motion.div>

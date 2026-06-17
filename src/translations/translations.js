@@ -205,6 +205,51 @@ export const translations = {
       }
     },
     
+    // Memories section
+    memories: {
+      title: "Souvenirs des 72h",
+      subtitle: "Quelques instants capturés pour revivre l'ambiance spirituelle et fraternelle de ces journées bénies.",
+      photoLabel: "Souvenir des 72h",
+      view: "Voir"
+    },
+
+    // Hadara Djouma page
+    hadara: {
+      calendarSubtitle: "Calendrier Annuel",
+      search: "Rechercher une Hadara...",
+      upcoming: "à venir",
+      upcomingTitle: "Hadaras à venir",
+      pastTitle: "Hadaras Passées",
+      viewDetails: "Voir les détails",
+      noResults: "Aucune Hadara trouvée",
+      tryOther: "Essayez avec un autre terme de recherche",
+      comingSoon: "Les Hadaras seront bientôt disponibles",
+      close: "Fermer",
+      loading: "Chargement des Abna'u Hadara Tidiani...",
+      location: "Lieu",
+      description: "Description"
+    },
+
+    // Calendrier Tariqa page
+    tariqa: {
+      title: "Calendrier de la Hadara",
+      subtitle: "Découvrez les événements officiels de la Hadara Tijaniyya",
+      loading: "Chargement du calendrier...",
+      search: "Rechercher un événement...",
+      all: "Tous",
+      eventsFound: "événement(s) trouvé(s)",
+      upcomingTitle: "Événements à venir",
+      upcomingBadge: "À VENIR",
+      conflict: "Conflit avec un programme Usratul Amine",
+      viewDetails: "Voir les détails",
+      pastTitle: "Événements passés",
+      noResults: "Aucun événement trouvé",
+      modifyFilters: "Essayez de modifier vos filtres",
+      location: "Lieu",
+      description: "Description",
+      close: "Fermer"
+    },
+
     // Footer
     footer: {
       about: "Association dédiée à préserver et honorer l'héritage exceptionnel de Serigne Abdou Aziz Sy Al Amine, 6ème Khalife Général des Tidianes.",
@@ -434,6 +479,51 @@ export const translations = {
       }
     },
     
+    // Memories section
+    memories: {
+      title: "ذكريات الـ 72 ساعة",
+      subtitle: "لحظات ملتقطة لاسترجاع الأجواء الروحية والإخوية لهذه الأيام المباركة.",
+      photoLabel: "ذكرى الـ 72 ساعة",
+      view: "عرض"
+    },
+
+    // Hadara Djouma page
+    hadara: {
+      calendarSubtitle: "التقويم السنوي",
+      search: "البحث عن حضرة...",
+      upcoming: "القادمة",
+      upcomingTitle: "الحضرات القادمة",
+      pastTitle: "الحضرات الماضية",
+      viewDetails: "عرض التفاصيل",
+      noResults: "لم يتم العثور على حضرة",
+      tryOther: "جرّب مصطلح بحث آخر",
+      comingSoon: "ستتوفر الحضرات قريباً",
+      close: "إغلاق",
+      loading: "جارٍ تحميل الأبناء الحضرة التيجانية...",
+      location: "المكان",
+      description: "الوصف"
+    },
+
+    // Calendrier Tariqa page
+    tariqa: {
+      title: "تقويم الحضرة",
+      subtitle: "اكتشف الأحداث الرسمية لحضرة الطريقة التجانية",
+      loading: "جارٍ تحميل التقويم...",
+      search: "البحث عن حدث...",
+      all: "الكل",
+      eventsFound: "حدث/أحداث موجودة",
+      upcomingTitle: "الأحداث القادمة",
+      upcomingBadge: "قادم",
+      conflict: "تعارض مع برنامج أسرة الأمين",
+      viewDetails: "عرض التفاصيل",
+      pastTitle: "الأحداث الماضية",
+      noResults: "لم يتم العثور على أحداث",
+      modifyFilters: "حاول تعديل مرشحاتك",
+      location: "المكان",
+      description: "الوصف",
+      close: "إغلاق"
+    },
+
     // Footer
     footer: {
       about: "جمعية مخصصة للحفاظ على الإرث الاستثنائي للشيخ عبد العزيز سي الأمين، الخليفة السادس العام للطريقة التجانية، وتكريمه.",
@@ -663,6 +753,51 @@ export const translations = {
       }
     },
     
+    // Memories section
+    memories: {
+      title: "72h Memories",
+      subtitle: "A few captured moments to relive the spiritual and fraternal atmosphere of these blessed days.",
+      photoLabel: "72h Memory",
+      view: "View"
+    },
+
+    // Hadara Djouma page
+    hadara: {
+      calendarSubtitle: "Annual Calendar",
+      search: "Search for a Hadara...",
+      upcoming: "upcoming",
+      upcomingTitle: "Upcoming Hadaras",
+      pastTitle: "Past Hadaras",
+      viewDetails: "View details",
+      noResults: "No Hadara found",
+      tryOther: "Try another search term",
+      comingSoon: "Hadaras will be available soon",
+      close: "Close",
+      loading: "Loading Abna'u Hadara Tidiani...",
+      location: "Location",
+      description: "Description"
+    },
+
+    // Calendrier Tariqa page
+    tariqa: {
+      title: "Hadara Calendar",
+      subtitle: "Discover the official events of the Hadara Tijaniyya",
+      loading: "Loading calendar...",
+      search: "Search for an event...",
+      all: "All",
+      eventsFound: "event(s) found",
+      upcomingTitle: "Upcoming Events",
+      upcomingBadge: "UPCOMING",
+      conflict: "Conflict with an Usratul Amine program",
+      viewDetails: "View details",
+      pastTitle: "Past Events",
+      noResults: "No events found",
+      modifyFilters: "Try modifying your filters",
+      location: "Location",
+      description: "Description",
+      close: "Close"
+    },
+
     // Footer
     footer: {
       about: "Association dedicated to preserving and honoring the exceptional legacy of Serigne Abdou Aziz Sy Al Amine, 6th General Khalife of the Tijaniyya.",
@@ -689,11 +824,13 @@ export const translations = {
 
 export const getTranslation = (language, key) => {
   const keys = key.split('.')
+
   let value = translations[language]
-  
-  for (const k of keys) {
-    value = value?.[k]
-  }
-  
-  return value || key
+  for (const k of keys) value = value?.[k]
+  if (value) return value
+
+  // fallback to French
+  let fr = translations['fr']
+  for (const k of keys) fr = fr?.[k]
+  return fr || key
 }
