@@ -212,15 +212,6 @@ const Footer = () => {
                 © 2025 Usratul Amine. {t('footer.copyright')}
               </p>
             </div>
-            
-            <div className="flex items-center gap-6 text-emerald-400 text-sm">
-              <span className={`flex items-center gap-2 ${
-                language === 'ar' ? 'font-arabic' : ''
-              }`}>
-                <Heart className="w-4 h-4 text-gold-400" />
-                {t('footer.made')}
-              </span>
-            </div>
           </div>
         </div>
       </div>
