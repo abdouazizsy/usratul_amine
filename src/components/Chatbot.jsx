@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send, Loader2 } from 'lucide-react';
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import { db } from '../firebase/config';
+import ReactMarkdown from 'react-markdown';
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -495,7 +496,13 @@ Répondez toujours avec respect, précision et bienveillance. Utilisez ces infor
                         : 'bg-white text-gray-800 rounded-bl-sm shadow-sm border border-gray-100'
                     }`}
                   >
-                    <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                    {message.role === 'assistant' ? (
+                      <div className="text-sm prose prose-sm max-w-none prose-headings:text-gray-800 prose-p:my-1 prose-ul:my-1 prose-li:my-0 prose-strong:text-gray-900">
+                        <ReactMarkdown>{message.content}</ReactMarkdown>
+                      </div>
+                    ) : (
+                      <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                    )}
                   </div>
                 </motion.div>
               ))}
