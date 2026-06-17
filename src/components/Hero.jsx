@@ -101,31 +101,14 @@ const Hero = () => {
               <div className="absolute inset-0 w-48 h-48 rounded-full bg-emerald-400/20 blur-2xl animate-pulse" style={{ animationDelay: '0.5s' }}></div>
               
               {/* Logo container */}
-              <div className="relative w-44 h-44 rounded-full bg-white backdrop-blur-sm border-4 border-gold-400 flex items-center justify-center elegant-shadow p-6 shadow-2xl shadow-gold-500/50">
-                <img 
-                  src="/logo-og-v2.png" 
-                  alt="Usratul Amine Logo" 
-                  className="w-full h-full object-contain"
-                  onError={(e) => {
-                    e.target.outerHTML = '<div class="text-6xl">🕌</div>'
-                  }}
-                />
-              </div>
+           
               
               {/* Decorative corner accents */}
-              <div className="absolute -top-2 -left-2 w-8 h-8 border-t-4 border-l-4 border-gold-500 rounded-tl-full"></div>
-              <div className="absolute -bottom-2 -right-2 w-8 h-8 border-b-4 border-r-4 border-gold-500 rounded-br-full"></div>
+            
             </div>
           </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.5, type: "spring" }}
-            className="text-gold-300 text-2xl font-arabic mb-2 drop-shadow-lg"
-          >
-            أُسْرَةُ الأَمِين
-          </motion.p>
+         
 
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
