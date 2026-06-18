@@ -17,7 +17,8 @@ export const tariqaEvents2025_2026 = [
     date: "2025-09-05",
     location: "",
     category: "COSKAS",
-    description: "Célébration du Mawlid"
+    description: "Célébration du Mawlid",
+    featured: true
   },
   {
     title: "Journée Feu Elhadji Cissé à (Thiès)",
@@ -55,7 +56,8 @@ export const tariqaEvents2025_2026 = [
     date: "2025-12-26",
     location: "Dakar",
     category: "COSKAS",
-    description: "Vendredi 26, Samedi 27, Dimanche 28 Décembre 2025"
+    description: "Vendredi 26, Samedi 27, Dimanche 28 Décembre 2025",
+    featured: true
   },
   {
     title: "Journée Serigne Babacar SY( RTA) Rue Thiers",
@@ -127,7 +129,8 @@ export const tariqaEvents2025_2026 = [
     title: "Hadratoul Jumaa ABNA U National (Guediawaye)",
     date: "2026-02-13",
     location: "Guediawaye",
-    category: "COSKAS"
+    category: "COSKAS",
+    featured: true
   },
   {
     title: "Conférence Nationale Seydi Djamil RTA (Dakar)",
@@ -175,7 +178,8 @@ export const tariqaEvents2025_2026 = [
     title: "Ziara Centrale",
     date: "2026-04-12",
     location: "",
-    category: "COSKAS"
+    category: "COSKAS",
+    featured: true
   },
   {
     title: "Gamou Elh Ahmed Lamine Diéne (Gueule Tapée)",
@@ -205,7 +209,8 @@ export const tariqaEvents2025_2026 = [
     title: "Gamou Serigne Babacar SY (Saint Louis)",
     date: "2026-05-02",
     location: "Saint Louis",
-    category: "COSKAS"
+    category: "COSKAS",
+    featured: true
   },
   {
     title: "Gamou Pikine Serigne Mansour SY",

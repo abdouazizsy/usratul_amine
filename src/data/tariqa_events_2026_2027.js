@@ -16,7 +16,8 @@ export const tariqaEvents2026_2027 = [
     date: "2026-08-25",
     location: "",
     category: "COSKAS",
-    description: "Mardi 25, Mercredi 26, Jeudi 27 Août 2026"
+    description: "Mardi 25, Mercredi 26, Jeudi 27 Août 2026",
+    featured: true
   },
   {
     title: "Journée Serigne Mansour SY (Tivaouane) Pape Malick Diop",
@@ -72,7 +73,8 @@ export const tariqaEvents2026_2027 = [
     date: "2026-12-25",
     location: "",
     category: "COSKAS",
-    description: "Vendredi 25, Samedi 26, Dimanche 27 Décembre 2026"
+    description: "Vendredi 25, Samedi 26, Dimanche 27 Décembre 2026",
+    featured: true
   },
   {
     title: "Conférence Ouakam Mame Mbaye Diop",
@@ -175,7 +177,8 @@ export const tariqaEvents2026_2027 = [
     title: "Hadara National Abna'u (Guédiawaye)",
     date: "2027-02-05",
     location: "Guédiawaye",
-    category: "COSKAS"
+    category: "COSKAS",
+    featured: true
   },
   {
     title: "Gamou Sokhna Astou SY (Louga)",
@@ -211,7 +214,8 @@ export const tariqaEvents2026_2027 = [
     title: "Ziara Générale",
     date: "2027-03-21",
     location: "",
-    category: "COSKAS"
+    category: "COSKAS",
+    featured: true
   },
   {
     title: "Ziara Dahira Nihmaty (Tivaouane)",
@@ -247,7 +251,8 @@ export const tariqaEvents2026_2027 = [
     title: "Gamou Serigne Ababacar SY (Saint-Louis)",
     date: "2027-04-17",
     location: "Saint-Louis",
-    category: "COSKAS"
+    category: "COSKAS",
+    featured: true
   },
   {
     title: "Gamou Ndakarou Serigne Sidy Ahmed SY (Rue Thiers)",

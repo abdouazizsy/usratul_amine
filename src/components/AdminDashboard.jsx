@@ -72,7 +72,8 @@ const AdminDashboard = () => {
     date: '',
     location: '',
     category: 'COSKAS',
-    description: ''
+    description: '',
+    featured: false
   })
 
   // État Hadara Djouma
@@ -426,7 +427,8 @@ const AdminDashboard = () => {
         date: '',
         location: '',
         category: 'COSKAS',
-        description: ''
+        description: '',
+        featured: false
       })
       setShowTariqaForm(false)
       setEditingTariqaEvent(null)
@@ -449,7 +451,8 @@ const AdminDashboard = () => {
       date: event.date,
       location: event.location || '',
       category: event.category || 'COSKAS',
-      description: event.description || ''
+      description: event.description || '',
+      featured: event.featured || false
     })
     setShowTariqaForm(true)
   }
@@ -1039,6 +1042,18 @@ const AdminDashboard = () => {
                           placeholder="Description de l'événement (optionnel)"
                         />
                       </div>
+
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={tariqaFormData.featured}
+                          onChange={(e) => setTariqaFormData({...tariqaFormData, featured: e.target.checked})}
+                          className="w-4 h-4 rounded border-gray-300 text-gold-600 focus:ring-gold-500"
+                        />
+                        <span className="text-sm font-medium text-gray-700">
+                          ⭐ Événement majeur (mis en avant sur le calendrier public)
+                        </span>
+                      </label>
 
                       <div className="flex gap-3">
                         <button
