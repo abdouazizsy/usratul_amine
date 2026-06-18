@@ -20,12 +20,24 @@ import {
 } from 'lucide-react'
 import { collection, addDoc, updateDoc, deleteDoc, doc, getDocs, query, orderBy } from 'firebase/firestore'
 import { db } from '../firebase/config'
-import { importTariqaEvents } from '../utils/importTariqaEvents'
+import { importTariqaEvents, importTariqaEvents2026_2027 } from '../utils/importTariqaEvents'
+import { tariqaEvents2025_2026 } from '../data/tariqa_events_2025_2026'
+import { tariqaEvents2026_2027 } from '../data/tariqa_events_2026_2027'
 import { importHadaraDjoumaToFirebase } from '../utils/importHadaraDjouma'
 import ConfirmModal from './ConfirmModal'
 import NotificationToast from './NotificationToast'
 import UserManagement from './UserManagement'
 import Settings from './Settings'
+
+const SEASON_2025_2026_KEYS = new Set(tariqaEvents2025_2026.map(e => `${e.title}|${e.date}`))
+const SEASON_2026_2027_KEYS = new Set(tariqaEvents2026_2027.map(e => `${e.title}|${e.date}`))
+
+const getTariqaEventSeason = (event) => {
+  const key = `${event.title}|${event.date}`
+  if (SEASON_2026_2027_KEYS.has(key)) return '2026-2027'
+  if (SEASON_2025_2026_KEYS.has(key)) return '2025-2026'
+  return event.date < '2026-07-01' ? '2025-2026' : '2026-2027'
+}
 
 const AdminDashboard = () => {
   const { user, logout, isAdmin } = useAdmin()
@@ -37,6 +49,9 @@ const AdminDashboard = () => {
   const [editingProgram, setEditingProgram] = useState(null)
   const [dateConflict, setDateConflict] = useState(null)
   const [importing, setImporting] = useState(false)
+  const [importing2026, setImporting2026] = useState(false)
+  const [tariqaSeasonTab, setTariqaSeasonTab] = useState('2025-2026')
+  const filteredTariqaEvents = tariqaEvents.filter(e => getTariqaEventSeason(e) === tariqaSeasonTab)
   
   const [confirmModal, setConfirmModal] = useState({ isOpen: false, type: '', onConfirm: null })
   const [notification, setNotification] = useState({ isOpen: false, type: 'success', title: '', message: '' })
@@ -278,6 +293,36 @@ const AdminDashboard = () => {
           })
         }
         setImporting(false)
+      }
+    })
+  }
+
+  const handleImportTariqaEvents2026_2027 = () => {
+    setConfirmModal({
+      isOpen: true,
+      type: 'import',
+      title: 'Importer le calendrier COSKAS 2026-2027',
+      message: 'Voulez-vous importer les 47 événements du calendrier COSKAS 2026-2027 ? Ils seront ajoutés en complément des événements déjà existants (les doublons sont ignorés).',
+      onConfirm: async () => {
+        setImporting2026(true)
+        const result = await importTariqaEvents2026_2027()
+        if (result.success) {
+          setNotification({
+            isOpen: true,
+            type: 'success',
+            title: 'Importation réussie !',
+            message: `${result.count} événements ont été importés avec succès.`
+          })
+          fetchTariqaEvents()
+        } else {
+          setNotification({
+            isOpen: true,
+            type: 'error',
+            title: 'Erreur d\'importation',
+            message: result.message || 'Une erreur est survenue lors de l\'importation.'
+          })
+        }
+        setImporting2026(false)
       }
     })
   }
@@ -840,12 +885,32 @@ const AdminDashboard = () => {
                 <div className="flex flex-col gap-3 mb-6">
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                     <h2 className="text-lg sm:text-xl font-bold text-gray-800">
-                      Calendrier de la Hadara 2025-2026
+                      Calendrier de la Hadara
                     </h2>
                     <div className="text-sm text-gray-600">
-                      {tariqaEvents.length} événements
+                      {tariqaEvents.length} événements au total
                     </div>
                   </div>
+
+                  <div className="flex gap-2 border-b border-gray-200">
+                    {['2025-2026', '2026-2027'].map((season) => {
+                      const count = tariqaEvents.filter(e => getTariqaEventSeason(e) === season).length
+                      return (
+                        <button
+                          key={season}
+                          onClick={() => setTariqaSeasonTab(season)}
+                          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+                            tariqaSeasonTab === season
+                              ? 'border-emerald-600 text-emerald-700'
+                              : 'border-transparent text-gray-500 hover:text-gray-700'
+                          }`}
+                        >
+                          {season} ({count})
+                        </button>
+                      )
+                    })}
+                  </div>
+
                   <div className="flex flex-col sm:flex-row gap-2">
                       <button
                         onClick={() => setShowTariqaForm(true)}
@@ -862,6 +927,16 @@ const AdminDashboard = () => {
                         >
                           <Plus className="w-4 h-4" />
                           {importing ? 'Importation...' : 'Importer COSKAS'}
+                        </button>
+                      )}
+                      {tariqaEvents.filter(e => getTariqaEventSeason(e) === '2026-2027').length === 0 && (
+                        <button
+                          onClick={handleImportTariqaEvents2026_2027}
+                          disabled={importing2026}
+                          className="flex items-center justify-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50 text-sm"
+                        >
+                          <Plus className="w-4 h-4" />
+                          {importing2026 ? 'Importation...' : 'Importer COSKAS 2026-2027'}
                         </button>
                       )}
                   </div>
@@ -998,9 +1073,16 @@ const AdminDashboard = () => {
                       Cliquez sur le bouton ci-dessus pour importer automatiquement les 50+ événements du calendrier COSKAS 2025-2026
                     </p>
                   </div>
+                ) : filteredTariqaEvents.length === 0 ? (
+                  <div className="text-center py-8">
+                    <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                    <p className="text-gray-500">
+                      Aucun événement pour la saison {tariqaSeasonTab}
+                    </p>
+                  </div>
                 ) : (
                   <div className="space-y-3">
-                    {tariqaEvents.map((event) => {
+                    {filteredTariqaEvents.map((event) => {
                       const eventDate = new Date(event.date)
                       const isFuture = eventDate > new Date()
                       
