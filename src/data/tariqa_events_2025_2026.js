@@ -87,7 +87,8 @@ export const tariqaEvents2025_2026 = [
     title: "Gamou Serigne Abdou Aziz SY (RTA) «ABRAR»",
     date: "2026-01-17",
     location: "Tivaouane",
-    category: "COSKAS"
+    category: "COSKAS",
+    featured: true
   },
   {
     title: "Gamou Fédération Serigne Mansour SY Dabakh",

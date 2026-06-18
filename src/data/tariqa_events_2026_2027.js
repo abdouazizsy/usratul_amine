@@ -165,7 +165,8 @@ export const tariqaEvents2026_2027 = [
     title: "Gamou Serigne Abdou Aziz SY « Abrar »",
     date: "2027-01-30",
     location: "",
-    category: "COSKAS"
+    category: "COSKAS",
+    featured: true
   },
   {
     title: "Ziara Moutahabina Filahi Serigne Alioune Cissé",
