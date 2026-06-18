@@ -80,7 +80,7 @@ const CalendrierTariqaPage = () => {
     return programs.some(program => program.date === eventDate)
   }
 
-  const categories = ['all', 'COSKAS', 'TAMKHARITE', 'AUTRES']
+  const categories = ['all', 'COSKAS']
 
   const filteredEvents = tariqaEvents.filter(event => {
     const matchesCategory = selectedCategory === 'all' || event.category === selectedCategory
