@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ChevronDown, Calendar, Sparkles, BookOpen } from 'lucide-react'
+import { Menu, X, ChevronDown, Calendar, Sparkles, BookOpen, ShoppingBag, ShoppingCart } from 'lucide-react'
 import LanguageSelector from './LanguageSelector'
 import { useLanguage } from '../contexts/LanguageContext'
+import { useCart } from '../contexts/CartContext'
 import { getTranslation } from '../translations/translations'
 
 const getGregorianYearLabel = () => {
@@ -13,6 +14,7 @@ const getGregorianYearLabel = () => {
 
 const Navigation = ({ scrolled }) => {
   const { language } = useLanguage()
+  const { totalItems } = useCart()
   const t = (key) => getTranslation(language, key)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [calendarsOpen, setCalendarsOpen] = useState(false)
@@ -169,7 +171,36 @@ const Navigation = ({ scrolled }) => {
                 )}
               </AnimatePresence>
             </div>
-            
+
+            <Link
+              to="/produits"
+              className={`flex items-center gap-1 font-medium transition-colors ${
+                scrolled
+                  ? 'text-emerald-700 hover:text-gold-600'
+                  : 'text-white hover:text-gold-300'
+              }`}
+            >
+              <ShoppingBag className="w-4 h-4" />
+              {t('nav.products')}
+            </Link>
+
+            <Link
+              to="/panier"
+              className={`relative p-2 rounded-full transition-colors ${
+                scrolled
+                  ? 'text-emerald-700 hover:bg-emerald-50'
+                  : 'text-white hover:bg-white/10'
+              }`}
+              aria-label={t('cart.title')}
+            >
+              <ShoppingCart className="w-5 h-5" />
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center bg-gold-500 text-white text-xs font-bold rounded-full">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
+
             <LanguageSelector scrolled={scrolled} />
           </div>
 
@@ -275,7 +306,34 @@ const Navigation = ({ scrolled }) => {
                       </motion.div>
                     )}
                   </AnimatePresence>
-                  
+
+                  <Link
+                    to="/produits"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`flex items-center gap-2 px-6 py-3 text-emerald-700 hover:bg-emerald-50 hover:text-gold-600 font-medium transition-colors ${
+                      language === 'ar' ? 'font-arabic text-right' : ''
+                    }`}
+                  >
+                    <ShoppingBag className="w-4 h-4" />
+                    {t('nav.products')}
+                  </Link>
+
+                  <Link
+                    to="/panier"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`flex items-center gap-2 px-6 py-3 text-emerald-700 hover:bg-emerald-50 hover:text-gold-600 font-medium transition-colors ${
+                      language === 'ar' ? 'font-arabic text-right' : ''
+                    }`}
+                  >
+                    <ShoppingCart className="w-4 h-4" />
+                    {t('cart.title')}
+                    {totalItems > 0 && (
+                      <span className="w-5 h-5 flex items-center justify-center bg-gold-500 text-white text-xs font-bold rounded-full">
+                        {totalItems}
+                      </span>
+                    )}
+                  </Link>
+
                   {/* Sélecteur de langue pour mobile */}
                   <div className="px-6 py-3 border-t border-gray-200 mt-2">
                     <p className="text-sm text-gray-600 mb-2 font-medium">Langue / Language</p>

@@ -4,6 +4,9 @@ import HomePage from './pages/HomePage'
 import ProgrammePage from './pages/ProgrammePage'
 import CalendrierTariqaPage from './pages/CalendrierTariqaPage'
 import HadaraDjoumaPage from './pages/HadaraDjoumaPage'
+import ProduitsPage from './pages/ProduitsPage'
+import CartPage from './pages/CartPage'
+import CheckoutPage from './pages/CheckoutPage'
 import AdminLogin from './components/AdminLogin'
 import AdminDashboard from './components/AdminDashboard'
 import { AdminProvider, useAdmin } from './contexts/AdminContext'
@@ -44,6 +47,9 @@ function App() {
           <Route path="/programme" element={<ProgrammePage />} />
           <Route path="/calendrier-tariqa" element={<CalendrierTariqaPage />} />
           <Route path="/hadara-djouma" element={<HadaraDjoumaPage />} />
+          <Route path="/produits" element={<ProduitsPage />} />
+          <Route path="/panier" element={<CartPage />} />
+          <Route path="/commande" element={<CheckoutPage />} />
           <Route 
             path="/admin" 
             element={

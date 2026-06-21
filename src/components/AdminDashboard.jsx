@@ -16,7 +16,13 @@ import {
   AlertTriangle,
   CheckCircle,
   Star,
-  Sparkles
+  Sparkles,
+  ShoppingBag,
+  Upload,
+  Image as ImageIcon,
+  ClipboardList,
+  Phone,
+  Banknote
 } from 'lucide-react'
 import { collection, addDoc, updateDoc, deleteDoc, doc, getDocs, query, orderBy } from 'firebase/firestore'
 import { db } from '../firebase/config'
@@ -24,6 +30,7 @@ import { importTariqaEvents, importTariqaEvents2026_2027 } from '../utils/import
 import { tariqaEvents2025_2026 } from '../data/tariqa_events_2025_2026'
 import { tariqaEvents2026_2027 } from '../data/tariqa_events_2026_2027'
 import { importHadaraDjoumaToFirebase } from '../utils/importHadaraDjouma'
+import { uploadImageToCloudinary } from '../utils/cloudinaryUpload'
 import ConfirmModal from './ConfirmModal'
 import NotificationToast from './NotificationToast'
 import UserManagement from './UserManagement'
@@ -88,11 +95,30 @@ const AdminDashboard = () => {
     description: ''
   })
 
+  // État Produits (e-commerce)
+  const [products, setProducts] = useState([])
+  const [showProductForm, setShowProductForm] = useState(false)
+  const [editingProduct, setEditingProduct] = useState(null)
+  const [uploadingImage, setUploadingImage] = useState(false)
+  const [productFormData, setProductFormData] = useState({
+    name: '',
+    price: '',
+    description: '',
+    imageUrl: '',
+    available: true
+  })
+
+  // État Commandes
+  const [orders, setOrders] = useState([])
+  const pendingOrdersCount = orders.filter(o => o.status === 'pending').length
+
   useEffect(() => {
     if (isAdmin) {
       fetchPrograms()
       fetchTariqaEvents()
       fetchHadaraDjoumaEvents()
+      fetchProducts()
+      fetchOrders()
     }
   }, [isAdmin])
 
@@ -146,6 +172,184 @@ const AdminDashboard = () => {
     } catch (error) {
       console.error('Error fetching hadara djouma events:', error)
     }
+  }
+
+  const fetchProducts = async () => {
+    try {
+      const productsQuery = query(collection(db, 'products'), orderBy('createdAt', 'desc'))
+      const querySnapshot = await getDocs(productsQuery)
+      const productsData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }))
+      setProducts(productsData)
+    } catch (error) {
+      console.error('Error fetching products:', error)
+    }
+  }
+
+  const fetchOrders = async () => {
+    try {
+      const ordersQuery = query(collection(db, 'orders'), orderBy('createdAt', 'desc'))
+      const querySnapshot = await getDocs(ordersQuery)
+      const ordersData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }))
+      setOrders(ordersData)
+    } catch (error) {
+      console.error('Error fetching orders:', error)
+    }
+  }
+
+  const handleUpdateOrderStatus = async (orderId, status) => {
+    try {
+      await updateDoc(doc(db, 'orders', orderId), { status })
+      setOrders((prev) => prev.map((o) => (o.id === orderId ? { ...o, status } : o)))
+    } catch (error) {
+      console.error('Error updating order status:', error)
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: 'Erreur',
+        message: 'Impossible de mettre à jour la commande.'
+      })
+    }
+  }
+
+  const handleDeleteOrder = (orderId) => {
+    setConfirmModal({
+      isOpen: true,
+      type: 'danger',
+      title: 'Supprimer la commande',
+      message: 'Êtes-vous sûr de vouloir supprimer cette commande ? Cette action est irréversible.',
+      onConfirm: async () => {
+        try {
+          await deleteDoc(doc(db, 'orders', orderId))
+          setOrders((prev) => prev.filter((o) => o.id !== orderId))
+          setNotification({
+            isOpen: true,
+            type: 'success',
+            title: 'Commande supprimée',
+            message: 'La commande a été supprimée avec succès.'
+          })
+        } catch (error) {
+          console.error('Error deleting order:', error)
+          setNotification({
+            isOpen: true,
+            type: 'error',
+            title: 'Erreur',
+            message: 'Impossible de supprimer la commande.'
+          })
+        }
+      }
+    })
+  }
+
+  const handleProductImageChange = async (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+
+    setUploadingImage(true)
+    try {
+      const imageUrl = await uploadImageToCloudinary(file)
+      setProductFormData({ ...productFormData, imageUrl })
+    } catch (error) {
+      console.error('Error uploading image:', error)
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: "Erreur d'upload",
+        message: error.message || "Impossible d'uploader l'image."
+      })
+    } finally {
+      setUploadingImage(false)
+    }
+  }
+
+  const handleProductSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const dataToSave = {
+        ...productFormData,
+        price: parseFloat(productFormData.price) || 0
+      }
+
+      if (editingProduct) {
+        await updateDoc(doc(db, 'products', editingProduct.id), dataToSave)
+        setNotification({
+          isOpen: true,
+          type: 'success',
+          title: 'Produit modifié',
+          message: 'Le produit a été modifié avec succès.'
+        })
+      } else {
+        await addDoc(collection(db, 'products'), {
+          ...dataToSave,
+          createdAt: new Date()
+        })
+        setNotification({
+          isOpen: true,
+          type: 'success',
+          title: 'Produit ajouté',
+          message: 'Le produit a été ajouté avec succès.'
+        })
+      }
+
+      setProductFormData({ name: '', price: '', description: '', imageUrl: '', available: true })
+      setShowProductForm(false)
+      setEditingProduct(null)
+      fetchProducts()
+    } catch (error) {
+      console.error('Error saving product:', error)
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: 'Erreur',
+        message: "Impossible d'enregistrer le produit."
+      })
+    }
+  }
+
+  const handleEditProduct = (product) => {
+    setEditingProduct(product)
+    setProductFormData({
+      name: product.name || '',
+      price: product.price ?? '',
+      description: product.description || '',
+      imageUrl: product.imageUrl || '',
+      available: product.available !== false
+    })
+    setShowProductForm(true)
+  }
+
+  const handleDeleteProduct = (id) => {
+    setConfirmModal({
+      isOpen: true,
+      type: 'danger',
+      title: 'Supprimer le produit',
+      message: 'Êtes-vous sûr de vouloir supprimer ce produit ? Cette action est irréversible.',
+      onConfirm: async () => {
+        try {
+          await deleteDoc(doc(db, 'products', id))
+          setNotification({
+            isOpen: true,
+            type: 'success',
+            title: 'Produit supprimé',
+            message: 'Le produit a été supprimé avec succès.'
+          })
+          fetchProducts()
+        } catch (error) {
+          console.error('Error deleting product:', error)
+          setNotification({
+            isOpen: true,
+            type: 'error',
+            title: 'Erreur',
+            message: 'Impossible de supprimer le produit.'
+          })
+        }
+      }
+    })
   }
 
   const handleImportHadaraDjouma = () => {
@@ -551,6 +755,33 @@ const AdminDashboard = () => {
               >
                 <Sparkles className="w-5 h-5 flex-shrink-0" />
                 Abna'u Hadara Tidiani
+              </button>
+              <button
+                onClick={() => setActiveTab('products')}
+                className={`flex-shrink-0 lg:w-full flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2 lg:py-3 rounded-lg transition-colors whitespace-nowrap text-sm lg:text-base ${
+                  activeTab === 'products'
+                    ? 'bg-emerald-100 text-emerald-700'
+                    : 'text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                <ShoppingBag className="w-5 h-5 flex-shrink-0" />
+                Produits
+              </button>
+              <button
+                onClick={() => setActiveTab('orders')}
+                className={`flex-shrink-0 lg:w-full flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2 lg:py-3 rounded-lg transition-colors whitespace-nowrap text-sm lg:text-base ${
+                  activeTab === 'orders'
+                    ? 'bg-emerald-100 text-emerald-700'
+                    : 'text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                <ClipboardList className="w-5 h-5 flex-shrink-0" />
+                Commandes
+                {pendingOrdersCount > 0 && (
+                  <span className="ml-auto lg:ml-0 px-2 py-0.5 text-xs font-bold bg-red-500 text-white rounded-full">
+                    {pendingOrdersCount}
+                  </span>
+                )}
               </button>
               <button
                 onClick={() => setActiveTab('users')}
@@ -1397,6 +1628,318 @@ const AdminDashboard = () => {
                                 <Trash2 className="w-4 h-4" />
                               </button>
                             </div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </motion.div>
+            )}
+
+            {activeTab === 'products' && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white rounded-xl shadow-sm p-4 sm:p-6"
+              >
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-3">
+                  <h2 className="text-lg sm:text-xl font-bold text-gray-800">
+                    Gestion des produits
+                  </h2>
+                  <button
+                    onClick={() => setShowProductForm(true)}
+                    className="flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Ajouter un produit
+                  </button>
+                </div>
+
+                {showProductForm && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="mb-6 p-6 bg-gray-50 rounded-lg"
+                  >
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-lg font-semibold">
+                        {editingProduct ? 'Modifier le produit' : 'Nouveau produit'}
+                      </h3>
+                      <button
+                        onClick={() => {
+                          setShowProductForm(false)
+                          setEditingProduct(null)
+                          setProductFormData({ name: '', price: '', description: '', imageUrl: '', available: true })
+                        }}
+                        className="text-gray-500 hover:text-gray-700"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    <form onSubmit={handleProductSubmit} className="space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Libellé du produit
+                          </label>
+                          <input
+                            type="text"
+                            value={productFormData.name}
+                            onChange={(e) => setProductFormData({ ...productFormData, name: e.target.value })}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                            placeholder="ex: Pin's Usratul Amine"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Prix (FCFA)
+                          </label>
+                          <input
+                            type="number"
+                            min="0"
+                            value={productFormData.price}
+                            onChange={(e) => setProductFormData({ ...productFormData, price: e.target.value })}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                            placeholder="ex: 3000"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Description
+                        </label>
+                        <textarea
+                          value={productFormData.description}
+                          onChange={(e) => setProductFormData({ ...productFormData, description: e.target.value })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                          rows={3}
+                          placeholder="Description du produit (optionnel)"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Image du produit
+                        </label>
+                        <div className="flex items-center gap-4">
+                          <label className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm">
+                            <Upload className="w-4 h-4" />
+                            {uploadingImage ? 'Envoi en cours...' : 'Choisir une image'}
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleProductImageChange}
+                              disabled={uploadingImage}
+                              className="hidden"
+                            />
+                          </label>
+                          {productFormData.imageUrl ? (
+                            <img
+                              src={productFormData.imageUrl}
+                              alt="Aperçu"
+                              className="w-16 h-16 object-cover rounded-lg border border-gray-200"
+                            />
+                          ) : (
+                            <div className="w-16 h-16 rounded-lg border border-dashed border-gray-300 flex items-center justify-center text-gray-300">
+                              <ImageIcon className="w-6 h-6" />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={productFormData.available}
+                          onChange={(e) => setProductFormData({ ...productFormData, available: e.target.checked })}
+                          className="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                        />
+                        <span className="text-sm font-medium text-gray-700">
+                          Disponible à la commande
+                        </span>
+                      </label>
+
+                      <div className="flex gap-3">
+                        <button
+                          type="submit"
+                          disabled={uploadingImage}
+                          className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50"
+                        >
+                          <Save className="w-4 h-4" />
+                          {editingProduct ? 'Mettre à jour' : 'Enregistrer'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowProductForm(false)
+                            setEditingProduct(null)
+                          }}
+                          className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                        >
+                          Annuler
+                        </button>
+                      </div>
+                    </form>
+                  </motion.div>
+                )}
+
+                {products.length === 0 ? (
+                  <div className="text-center py-8">
+                    <ShoppingBag className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                    <p className="text-gray-500">
+                      Aucun produit enregistré pour le moment
+                    </p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {products.map((product) => (
+                      <div
+                        key={product.id}
+                        className="border border-gray-200 rounded-xl overflow-hidden bg-gray-50"
+                      >
+                        <div className="w-full h-40 bg-gray-100 flex items-center justify-center overflow-hidden">
+                          {product.imageUrl ? (
+                            <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
+                          ) : (
+                            <ImageIcon className="w-10 h-10 text-gray-300" />
+                          )}
+                        </div>
+                        <div className="p-4">
+                          <div className="flex items-start justify-between mb-1">
+                            <h3 className="font-semibold text-gray-800">{product.name}</h3>
+                            {product.available === false && (
+                              <span className="px-2 py-0.5 text-xs font-medium bg-red-100 text-red-700 rounded">
+                                Indisponible
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-emerald-700 font-bold mb-2">
+                            {Number(product.price).toLocaleString('fr-FR')} FCFA
+                          </p>
+                          {product.description && (
+                            <p className="text-sm text-gray-600 mb-3 line-clamp-2">{product.description}</p>
+                          )}
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => handleEditProduct(product)}
+                              className="flex-1 flex items-center justify-center gap-1 p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors text-sm"
+                            >
+                              <Edit className="w-4 h-4" />
+                              Modifier
+                            </button>
+                            <button
+                              onClick={() => handleDeleteProduct(product.id)}
+                              className="flex-1 flex items-center justify-center gap-1 p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors text-sm"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                              Supprimer
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            )}
+
+            {activeTab === 'orders' && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white rounded-xl shadow-sm p-4 sm:p-6"
+              >
+                <h2 className="text-xl font-bold text-gray-800 mb-6">Commandes</h2>
+
+                {orders.length === 0 ? (
+                  <div className="text-center py-8">
+                    <ClipboardList className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                    <p className="text-gray-500">Aucune commande pour le moment</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {orders.map((order) => {
+                      const paymentLabels = {
+                        cash: 'Espèces',
+                        wave: 'Wave',
+                        orange_money: 'Orange Money'
+                      }
+                      const statusLabels = {
+                        pending: 'En attente',
+                        completed: 'Terminée',
+                        cancelled: 'Annulée'
+                      }
+                      const statusColors = {
+                        pending: 'bg-yellow-100 text-yellow-700',
+                        completed: 'bg-emerald-100 text-emerald-700',
+                        cancelled: 'bg-red-100 text-red-700'
+                      }
+                      const createdAtDate = order.createdAt?.toDate ? order.createdAt.toDate() : null
+
+                      return (
+                        <div
+                          key={order.id}
+                          className="border border-gray-200 rounded-xl p-4 sm:p-5"
+                        >
+                          <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
+                            <div>
+                              <p className="font-semibold text-gray-900">{order.customerName}</p>
+                              <p className="text-sm text-gray-500 flex items-center gap-1">
+                                <Phone className="w-3.5 h-3.5" />
+                                {order.customerPhone}
+                              </p>
+                              {createdAtDate && (
+                                <p className="text-xs text-gray-400 mt-1">
+                                  {createdAtDate.toLocaleString('fr-FR')}
+                                </p>
+                              )}
+                            </div>
+                            <span className={`px-2.5 py-1 text-xs font-semibold rounded-full whitespace-nowrap ${statusColors[order.status] || statusColors.pending}`}>
+                              {statusLabels[order.status] || order.status}
+                            </span>
+                          </div>
+
+                          <div className="space-y-1 mb-3 text-sm text-gray-700">
+                            {(order.items || []).map((item, idx) => (
+                              <div key={idx} className="flex justify-between">
+                                <span>{item.name} x{item.quantity}</span>
+                                <span className="font-medium">{(item.price * item.quantity).toLocaleString('fr-FR')} FCFA</span>
+                              </div>
+                            ))}
+                          </div>
+
+                          <div className="flex items-center justify-between pt-3 border-t border-gray-100 mb-3">
+                            <span className="flex items-center gap-1 text-sm text-gray-600">
+                              <Banknote className="w-4 h-4" />
+                              {paymentLabels[order.paymentMethod] || order.paymentMethod}
+                            </span>
+                            <span className="text-lg font-bold text-emerald-700">
+                              {Number(order.total).toLocaleString('fr-FR')} FCFA
+                            </span>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <select
+                              value={order.status || 'pending'}
+                              onChange={(e) => handleUpdateOrderStatus(order.id, e.target.value)}
+                              className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                            >
+                              <option value="pending">En attente</option>
+                              <option value="completed">Terminée</option>
+                              <option value="cancelled">Annulée</option>
+                            </select>
+                            <button
+                              onClick={() => handleDeleteOrder(order.id)}
+                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                              title="Supprimer"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
                           </div>
                         </div>
                       )

@@ -7,9 +7,10 @@ export const translations = {
       program: "Programme Usratul Amine",
       library: "Bibliothèque",
       message: "Message",
-      contact: "Contact"
+      contact: "Contact",
+      products: "Boutique"
     },
-    
+
     // Hero
     hero: {
       title: "Usratul Amine",
@@ -251,6 +252,44 @@ export const translations = {
       close: "Fermer"
     },
 
+    // Produits
+    products: {
+      title: "Boutique Usratul Amine",
+      subtitle: "Découvrez les produits disponibles auprès de notre association",
+      loading: "Chargement des produits...",
+      search: "Rechercher un produit...",
+      noResults: "Aucun produit disponible pour le moment",
+      outOfStock: "Indisponible",
+      order: "Commander",
+      addToCart: "Ajouter au panier",
+      added: "Ajouté"
+    },
+
+    // Panier
+    cart: {
+      title: "Panier",
+      empty: "Votre panier est vide",
+      backToShop: "Retour à la boutique",
+      remove: "Retirer",
+      total: "Total",
+      checkout: "Passer la commande"
+    },
+
+    // Commande
+    checkout: {
+      title: "Finaliser la commande",
+      summary: "Récapitulatif",
+      contactInfo: "Vos coordonnées",
+      name: "Nom complet",
+      phone: "Téléphone",
+      paymentMethod: "Mode de paiement",
+      comingSoon: "Bientôt disponible",
+      confirmOrder: "Confirmer la commande",
+      processing: "Envoi en cours...",
+      successTitle: "Commande envoyée !",
+      successMessage: "Votre commande a bien été enregistrée. Nous vous contacterons rapidement pour la confirmer."
+    },
+
     // Footer
     footer: {
       about: "Association dédiée à préserver et honorer l'héritage exceptionnel de Serigne Abdou Aziz Sy Al Amine, 6ème Khalife Général des Tidianes.",
@@ -282,9 +321,10 @@ export const translations = {
       program: "البرنامج",
       library: "المكتبة",
       message: "الرسالة",
-      contact: "اتصل بنا"
+      contact: "اتصل بنا",
+      products: "المتجر"
     },
-    
+
     // Hero
     hero: {
       title: "أسرة الأمين",
@@ -526,6 +566,44 @@ export const translations = {
       close: "إغلاق"
     },
 
+    // المنتجات
+    products: {
+      title: "متجر أسرة الأمين",
+      subtitle: "اكتشف المنتجات المتوفرة لدى جمعيتنا",
+      loading: "جارٍ تحميل المنتجات...",
+      search: "البحث عن منتج...",
+      noResults: "لا توجد منتجات متوفرة حالياً",
+      outOfStock: "غير متوفر",
+      order: "اطلب الآن",
+      addToCart: "أضف إلى السلة",
+      added: "تمت الإضافة"
+    },
+
+    // السلة
+    cart: {
+      title: "السلة",
+      empty: "سلتك فارغة",
+      backToShop: "العودة إلى المتجر",
+      remove: "إزالة",
+      total: "الإجمالي",
+      checkout: "إتمام الطلب"
+    },
+
+    // الطلب
+    checkout: {
+      title: "إتمام الطلب",
+      summary: "ملخص الطلب",
+      contactInfo: "بياناتك",
+      name: "الاسم الكامل",
+      phone: "الهاتف",
+      paymentMethod: "طريقة الدفع",
+      comingSoon: "قريباً",
+      confirmOrder: "تأكيد الطلب",
+      processing: "جارٍ الإرسال...",
+      successTitle: "تم إرسال طلبك!",
+      successMessage: "تم تسجيل طلبك بنجاح. سنتواصل معك قريباً لتأكيده."
+    },
+
     // Footer
     footer: {
       about: "جمعية مخصصة للحفاظ على الإرث الاستثنائي للشيخ عبد العزيز سي الأمين، الخليفة السادس العام للطريقة التجانية، وتكريمه.",
@@ -557,9 +635,10 @@ export const translations = {
       program: "Program",
       library: "Library",
       message: "Message",
-      contact: "Contact"
+      contact: "Contact",
+      products: "Shop"
     },
-    
+
     // Hero
     hero: {
       title: "Usratul Amine",
@@ -799,6 +878,44 @@ export const translations = {
       location: "Location",
       description: "Description",
       close: "Close"
+    },
+
+    // Products
+    products: {
+      title: "Usratul Amine Shop",
+      subtitle: "Discover the products available from our association",
+      loading: "Loading products...",
+      search: "Search for a product...",
+      noResults: "No products available at the moment",
+      outOfStock: "Out of stock",
+      order: "Order",
+      addToCart: "Add to cart",
+      added: "Added"
+    },
+
+    // Cart
+    cart: {
+      title: "Cart",
+      empty: "Your cart is empty",
+      backToShop: "Back to shop",
+      remove: "Remove",
+      total: "Total",
+      checkout: "Checkout"
+    },
+
+    // Checkout
+    checkout: {
+      title: "Checkout",
+      summary: "Order summary",
+      contactInfo: "Your details",
+      name: "Full name",
+      phone: "Phone",
+      paymentMethod: "Payment method",
+      comingSoon: "Coming soon",
+      confirmOrder: "Confirm order",
+      processing: "Sending...",
+      successTitle: "Order sent!",
+      successMessage: "Your order has been recorded. We will contact you shortly to confirm it."
     },
 
     // Footer
