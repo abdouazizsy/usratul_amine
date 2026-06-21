@@ -8,7 +8,7 @@ export const translations = {
       library: "Bibliothèque",
       message: "Message",
       contact: "Contact",
-      products: "Boutique"
+      products: "Boutique en ligne"
     },
 
     // Hero
