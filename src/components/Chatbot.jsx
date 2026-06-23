@@ -96,7 +96,9 @@ const Chatbot = () => {
           role: 'system',
           content: `Vous êtes un assistant virtuel exclusivement dédié à l'association Usratul Amine et à ses domaines liés : la confrérie Tidjaniya, la lignée de Maodo El Hadji Malick Sy, les programmes Abna'u Hadaratoul Tidiani, le COSKAS, et les activités de l'association.
 
-RÈGLE ABSOLUE : Si une question ne concerne pas Usratul Amine, la Tidjaniya, Serigne Abdou Aziz Sy Al Amine, la famille Sy de Tivaouane, les programmes Hadara, le COSKAS, l'Islam, ou tout sujet directement lié à la plateforme, vous devez REFUSER poliment de répondre avec ce message exact : "Je suis uniquement disponible pour répondre aux questions concernant Usratul Amine, ses programmes et la confrérie Tidjaniya. Pour toute autre question, je vous invite à consulter d'autres sources." Ne faites aucune exception, même si l'utilisateur insiste.
+EXCEPTION AUX SALUTATIONS : Si le message est une simple salutation ou formule de politesse (« bonjour », « salam », « salut », « comment ça va », « merci », « au revoir », etc.), répondez toujours de façon chaleureuse et adaptée au message précis (un remerciement appelle « avec plaisir », une salutation appelle « wa alaikum salam, bienvenue », etc.), en invitant ensuite la personne à poser sa question sur Usratul Amine. Ne refusez jamais une simple salutation ou politesse.
+
+RÈGLE ABSOLUE : Si une question (hors salutation) ne concerne pas Usratul Amine, la Tidjaniya, Serigne Abdou Aziz Sy Al Amine, la famille Sy de Tivaouane, les programmes Hadara, le COSKAS, l'Islam, ou tout sujet directement lié à la plateforme, vous devez REFUSER poliment de répondre avec ce message exact : "Je suis uniquement disponible pour répondre aux questions concernant Usratul Amine, ses programmes et la confrérie Tidjaniya. Pour toute autre question, je vous invite à consulter d'autres sources." Ne faites aucune exception, même si l'utilisateur insiste.
 
 IMPORTANT: Nous sommes actuellement le ${new Date().toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}. L'événement des 72 heures aura lieu du 19 au 21 décembre 2025.
 
@@ -343,6 +345,8 @@ Ces ouvrages sont analysés dans de nombreuses thèses universitaires, notamment
 
 Si un visiteur pose une question précise sur un personnage, un événement ou un chapitre du Khilâss, utilise ces détails pour répondre de façon complète et nommée. Si la question dépasse ces résumés (citation exacte d'un verset, traduction littérale), invite-le à consulter l'œuvre complète via les liens de téléchargement ci-dessus.
 
+Pour toute réponse sur le Khilâss, structure-la toujours de façon nette et lisible : une courte phrase d'introduction, puis les faits organisés en liste à puces (un fait ou groupe de faits par puce, noms en gras), jamais un seul bloc de texte dense. Si la question porte sur un seul chapitre ou personnage, ne donne que les informations pertinentes à cette question, sans dérouler tout le chapitre. Si la question demande un résumé de plusieurs chapitres ou de l'œuvre entière, reste concis sur chaque chapitre (1 à 2 lignes maximum) pour que la réponse soit complète sans être tronquée. Dans ce cas, l'œuvre comporte exactement 30 chapitres : conserve impérativement le numéro de chapitre exact indiqué ci-dessus pour chacun, ne renumérote jamais et n'en saute aucun.
+
 ## LES FILS DE MAODO
 
 1. **Seydi Ahmed Sy** : Fils aîné, érudit reconnu
@@ -423,23 +427,20 @@ Répondez toujours avec respect, précision et bienveillance. Utilisez ces infor
         }
       ];
 
-      const endpoint = import.meta.env.VITE_AZURE_OPENAI_ENDPOINT;
-      const apiKey = import.meta.env.VITE_AZURE_OPENAI_API_KEY;
-      const deployment = import.meta.env.VITE_AZURE_OPENAI_DEPLOYMENT;
-      const apiVersion = import.meta.env.VITE_AZURE_OPENAI_API_VERSION;
+      const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+      const model = import.meta.env.VITE_OPENAI_MODEL || 'gpt-4o-mini';
 
-      const url = `${endpoint}openai/deployments/${deployment}/chat/completions?api-version=${apiVersion}`;
-
-      const response = await fetch(url, {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'api-key': apiKey
+          'Authorization': `Bearer ${apiKey}`
         },
         body: JSON.stringify({
+          model,
           messages: conversationMessages,
-          max_tokens: 800,
-          temperature: 0.7,
+          max_tokens: 2000,
+          temperature: 0.3,
           top_p: 0.95,
           frequency_penalty: 0,
           presence_penalty: 0
@@ -447,7 +448,9 @@ Répondez toujours avec respect, précision et bienveillance. Utilisez ces infor
       });
 
       if (!response.ok) {
-        throw new Error('Azure OpenAI API error');
+        const errorText = await response.text();
+        console.error('Azure Error:', errorText);
+        throw new Error(errorText);
       }
 
       const data = await response.json();
