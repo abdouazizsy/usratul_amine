@@ -12,6 +12,7 @@ const Chatbot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hadaraEvents, setHadaraEvents] = useState([]);
   const [coskasEvents, setCoskasEvents] = useState([]);
+  const [tariqaEvents, setTariqaEvents] = useState([]);
   const [eventsLoaded, setEventsLoaded] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -47,12 +48,17 @@ const Chatbot = () => {
       const pastHadara = hadara.filter(e => new Date(e.date) < now).slice(-8);
       setHadaraEvents([...pastHadara, ...upcomingHadara]);
 
-      const coskas = tariqaSnap.docs
-        .map(d => ({ ...d.data(), id: d.id }))
-        .filter(e => e.category === 'COSKAS');
+      const allTariqa = tariqaSnap.docs.map(d => ({ ...d.data(), id: d.id }));
+
+      const coskas = allTariqa.filter(e => e.category === 'COSKAS');
       const upcomingCoskas = coskas.filter(e => new Date(e.date) >= now);
       const pastCoskas = coskas.filter(e => new Date(e.date) < now).slice(-8);
       setCoskasEvents([...pastCoskas, ...upcomingCoskas]);
+
+      const otherTariqa = allTariqa.filter(e => e.category !== 'COSKAS');
+      const upcomingTariqa = otherTariqa.filter(e => new Date(e.date) >= now);
+      const pastTariqa = otherTariqa.filter(e => new Date(e.date) < now).slice(-8);
+      setTariqaEvents([...pastTariqa, ...upcomingTariqa]);
 
       setEventsLoaded(true);
     } catch (err) {
@@ -89,6 +95,10 @@ const Chatbot = () => {
 
       const coskasSection = coskasEvents.length > 0
         ? `\n\n## PROGRAMME COSKAS\nVoici les événements COSKAS (passés récents et à venir) :\n${formatEventList(coskasEvents)}`
+        : '';
+
+      const tariqaSection = tariqaEvents.length > 0
+        ? `\n\n## CALENDRIER DE LA HADARA (Événements de la Tariqa)\nVoici les événements du calendrier de la Tariqa (Maouloud, Gamou, Ziarra, etc.) :\n${formatEventList(tariqaEvents)}`
         : '';
 
       const conversationMessages = [
@@ -467,7 +477,7 @@ Les 23 chartes sont les conditions et obligations que tout disciple Tijân doit 
 
 Pour toute question sur les chartes, structure la réponse en citant le numéro, le titre et l'explication. Si la question porte sur une charte précise, développe uniquement celle-là. Si la question porte sur toutes les chartes, liste-les de façon concise (numéro + titre + une ligne de résumé).
 
-Répondez toujours avec respect, précision et bienveillance. Utilisez ces informations pour aider les visiteurs à mieux comprendre l'héritage de Serigne Abdou Aziz Sy Al Amine et la mission de l'association.${hadaraSection}${coskasSection}`
+Répondez toujours avec respect, précision et bienveillance. Utilisez ces informations pour aider les visiteurs à mieux comprendre l'héritage de Serigne Abdou Aziz Sy Al Amine et la mission de l'association.${hadaraSection}${coskasSection}${tariqaSection}`
         },
         ...messages.map(msg => ({
           role: msg.role,
