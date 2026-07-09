@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { BookOpen, Library as LibraryIcon, Sparkles } from 'lucide-react'
+import { Library as LibraryIcon, Sparkles } from 'lucide-react'
 import { useLanguage } from '../contexts/LanguageContext'
 import { getTranslation } from '../translations/translations'
 
@@ -165,11 +165,6 @@ const Library = () => {
                       {shelfData.description}
                     </p>
 
-                    {/* Explore Button */}
-                    <button className={`mt-auto w-full py-3 px-6 rounded-xl bg-gradient-to-r ${shelf.color} text-white font-semibold shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 group-hover:gap-3`}>
-                      <BookOpen className="w-5 h-5" />
-                      <span>Explorer</span>
-                    </button>
                   </div>
 
                   {/* Decorative Corner */}
