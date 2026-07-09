@@ -15,6 +15,7 @@ import Chatbot from '../components/Chatbot'
 const HomePage = () => {
   const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
+  const isPWA = window.matchMedia('(display-mode: standalone)').matches
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,8 +46,8 @@ const HomePage = () => {
       <Pins />
       <Biography />
       <Memories />
-      <Library />
-      <Message />
+      {!isPWA && <Library />}
+      {!isPWA && <Message />}
       <Contact />
       <Footer />
       <Chatbot />
