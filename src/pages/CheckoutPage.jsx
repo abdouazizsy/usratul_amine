@@ -13,8 +13,8 @@ import { useCart } from '../contexts/CartContext'
 const ORDER_PHONE = '221771082626'
 
 const PAYMENT_METHODS = [
-  { id: 'wave', label: 'Wave', icon: Smartphone, locked: true },
-  { id: 'orange_money', label: 'Orange Money', icon: Smartphone, locked: true },
+  { id: 'wave', label: 'Wave', image: '/wave.png', locked: true },
+  { id: 'orange_money', label: 'Orange Money', image: '/orange-money.png', locked: true },
   { id: 'cash', label: 'Espèces', icon: Banknote, locked: false }
 ]
 
@@ -183,7 +183,15 @@ const CheckoutPage = () => {
                       {method.locked && (
                         <Lock className="w-4 h-4 text-gray-400 absolute top-2 right-2" />
                       )}
-                      <Icon className={`w-8 h-8 ${method.locked ? 'text-gray-400' : 'text-emerald-600'}`} />
+                      {method.image ? (
+                        <img
+                          src={method.image}
+                          alt={method.label}
+                          className={`w-12 h-12 object-contain rounded-lg ${method.locked ? 'opacity-50 grayscale' : ''}`}
+                        />
+                      ) : (
+                        <Icon className={`w-8 h-8 ${method.locked ? 'text-gray-400' : 'text-emerald-600'}`} />
+                      )}
                       <span className={`text-sm font-semibold ${method.locked ? 'text-gray-500' : 'text-gray-800'}`}>
                         {method.label}
                       </span>
