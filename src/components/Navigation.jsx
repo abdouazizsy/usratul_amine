@@ -21,6 +21,7 @@ const Navigation = ({ scrolled }) => {
   const [mobileCalendarsOpen, setMobileCalendarsOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
+  const isPWA = window.matchMedia('(display-mode: standalone)').matches
   
   const scrollToSection = (id) => {
     // Si on n'est pas sur la page d'accueil, naviguer d'abord vers la page d'accueil
@@ -84,10 +85,10 @@ const Navigation = ({ scrolled }) => {
             {[
               { id: 'about', key: 'nav.presentation', scroll: true },
               { id: 'biography', key: 'nav.biography', scroll: true },
-              { id: 'library', key: 'nav.library', scroll: true },
-              { id: 'message', key: 'nav.message', scroll: true },
+              { id: 'library', key: 'nav.library', scroll: true, pwaHidden: true },
+              { id: 'message', key: 'nav.message', scroll: true, pwaHidden: true },
               { id: 'contact', key: 'nav.contact', scroll: true }
-            ].map((item) => (
+            ].filter(item => !(isPWA && item.pwaHidden)).map((item) => (
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
@@ -244,10 +245,10 @@ const Navigation = ({ scrolled }) => {
                   {[
                     { id: 'about', key: 'nav.presentation' },
                     { id: 'biography', key: 'nav.biography' },
-                    { id: 'library', key: 'nav.library' },
-                    { id: 'message', key: 'nav.message' },
+                    { id: 'library', key: 'nav.library', pwaHidden: true },
+                    { id: 'message', key: 'nav.message', pwaHidden: true },
                     { id: 'contact', key: 'nav.contact' }
-                  ].map((item) => (
+                  ].filter(item => !(isPWA && item.pwaHidden)).map((item) => (
                     <button
                       key={item.id}
                       onClick={() => scrollToSection(item.id)}
