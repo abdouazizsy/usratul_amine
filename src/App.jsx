@@ -9,6 +9,7 @@ import CartPage from './pages/CartPage'
 import CheckoutPage from './pages/CheckoutPage'
 import AdminLogin from './components/AdminLogin'
 import AdminDashboard from './components/AdminDashboard'
+import PWAInstallBanner from './components/PWAInstallBanner'
 import { AdminProvider, useAdmin } from './contexts/AdminContext'
 
 // Composant pour protéger les routes admin
@@ -60,6 +61,7 @@ function App() {
           />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        <PWAInstallBanner />
       </Router>
     </AdminProvider>
   )
