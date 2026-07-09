@@ -415,6 +415,58 @@ Serigne Babacar Sy Mansour (Khalife actuel)
 6. Serigne Abdou Aziz Sy Al Amine (mars–septembre 2017)
 7. Serigne Babacar Sy Mansour (depuis septembre 2017)
 
+## LES 23 CHARTES DE LA TARIQA TIDJANIYYA
+
+Les 23 chartes sont les conditions et obligations que tout disciple Tijân doit respecter pour appartenir pleinement à la voie.
+
+1. **Initiation par un muqaddam autorisé** : Le postulant doit être initié par un muqaddam lui-même consacré par le Cheikh fondateur ou un de ses représentants notoires.
+
+2. **Abandon de tout autre wird** : Le postulant doit renoncer à tout wird d'une tariqa autre que la Tidjaniyya. S'il quitte son wird initial, il est sous la protection du Cheikh. Si le Tijâni abandonne son wird, aucun cheikh ne peut le prémunir de sa perdition.
+
+3. **Interdiction de la ziyara à des saints étrangers** : Il est absolument interdit de visiter (ziarra istimdat) ou d'invoquer l'intercession de tout saint étranger (non Tijâni) vivant ou mort, sous peine d'exclusion de la Tariqa. Le Tijâni doit néanmoins respect à tout saint homme. Cette interdiction n'exclut pas une fréquentation entre musulmans.
+
+4. **Assiduité aux cinq prières en assemblée** : Le Tijâni doit faire les cinq prières en assemblée ou à la mosquée s'il n'a aucune contrainte valable.
+
+5. **Amour sincère du Cheikh** : Il doit aimer Seyid Cheikh Ahmad At Tijâne et ses représentants d'un amour sincère et sans rupture jusqu'à la mort, et les honorer.
+
+6. **Ne pas se croire à l'abri des stratagèmes d'Allah** : Il ne faut pas faire preuve d'excès de confiance, car nul n'est à l'abri des stratagèmes d'Allah.
+
+7. **Absence de tout outrage envers le Cheikh** : Aucun outrage, animosité ou hostilité à l'égard de Seyid Cheikh Ahmad At Tijâne (qu'Allah l'agrée). Il ne doit pas contredire ses enseignements et directives.
+
+8. **Assiduité au wird jusqu'à la mort** : Le Tijâni doit accomplir avec assiduité le wird de la Tariqa jusqu'à sa mort sans l'abandonner. Le vœu d'un acte surérogatoire le rend obligatoire.
+
+9. **Croyance aux bienfaits de la Tariqa** : Croire à tous les bienfaits de la Tariqa sans aucune exception.
+
+10. **Absence de critique envers le Cheikh** : Croyance ferme en Seyid Cheikh Ahmad At Tijâne et en ses propos, car sa seule source est le Coran et la Sunna. Ceci est valable pour l'ensemble des awliyas.
+
+11. **Initiation authentique avant la pratique du wird** : L'adepte doit être initié par un Khalif ou par un Moukhadam investi avant de pratiquer le wird.
+
+12. **Accomplissement collectif de la Wadhifa et du Zikr du vendredi** : Faire la wadhifa et le Zikroul yawmul jummati en assemblée si possible, après l'Asr du vendredi.
+
+13. **Ablutions rituelles pour la Djawharatul Kamâl** : Il ne faut jamais réciter la perle de la perfection (Djaw'haratoul Kamâl) sans les ablutions rituelles à l'eau.
+
+14. **Interdiction de rompre les liens** : Il est interdit au disciple Tijâni de rompre les liens parentaux, encore moins avec ses condisciples.
+
+15. **Ne pas négliger le wird** : Le disciple ne doit pas négliger le wird ni repousser son accomplissement en dehors de son temps dédié sans excuse valable.
+
+16. **Interdiction de transmettre le wird sans autorisation** : Il ne faut pas prétendre à la transmission du wird sans autorisation. Seul un Moukhadam vivant avec une chaîne de transmission authentique peut transmettre le wird Tijân.
+
+17. **Respecter les membres de la Tariqa** : Respecter et honorer les gens de la Tariqa, en particulier les anciens qui ont acquis des grâces particulières de Dieu.
+
+18. **Pureté du corps et des habits** : Veiller à la pureté rigoureuse du corps et des habits lors du zikr, comme pour la prière.
+
+19. **Pureté du lieu de zikr** : Veiller à la pureté du lieu de zikr. Pour la Wazifa, le lieu doit contenir au minimum 6 personnes.
+
+20. **S'orienter vers la Qibla** : Pendant la récitation des oraisons, s'orienter vers La Mecque (qibla), sauf dans les assemblées et les déplacements (voitures, avions, etc.).
+
+21. **Ne pas parler pendant le wird** : Il est formellement interdit de parler pendant le wird, sauf exceptions : l'enfant envers ses parents, l'épouse envers son mari, le disciple envers son wassila.
+
+22. **Visualiser le Prophète ou le Cheikh** : Lors du wird, l'incantateur doit visualiser le Prophète (saws) ou l'image de son Cheikh et chercher en eux un appui spirituel.
+
+23. **Comprendre le sens des formules récitées** : Il faut s'efforcer de comprendre le sens profond de ce que l'on récite, à défaut s'écouter attentivement en veillant à ne point écorcher la prononciation.
+
+Pour toute question sur les chartes, structure la réponse en citant le numéro, le titre et l'explication. Si la question porte sur une charte précise, développe uniquement celle-là. Si la question porte sur toutes les chartes, liste-les de façon concise (numéro + titre + une ligne de résumé).
+
 Répondez toujours avec respect, précision et bienveillance. Utilisez ces informations pour aider les visiteurs à mieux comprendre l'héritage de Serigne Abdou Aziz Sy Al Amine et la mission de l'association.${hadaraSection}${coskasSection}`
         },
         ...messages.map(msg => ({
