@@ -489,29 +489,19 @@ Répondez toujours avec respect, précision et bienveillance. Utilisez ces infor
         }
       ];
 
-      const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
-      const model = import.meta.env.VITE_OPENAI_MODEL || 'gpt-4o-mini';
-
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      const response = await fetch('/.netlify/functions/chat', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model,
-          messages: conversationMessages,
-          max_tokens: 2000,
-          temperature: 0.3,
-          top_p: 0.95,
-          frequency_penalty: 0,
-          presence_penalty: 0
+          messages: conversationMessages
         })
       });
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('Azure Error:', errorText);
+        console.error('Chat function error:', errorText);
         throw new Error(errorText);
       }
 
