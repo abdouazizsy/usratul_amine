@@ -11,6 +11,7 @@ import CheckoutPage from './pages/CheckoutPage'
 import AdminLogin from './components/AdminLogin'
 import AdminDashboard from './components/AdminDashboard'
 import PWAInstallBanner from './components/PWAInstallBanner'
+import ScrollToTop from './components/ScrollToTop'
 import { AdminProvider, useAdmin } from './contexts/AdminContext'
 
 // Composant pour protéger les routes admin
@@ -44,6 +45,7 @@ function App() {
   return (
     <AdminProvider>
       <Router>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/programme" element={<ProgrammePage />} />
