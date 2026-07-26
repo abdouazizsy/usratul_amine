@@ -13,7 +13,7 @@ const Chatbot = () => {
   const [hadaraEvents, setHadaraEvents] = useState([]);
   const [coskasEvents, setCoskasEvents] = useState([]);
   const [tariqaEvents, setTariqaEvents] = useState([]);
-  const [programEvents, setProgramEvents] = useState([]);
+  const [programEvents, setProgramEvents] = useState({ upcoming: [], past: [] });
   const [eventsLoaded, setEventsLoaded] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -65,7 +65,7 @@ const Chatbot = () => {
       const programs = programsSnap.docs.map(d => ({ ...d.data(), id: d.id }));
       const upcomingPrograms = programs.filter(p => new Date(p.date) >= now);
       const pastPrograms = programs.filter(p => new Date(p.date) < now).slice(-8);
-      setProgramEvents([...pastPrograms, ...upcomingPrograms]);
+      setProgramEvents({ upcoming: upcomingPrograms, past: pastPrograms });
 
       setEventsLoaded(true);
     } catch (err) {
@@ -117,8 +117,14 @@ const Chatbot = () => {
         ? `\n\n## CALENDRIER DE LA HADARA (Événements de la Tariqa)\nVoici les événements du calendrier de la Tariqa (Maouloud, Gamou, Ziarra, etc.) :\n${formatEventList(tariqaEvents)}`
         : '';
 
-      const programsSection = programEvents.length > 0
-        ? `\n\n## PROGRAMMES ET RÉUNIONS DE USRATUL AMINE\nVoici les programmes, réunions et activités internes de l'association (passés récents et à venir). Utilise cette liste pour répondre à toute question sur une réunion ou une activité prévue prochainement :\n${formatProgramList(programEvents)}`
+      const hasPrograms = programEvents.upcoming.length > 0 || programEvents.past.length > 0;
+      const programsSection = hasPrograms
+        ? `\n\n## PROGRAMMES ET RÉUNIONS DE USRATUL AMINE
+Ces listes sont déjà triées : ne recalcule jamais toi-même si une date est passée ou à venir, fie-toi uniquement à la section dans laquelle figure chaque élément.
+
+### À VENIR (prochaines réunions/activités, dans l'ordre chronologique — la première de cette liste est LA prochaine)
+${programEvents.upcoming.length > 0 ? formatProgramList(programEvents.upcoming) : "Aucune réunion ou activité à venir enregistrée pour le moment."}
+${programEvents.past.length > 0 ? `\n### RÉCEMMENT PASSÉES (ne jamais les présenter comme "prochaines" ou "à venir")\n${formatProgramList(programEvents.past)}` : ''}`
         : '';
 
       const conversationMessages = [
