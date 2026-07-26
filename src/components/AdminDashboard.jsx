@@ -743,7 +743,7 @@ const AdminDashboard = () => {
                 }`}
               >
                 <Calendar className="w-5 h-5 flex-shrink-0" />
-                Calendrier Hadara
+                COSKAS
               </button>
               <button
                 onClick={() => setActiveTab('hadara-djouma')}
@@ -1119,7 +1119,7 @@ const AdminDashboard = () => {
                 <div className="flex flex-col gap-3 mb-6">
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
                     <h2 className="text-lg sm:text-xl font-bold text-gray-800">
-                      Calendrier de la Hadara
+                      COSKAS
                     </h2>
                     <div className="text-sm text-gray-600">
                       {tariqaEvents.length} événements au total

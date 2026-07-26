@@ -150,7 +150,7 @@ const Navigation = ({ scrolled }) => {
                           <Calendar className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                          <p className="font-semibold text-gray-900 group-hover:text-emerald-700">Calendrier Hadara</p>
+                          <p className="font-semibold text-gray-900 group-hover:text-emerald-700">COSKAS</p>
                           <p className="text-xs text-gray-500">Calendrier officiel de la Tariqa</p>
                         </div>
                       </Link>
@@ -294,7 +294,7 @@ const Navigation = ({ scrolled }) => {
                           className="flex items-center gap-3 px-8 py-3 text-gray-700 hover:bg-white transition-colors"
                         >
                           <Calendar className="w-4 h-4 text-gold-600" />
-                          <span className="text-sm">Calendrier Hadara</span>
+                          <span className="text-sm">COSKAS</span>
                         </Link>
                         <Link
                           to="/hadara-djouma"

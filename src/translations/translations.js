@@ -233,7 +233,7 @@ export const translations = {
 
     // Calendrier Tariqa page
     tariqa: {
-      title: "Calendrier de la Hadara",
+      title: "COSKAS",
       subtitle: "Découvrez les événements officiels de la Hadara Tijaniyya",
       loading: "Chargement du calendrier...",
       search: "Rechercher un événement...",
@@ -547,7 +547,7 @@ export const translations = {
 
     // Calendrier Tariqa page
     tariqa: {
-      title: "تقويم الحضرة",
+      title: "COSKAS",
       subtitle: "اكتشف الأحداث الرسمية لحضرة الطريقة التجانية",
       loading: "جارٍ تحميل التقويم...",
       search: "البحث عن حدث...",
@@ -861,7 +861,7 @@ export const translations = {
 
     // Calendrier Tariqa page
     tariqa: {
-      title: "Hadara Calendar",
+      title: "COSKAS",
       subtitle: "Discover the official events of the Hadara Tijaniyya",
       loading: "Loading calendar...",
       search: "Search for an event...",

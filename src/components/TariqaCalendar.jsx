@@ -61,7 +61,7 @@ const TariqaCalendar = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-elegant font-bold text-gradient mb-6">
-            Calendrier de la Hadara
+            COSKAS
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-emerald-600 to-gold-600 mx-auto mb-8"></div>
           <p className="text-xl text-gray-700 max-w-2xl mx-auto">
