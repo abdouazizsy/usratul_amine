@@ -144,6 +144,12 @@ export const translations = {
           titleFr: "Langue et littératures arabes",
           description: "Ouvrages sur la langue arabe et sa littérature"
         },
+        foreignLanguages: {
+          number: "6",
+          titleAr: "اللغات الأجنبية وآدابها",
+          titleFr: "Langues étrangères",
+          description: "Ouvrages en langues étrangères (français, anglais...)"
+        },
         magazines: {
           number: "7",
           titleAr: "الصحف والمجلات",
@@ -458,6 +464,12 @@ export const translations = {
           titleFr: "Langue et littératures arabes",
           description: "كتب عن اللغة العربية وآدابها"
         },
+        foreignLanguages: {
+          number: "٦",
+          titleAr: "اللغات الأجنبية وآدابها",
+          titleFr: "Langues étrangères",
+          description: "كتب باللغات الأجنبية (الفرنسية، الإنجليزية...)"
+        },
         magazines: {
           number: "٧",
           titleAr: "الصحف والمجلات",
@@ -771,6 +783,12 @@ export const translations = {
           titleAr: "اللغة العربية وأدبها",
           titleFr: "Arabic Language and Literature",
           description: "Books on Arabic language and its literature"
+        },
+        foreignLanguages: {
+          number: "6",
+          titleAr: "اللغات الأجنبية وآدابها",
+          titleFr: "Foreign Languages",
+          description: "Books in foreign languages (French, English...)"
         },
         magazines: {
           number: "7",

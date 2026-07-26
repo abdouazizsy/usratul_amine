@@ -4,6 +4,13 @@ import { Library as LibraryIcon, Sparkles } from 'lucide-react'
 import { useLanguage } from '../contexts/LanguageContext'
 import { getTranslation } from '../translations/translations'
 
+const galleryPhotos = [
+  '/library-photo-1.jpeg',
+  '/library-photo-2.jpeg',
+  '/library-photo-3.jpeg',
+  '/library-photo-4.jpeg'
+]
+
 const Library = () => {
   const { language } = useLanguage()
   const t = (key) => getTranslation(language, key)
@@ -38,6 +45,12 @@ const Library = () => {
       color: 'from-blue-500 to-cyan-600',
       icon: '📚',
       image: '/library-language.jpg'
+    },
+    {
+      id: 'foreignLanguages',
+      color: 'from-teal-500 to-green-600',
+      icon: '🌍',
+      image: '/library-foreign-languages.jpg'
     },
     {
       id: 'magazines',
@@ -100,6 +113,35 @@ const Library = () => {
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             {t('library.subtitle')}
           </p>
+
+          <div className="mt-6 inline-flex items-center gap-2 px-5 py-3 bg-emerald-50 border border-emerald-200 rounded-2xl max-w-2xl mx-auto">
+            <Sparkles className="w-5 h-5 text-emerald-600 flex-shrink-0" />
+            <p className="text-sm text-emerald-800 text-left">
+              {t('library.comingSoon')}
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Photo Gallery */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-16"
+        >
+          {galleryPhotos.map((photo) => (
+            <div
+              key={photo}
+              className="aspect-square rounded-2xl overflow-hidden shadow-lg border border-gray-100"
+            >
+              <img
+                src={photo}
+                alt="Bibliothèque Al Amine"
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+          ))}
         </motion.div>
 
         {/* Shelves Grid */}
@@ -175,22 +217,6 @@ const Library = () => {
               </motion.div>
             )
           })}
-        </motion.div>
-
-        {/* Bottom CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-16 text-center"
-        >
-          <div className="flex flex-col items-center gap-3 text-gray-600">
-            <Sparkles className="w-6 h-6 text-amber-500" />
-            <p className="text-lg text-center max-w-3xl">
-              {t('library.comingSoon')}
-            </p>
-          </div>
         </motion.div>
       </div>
     </section>

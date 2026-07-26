@@ -6,7 +6,6 @@ import About from '../components/About'
 import Pins from '../components/Pins'
 import Biography from '../components/Biography'
 import Memories from '../components/Memories'
-import Library from '../components/Library'
 import Message from '../components/Message'
 import Contact from '../components/Contact'
 import Footer from '../components/Footer'
@@ -46,7 +45,6 @@ const HomePage = () => {
       <Pins />
       <Biography />
       <Memories />
-      {!isPWA && <Library />}
       {!isPWA && <Message />}
       <Contact />
       <Footer />

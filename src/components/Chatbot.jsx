@@ -227,13 +227,14 @@ Voici vos connaissances détaillées:
 **Diffusion en direct:** Zawiya TV (usratulamine.sn) - Contact: 77 874 62 82
 
 ## BIBLIOTHÈQUE AL AMINE
-Collection d'ouvrages islamiques organisée en 6 rayons:
+Collection d'ouvrages islamiques organisée en 7 rayons:
 1. Tafsir du Saint Coran et ses sciences
 2. Récits Prophétiques (Hadith) et ses sciences
 3. Fiqh (jurisprudence islamique) et ses principes
 4. Soufisme et ses écoles
 5. Langue et littératures arabes
-6. Revues et périodiques
+6. Langues étrangères (français, anglais...)
+7. Revues et périodiques
 
 ## PIN'S USRATUL AMINE
 - Slogan: "Mon pin's, mon engagement"

@@ -84,24 +84,30 @@ const Navigation = ({ scrolled }) => {
           <div className="hidden md:flex items-center gap-6">
             {[
               { id: 'about', key: 'nav.presentation', scroll: true },
-              { id: 'biography', key: 'nav.biography', scroll: true },
-              { id: 'library', key: 'nav.library', scroll: true, pwaHidden: true },
-              { id: 'message', key: 'nav.message', scroll: true, pwaHidden: true },
+              { id: 'library', key: 'nav.library', link: '/library', pwaHidden: true },
               { id: 'contact', key: 'nav.contact', scroll: true }
-            ].filter(item => !(isPWA && item.pwaHidden)).map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className={`font-medium transition-colors ${
-                  scrolled 
-                    ? 'text-emerald-700 hover:text-gold-600' 
-                    : 'text-white hover:text-gold-300'
-                }`}
-              >
-                {t(item.key)}
-              </button>
-            ))}
-            
+            ].filter(item => !(isPWA && item.pwaHidden)).map((item) => {
+              const linkClassName = `font-medium transition-colors ${
+                scrolled
+                  ? 'text-emerald-700 hover:text-gold-600'
+                  : 'text-white hover:text-gold-300'
+              }`
+
+              return item.link ? (
+                <Link key={item.id} to={item.link} className={linkClassName}>
+                  {t(item.key)}
+                </Link>
+              ) : (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={linkClassName}
+                >
+                  {t(item.key)}
+                </button>
+              )
+            })}
+
             {/* Dropdown Calendriers */}
             <div 
               className="relative"
@@ -245,20 +251,33 @@ const Navigation = ({ scrolled }) => {
                   {[
                     { id: 'about', key: 'nav.presentation' },
                     { id: 'biography', key: 'nav.biography' },
-                    { id: 'library', key: 'nav.library', pwaHidden: true },
+                    { id: 'library', key: 'nav.library', link: '/library', pwaHidden: true },
                     { id: 'message', key: 'nav.message', pwaHidden: true },
                     { id: 'contact', key: 'nav.contact' }
-                  ].filter(item => !(isPWA && item.pwaHidden)).map((item) => (
-                    <button
-                      key={item.id}
-                      onClick={() => scrollToSection(item.id)}
-                      className={`block w-full text-left px-6 py-3 text-emerald-700 hover:bg-emerald-50 hover:text-gold-600 font-medium transition-colors ${
-                        language === 'ar' ? 'font-arabic text-right' : ''
-                      }`}
-                    >
-                      {t(item.key)}
-                    </button>
-                  ))}
+                  ].filter(item => !(isPWA && item.pwaHidden)).map((item) => {
+                    const linkClassName = `block w-full text-left px-6 py-3 text-emerald-700 hover:bg-emerald-50 hover:text-gold-600 font-medium transition-colors ${
+                      language === 'ar' ? 'font-arabic text-right' : ''
+                    }`
+
+                    return item.link ? (
+                      <Link
+                        key={item.id}
+                        to={item.link}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className={linkClassName}
+                      >
+                        {t(item.key)}
+                      </Link>
+                    ) : (
+                      <button
+                        key={item.id}
+                        onClick={() => scrollToSection(item.id)}
+                        className={linkClassName}
+                      >
+                        {t(item.key)}
+                      </button>
+                    )
+                  })}
                   
                   {/* Section Calendriers - Mobile Accordion */}
                   <button
