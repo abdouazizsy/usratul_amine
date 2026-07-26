@@ -13,6 +13,7 @@ const Chatbot = () => {
   const [hadaraEvents, setHadaraEvents] = useState([]);
   const [coskasEvents, setCoskasEvents] = useState([]);
   const [tariqaEvents, setTariqaEvents] = useState([]);
+  const [programEvents, setProgramEvents] = useState([]);
   const [eventsLoaded, setEventsLoaded] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -36,9 +37,10 @@ const Chatbot = () => {
 
   const fetchEvents = async () => {
     try {
-      const [hadaraSnap, tariqaSnap] = await Promise.all([
+      const [hadaraSnap, tariqaSnap, programsSnap] = await Promise.all([
         getDocs(query(collection(db, 'hadara_djouma_events'), orderBy('date', 'asc'))),
-        getDocs(query(collection(db, 'tariqa_events'), orderBy('date', 'asc')))
+        getDocs(query(collection(db, 'tariqa_events'), orderBy('date', 'asc'))),
+        getDocs(query(collection(db, 'programs'), orderBy('date', 'asc')))
       ]);
 
       const now = new Date();
@@ -60,6 +62,11 @@ const Chatbot = () => {
       const pastTariqa = otherTariqa.filter(e => new Date(e.date) < now).slice(-8);
       setTariqaEvents([...pastTariqa, ...upcomingTariqa]);
 
+      const programs = programsSnap.docs.map(d => ({ ...d.data(), id: d.id }));
+      const upcomingPrograms = programs.filter(p => new Date(p.date) >= now);
+      const pastPrograms = programs.filter(p => new Date(p.date) < now).slice(-8);
+      setProgramEvents([...pastPrograms, ...upcomingPrograms]);
+
       setEventsLoaded(true);
     } catch (err) {
       console.error('Chatbot: erreur chargement événements', err);
@@ -73,6 +80,15 @@ const Chatbot = () => {
       const loc = e.location ? ` — ${e.location}` : '';
       const desc = e.description ? ` (${e.description})` : '';
       return `• ${e.title} : ${d}${loc}${desc}`;
+    }).join('\n');
+
+  const formatProgramList = (programs) =>
+    programs.map(p => {
+      const d = new Date(p.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      const time = p.time ? ` à ${p.time}` : '';
+      const loc = p.location ? ` — ${p.location}` : '';
+      const desc = p.description ? ` (${p.description})` : '';
+      return `• ${p.title} : ${d}${time}${loc}${desc}`;
     }).join('\n');
 
   const handleSendMessage = async () => {
@@ -99,6 +115,10 @@ const Chatbot = () => {
 
       const tariqaSection = tariqaEvents.length > 0
         ? `\n\n## CALENDRIER DE LA HADARA (Événements de la Tariqa)\nVoici les événements du calendrier de la Tariqa (Maouloud, Gamou, Ziarra, etc.) :\n${formatEventList(tariqaEvents)}`
+        : '';
+
+      const programsSection = programEvents.length > 0
+        ? `\n\n## PROGRAMMES ET RÉUNIONS DE USRATUL AMINE\nVoici les programmes, réunions et activités internes de l'association (passés récents et à venir). Utilise cette liste pour répondre à toute question sur une réunion ou une activité prévue prochainement :\n${formatProgramList(programEvents)}`
         : '';
 
       const conversationMessages = [
@@ -478,7 +498,7 @@ Les 23 chartes sont les conditions et obligations que tout disciple Tijân doit 
 
 Pour toute question sur les chartes, structure la réponse en citant le numéro, le titre et l'explication. Si la question porte sur une charte précise, développe uniquement celle-là. Si la question porte sur toutes les chartes, liste-les de façon concise (numéro + titre + une ligne de résumé).
 
-Répondez toujours avec respect, précision et bienveillance. Utilisez ces informations pour aider les visiteurs à mieux comprendre l'héritage de Serigne Abdou Aziz Sy Al Amine et la mission de l'association.${hadaraSection}${coskasSection}${tariqaSection}`
+Répondez toujours avec respect, précision et bienveillance. Utilisez ces informations pour aider les visiteurs à mieux comprendre l'héritage de Serigne Abdou Aziz Sy Al Amine et la mission de l'association.${hadaraSection}${coskasSection}${tariqaSection}${programsSection}`
         },
         ...messages.map(msg => ({
           role: msg.role,
