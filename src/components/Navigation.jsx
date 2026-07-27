@@ -72,7 +72,7 @@ const Navigation = ({ scrolled }) => {
                 }}
               />
             </div>
-            <span className={`text-xl font-elegant font-bold ${
+            <span className={`hidden sm:inline-block text-xl font-elegant font-bold ${
               scrolled ? 'text-emerald-800' : 'text-white'
             }`}>
               Usratul Amine
@@ -250,9 +250,7 @@ const Navigation = ({ scrolled }) => {
                   {/* Liens avec scroll */}
                   {[
                     { id: 'about', key: 'nav.presentation' },
-                    { id: 'biography', key: 'nav.biography' },
                     { id: 'library', key: 'nav.library', link: '/library', pwaHidden: true },
-                    { id: 'message', key: 'nav.message', pwaHidden: true },
                     { id: 'contact', key: 'nav.contact' }
                   ].filter(item => !(isPWA && item.pwaHidden)).map((item) => {
                     const linkClassName = `block w-full text-left px-6 py-3 text-emerald-700 hover:bg-emerald-50 hover:text-gold-600 font-medium transition-colors ${
