@@ -7,26 +7,59 @@ const Hero = () => {
   const { t, language } = useTranslation()
   
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section id="hero" className="relative min-h-screen lg:flex lg:items-center lg:justify-center overflow-hidden">
       {/* Multi-layered Background */}
       <div className="absolute inset-0">
         {/* Base gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-950 via-emerald-900 to-emerald-950"></div>
-        
+
         {/* Islamic pattern overlay */}
         <div className="absolute inset-0 islamic-pattern opacity-30"></div>
-        
+
         {/* Radial gradient spotlight */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-emerald-800/40 via-transparent to-transparent"></div>
-        
+
+        {/* Portrait de Serigne Abdou Aziz Sy Al Amine, fondu dans le fond (desktop) */}
+        <div
+          className="hidden lg:block absolute inset-y-0 right-0 w-[36%] opacity-100"
+          style={{
+            maskImage: 'linear-gradient(to left, black 75%, transparent 98%), linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)',
+            maskComposite: 'intersect',
+            WebkitMaskImage: 'linear-gradient(to left, black 75%, transparent 98%), linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)',
+            WebkitMaskComposite: 'source-in'
+          }}
+        >
+          <img
+            src="/hero-al-amine.png"
+            alt="Serigne Abdou Aziz Sy Al Amine"
+            className="w-full h-full object-cover"
+            style={{ objectPosition: '60% top' }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-emerald-950/70"></div>
+        </div>
+
         {/* Animated gradient orbs */}
         <div className="absolute top-20 left-20 w-96 h-96 bg-gold-500/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-20 right-20 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-        
+
         {/* Subtle overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40"></div>
       </div>
-      
+
+      {/* Portrait plein cadre en tête de page, mobile/tablette uniquement */}
+      <div className="lg:hidden relative w-full h-[52vh] min-h-[380px]">
+        <img
+          src="/hero-al-amine.png"
+          alt="Serigne Abdou Aziz Sy Al Amine"
+          className="w-full h-full object-cover"
+          style={{ objectPosition: '50% 20%' }}
+        />
+        {/* Vignette haute pour garder le menu lisible */}
+        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/50 to-transparent"></div>
+        {/* Fondu bas vers le fond de la section */}
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-emerald-950"></div>
+      </div>
+
       {/* Floating particles and stars */}
       <div className="absolute inset-0 overflow-hidden">
         {[...Array(30)].map((_, i) => (
@@ -81,7 +114,7 @@ const Hero = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-12 lg:py-0 lg:pl-8 lg:pr-[20%] text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}

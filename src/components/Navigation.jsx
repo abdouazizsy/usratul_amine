@@ -55,15 +55,15 @@ const Navigation = ({ scrolled }) => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <Link 
+          <Link
             to="/"
-            className="flex items-center gap-3"
+            className="flex items-center gap-3 self-start mt-3"
           >
             <motion.div whileHover={{ scale: 1.05 }}>
-            <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center p-1.5 shadow-md overflow-hidden">
-              <img 
-                src="/logo-og-v2.png" 
-                alt="Usratul Amine Logo" 
+            <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center p-1.5 shadow-md overflow-hidden">
+              <img
+                src="/logo-og-v2.png"
+                alt="Usratul Amine Logo"
                 className="w-full h-full object-cover rounded-full"
                 onError={(e) => {
                   // Fallback si l'image n'est pas trouvée
@@ -72,11 +72,6 @@ const Navigation = ({ scrolled }) => {
                 }}
               />
             </div>
-            <span className={`hidden sm:inline-block text-xl font-elegant font-bold ${
-              scrolled ? 'text-emerald-800' : 'text-white'
-            }`}>
-              Usratul Amine
-            </span>
             </motion.div>
           </Link>
           
