@@ -570,7 +570,7 @@ Répondez toujours avec respect, précision et bienveillance. Utilisez ces infor
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-24 right-6 w-96 h-[600px] bg-white rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden border border-gray-200"
+            className="fixed bottom-24 left-4 right-4 sm:left-auto sm:right-6 w-auto sm:w-96 h-[70vh] max-h-[600px] sm:h-[600px] bg-white rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden border border-gray-200"
           >
             <div className="bg-gradient-to-r from-emerald-600 to-teal-600 p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
