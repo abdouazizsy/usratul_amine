@@ -1,8 +1,10 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Library as LibraryIcon, Sparkles } from 'lucide-react'
+import { Library as LibraryIcon, Sparkles, ArrowRight, Phone } from 'lucide-react'
 import { useLanguage } from '../contexts/LanguageContext'
 import { getTranslation } from '../translations/translations'
+import { rayonBooks } from '../data/rayonBooks'
 
 const galleryPhotos = [
   '/library-photo-1.jpeg',
@@ -120,6 +122,13 @@ const Library = () => {
               {t('library.comingSoon')}
             </p>
           </div>
+
+          <div className="mt-4 inline-flex items-center gap-2 px-5 py-3 bg-amber-50 border border-amber-200 rounded-2xl max-w-2xl mx-auto">
+            <Phone className="w-5 h-5 text-amber-700 flex-shrink-0" />
+            <p className="text-sm text-amber-900 text-left">
+              <span className="font-semibold">{t('library.contactLabel')}</span> — +221 33 955 85 25 / +221 77 021 29 00
+            </p>
+          </div>
         </motion.div>
 
         {/* Photo Gallery */}
@@ -154,7 +163,11 @@ const Library = () => {
         >
           {shelves.map((shelf) => {
             const shelfData = t(`library.shelves.${shelf.id}`)
-            
+            const hasBooks = Boolean(rayonBooks[shelf.id]?.length)
+
+            const CardWrapper = hasBooks ? Link : 'div'
+            const cardWrapperProps = hasBooks ? { to: `/library/${shelf.id}` } : {}
+
             return (
               <motion.div
                 key={shelf.id}
@@ -162,7 +175,10 @@ const Library = () => {
                 whileHover={{ y: -10, transition: { duration: 0.3 } }}
                 className="group relative"
               >
-                <div className="relative bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-2xl transition-all duration-300">
+                <CardWrapper
+                  {...cardWrapperProps}
+                  className="relative bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-2xl transition-all duration-300 block"
+                >
                   {/* Shelf Number Badge */}
                   <div className="absolute top-4 right-4 z-20">
                     <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${shelf.color} flex items-center justify-center shadow-lg`}>
@@ -207,13 +223,19 @@ const Library = () => {
                       {shelfData.description}
                     </p>
 
+                    {hasBooks && (
+                      <div className="flex items-center gap-2 text-emerald-700 font-semibold text-sm group-hover:gap-3 transition-all">
+                        Voir les ouvrages
+                        <ArrowRight className="w-4 h-4" />
+                      </div>
+                    )}
                   </div>
 
                   {/* Decorative Corner */}
                   <div className="absolute top-0 right-0 w-32 h-32 overflow-hidden pointer-events-none">
                     <div className={`absolute transform rotate-45 translate-x-16 -translate-y-16 w-32 h-32 bg-gradient-to-br ${shelf.color} opacity-10`} />
                   </div>
-                </div>
+                </CardWrapper>
               </motion.div>
             )
           })}

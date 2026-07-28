@@ -112,7 +112,8 @@ export const translations = {
       title: "Bibliothèque de Serigne Abdou Aziz Sy Al Amine",
       subtitle: "Découvrez notre collection d'ouvrages islamiques organisée par rayons",
       section: "Rayon",
-      comingSoon: "Le site de la bibliothèque officielle de Serigne Abdou Aziz Sy Al Amine sera disponible très prochainement, in shā' Allāh.",
+      comingSoon: "Cette bibliothèque numérique est actuellement en cours de conception. Très prochainement, in shā' Allāh, vous pourrez consulter et télécharger l'ensemble de ces ouvrages directement depuis le site de la bibliothèque.",
+      contactLabel: "Responsable de la bibliothèque",
       shelves: {
         tafsir: {
           number: "1",
@@ -432,7 +433,8 @@ export const translations = {
       title: "مكتبة الأمين",
       subtitle: "اكتشف مجموعتنا من الكتب الإسلامية منظمة حسب الأقسام",
       section: "الرف",
-      comingSoon: "موقع المكتبة الرسمية للسيرين عبد العزيز سي الأمين سيكون متاحاً قريباً جداً، إن شاء الله.",
+      comingSoon: "هذه المكتبة الرقمية قيد الإنشاء حالياً. قريباً جداً، إن شاء الله، سيتمكن الزوار من قراءة وتحميل هذه المؤلفات مباشرة من موقع المكتبة.",
+      contactLabel: "المسؤول عن المكتبة",
       shelves: {
         tafsir: {
           number: "١",
@@ -752,7 +754,8 @@ export const translations = {
       title: "Al Amine Library",
       subtitle: "Discover our collection of Islamic books organized by sections",
       section: "Shelf",
-      comingSoon: "The official library website of Serigne Abdou Aziz Sy Al Amine will be available very soon, in shā' Allāh.",
+      comingSoon: "This digital library is currently under development. Very soon, in shā' Allāh, you will be able to read and download all of these works directly from the library's site.",
+      contactLabel: "Library manager",
       shelves: {
         tafsir: {
           number: "1",
