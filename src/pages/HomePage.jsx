@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import Navigation from '../components/Navigation'
+import CountdownSpiral from '../components/CountdownSpiral'
 import Hero from '../components/Hero'
 import About from '../components/About'
 import Pins from '../components/Pins'
@@ -40,6 +41,7 @@ const HomePage = () => {
   return (
     <div className="min-h-screen">
       <Navigation scrolled={scrolled} />
+      <CountdownSpiral />
       <Hero />
       <About />
       <Pins />

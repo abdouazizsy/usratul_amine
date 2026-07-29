@@ -1,12 +1,33 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { collection, getDocs, query, orderBy } from 'firebase/firestore'
+import { db } from '../firebase/config'
 import { Phone, MapPin, Mail, Globe, Heart, Book, Users, Calendar } from 'lucide-react'
 import { useTranslation } from '../hooks/useTranslation'
 
 const Footer = () => {
   const { t, language } = useTranslation()
-  
+  const [nextProgram, setNextProgram] = useState(null)
+  const [programsLoaded, setProgramsLoaded] = useState(false)
+
+  useEffect(() => {
+    const fetchNextProgram = async () => {
+      try {
+        const snap = await getDocs(query(collection(db, 'programs'), orderBy('date', 'asc')))
+        const programs = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+        const now = new Date()
+        const upcoming = programs.filter(p => new Date(p.date) >= now)
+        setNextProgram(upcoming[0] || null)
+      } catch (err) {
+        console.error('Footer: erreur chargement programmes', err)
+      } finally {
+        setProgramsLoaded(true)
+      }
+    }
+    fetchNextProgram()
+  }, [])
+
   const quickLinks = [
     { nameKey: 'nav.presentation', href: '/#about', isRoute: true },
     { nameKey: 'nav.biography', href: '/#biography', isRoute: true },
@@ -183,10 +204,14 @@ const Footer = () => {
                 <div className="text-white">
                   <p className={`font-bold text-lg ${
                     language === 'ar' ? 'font-arabic' : ''
-                  }`}>{t('footer.event.title')}</p>
+                  }`}>{nextProgram ? nextProgram.title : t('footer.event.title')}</p>
                   <p className={`text-sm opacity-90 ${
                     language === 'ar' ? 'font-arabic' : ''
-                  }`}>{t('footer.event.dates')}</p>
+                  }`}>
+                    {nextProgram
+                      ? new Date(nextProgram.date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+                      : (programsLoaded ? t('footer.event.dates') : ' ')}
+                  </p>
                 </div>
               </div>
               <Link

@@ -312,7 +312,7 @@ export const translations = {
       },
       event: {
         title: "Événements",
-        dates: "Programme terminé pour cette année",
+        dates: "Les prochains événements seront annoncés ici",
         button: "Voir le programme"
       },
       copyright: "Tous droits réservés.",
@@ -632,8 +632,8 @@ export const translations = {
         community: "المجتمع"
       },
       event: {
-        title: "حدث ٢٠٢٥",
-        dates: "١٩-٢٠-٢١ ديسمبر • تيواوان",
+        title: "الأحداث",
+        dates: "ستُعلن الأحداث القادمة هنا",
         button: "عرض البرنامج"
       },
       copyright: "جميع الحقوق محفوظة.",
@@ -954,7 +954,7 @@ export const translations = {
       },
       event: {
         title: "Events",
-        dates: "Program completed for this year",
+        dates: "Upcoming events will be announced here",
         button: "View program"
       },
       copyright: "All rights reserved.",
