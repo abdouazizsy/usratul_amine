@@ -27,6 +27,18 @@ const Contact = () => {
     },
     {
       icon: Mail,
+      titleKey: "contact.email",
+      value: "contact@usratulamine.sn",
+      link: "mailto:contact@usratulamine.sn"
+    },
+    {
+      icon: Mail,
+      titleKey: "contact.libraryEmail",
+      value: "bibliotheque@usratulamine.sn",
+      link: "mailto:bibliotheque@usratulamine.sn"
+    },
+    {
+      icon: Globe,
       title: "USRA TV",
       valueKey: "contact.zawiya",
       link: "https://www.youtube.com/channel/UCxnUQvUEGFPuT3f1q8EeIlg"
@@ -58,7 +70,7 @@ const Contact = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
           {contactInfo.map((item, index) => (
             <motion.div
               key={index}

@@ -205,6 +205,8 @@ export const translations = {
       phoneNumber: "+221 77 108 26 26",
       website: "Site Web",
       address: "Adresse",
+      email: "Email",
+      libraryEmail: "Bibliothèque",
       zawiya: "Suivez-nous en direct",
       cta: {
         title: "Rejoignez notre mission",
@@ -526,6 +528,8 @@ export const translations = {
       phoneNumber: "+٢٢١ ٧٧ ١٠٨ ٢٦ ٢٦",
       website: "الموقع الإلكتروني",
       address: "العنوان",
+      email: "البريد الإلكتروني",
+      libraryEmail: "المكتبة",
       zawiya: "تابعنا مباشرة",
       cta: {
         title: "انضم إلى مهمتنا",
@@ -847,6 +851,8 @@ export const translations = {
       phoneNumber: "+221 77 108 26 26",
       website: "Website",
       address: "Address",
+      email: "Email",
+      libraryEmail: "Library",
       zawiya: "Follow us live",
       cta: {
         title: "Join our mission",

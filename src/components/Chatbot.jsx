@@ -270,6 +270,8 @@ Collection d'ouvrages islamiques organisée en 7 rayons:
 ## CONTACT
 - Téléphone: +221 77 108 26 26
 - Site web: www.usratulamine.sn
+- Email: contact@usratulamine.sn
+- Email bibliothèque: bibliotheque@usratulamine.sn
 - Localisation: Tivaouane, Sénégal
 
 ## ORIGINE DE LA TARIQA TIDJANIYYA
