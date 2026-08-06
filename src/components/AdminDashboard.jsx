@@ -23,7 +23,8 @@ import {
   ClipboardList,
   Phone,
   Banknote,
-  UsersRound
+  UsersRound,
+  Search
 } from 'lucide-react'
 import { collection, addDoc, updateDoc, deleteDoc, doc, getDocs, query, orderBy } from 'firebase/firestore'
 import { db } from '../firebase/config'
@@ -54,14 +55,24 @@ const AdminDashboard = () => {
   const [programs, setPrograms] = useState([])
   const [tariqaEvents, setTariqaEvents] = useState([])
   const [loading, setLoading] = useState(true)
+  const [programsSearch, setProgramsSearch] = useState('')
+  const [tariqaSearch, setTariqaSearch] = useState('')
+  const [hadaraSearch, setHadaraSearch] = useState('')
+  const [productsSearch, setProductsSearch] = useState('')
+  const [ordersSearch, setOrdersSearch] = useState('')
   const [showAddForm, setShowAddForm] = useState(false)
   const [editingProgram, setEditingProgram] = useState(null)
   const [dateConflict, setDateConflict] = useState(null)
   const [importing, setImporting] = useState(false)
   const [importing2026, setImporting2026] = useState(false)
   const [tariqaSeasonTab, setTariqaSeasonTab] = useState('2025-2026')
-  const filteredTariqaEvents = tariqaEvents.filter(e => getTariqaEventSeason(e) === tariqaSeasonTab)
-  
+  const filteredTariqaEvents = tariqaEvents.filter(e => {
+    if (getTariqaEventSeason(e) !== tariqaSeasonTab) return false
+    const term = tariqaSearch.trim().toLowerCase()
+    if (!term) return true
+    return [e.title, e.location, e.category].filter(Boolean).some(v => v.toLowerCase().includes(term))
+  })
+
   const [confirmModal, setConfirmModal] = useState({ isOpen: false, type: '', onConfirm: null })
   const [notification, setNotification] = useState({ isOpen: false, type: 'success', title: '', message: '' })
 
@@ -696,6 +707,31 @@ const AdminDashboard = () => {
     return <div>Accès non autorisé</div>
   }
 
+  const filteredPrograms = programs.filter(p => {
+    const term = programsSearch.trim().toLowerCase()
+    if (!term) return true
+    return [p.title, p.description, p.location].filter(Boolean).some(v => v.toLowerCase().includes(term))
+  })
+
+  const filteredHadaraDjoumaEvents = hadaraDjoumaEvents.filter(e => {
+    const term = hadaraSearch.trim().toLowerCase()
+    if (!term) return true
+    return [e.title, e.location, e.description].filter(Boolean).some(v => v.toLowerCase().includes(term))
+  })
+
+  const filteredProducts = products.filter(p => {
+    const term = productsSearch.trim().toLowerCase()
+    if (!term) return true
+    return [p.name, p.description].filter(Boolean).some(v => v.toLowerCase().includes(term))
+  })
+
+  const filteredOrders = orders.filter(o => {
+    const term = ordersSearch.trim().toLowerCase()
+    if (!term) return true
+    const itemNames = (o.items || []).map(i => i.name).join(' ')
+    return [o.customerName, o.customerPhone, itemNames].filter(Boolean).some(v => v.toLowerCase().includes(term))
+  })
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-gold-50">
       <div className="bg-white shadow-sm border-b">
@@ -1005,6 +1041,16 @@ const AdminDashboard = () => {
                   </motion.div>
                 )}
 
+                <div className="relative mb-4">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    value={programsSearch}
+                    onChange={(e) => setProgramsSearch(e.target.value)}
+                    placeholder="Rechercher un programme..."
+                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  />
+                </div>
+
                 {loading ? (
                   <div className="text-center py-8">
                     <div className="text-gray-500">Chargement...</div>
@@ -1013,9 +1059,13 @@ const AdminDashboard = () => {
                   <div className="text-center py-8">
                     <div className="text-gray-500">Aucun programme trouvé</div>
                   </div>
+                ) : filteredPrograms.length === 0 ? (
+                  <div className="text-center py-8">
+                    <div className="text-gray-500">Aucun résultat pour "{programsSearch}"</div>
+                  </div>
                 ) : (
                   <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-                    {programs.map((program, index) => {
+                    {filteredPrograms.map((program, index) => {
                       const isFuture = new Date(program.date) > new Date()
                       return (
                         <motion.div
@@ -1156,6 +1206,16 @@ const AdminDashboard = () => {
                         </button>
                       )
                     })}
+                  </div>
+
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                      value={tariqaSearch}
+                      onChange={(e) => setTariqaSearch(e.target.value)}
+                      placeholder="Rechercher un événement..."
+                      className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                    />
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-2">
@@ -1576,8 +1636,21 @@ const AdminDashboard = () => {
                     </p>
                   </div>
                 ) : (
+                  <>
+                    <div className="relative mb-4">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <input
+                        value={hadaraSearch}
+                        onChange={(e) => setHadaraSearch(e.target.value)}
+                        placeholder="Rechercher un événement..."
+                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                      />
+                    </div>
+                    {filteredHadaraDjoumaEvents.length === 0 && (
+                      <div className="text-center py-8 text-gray-500">Aucun résultat pour "{hadaraSearch}"</div>
+                    )}
                   <div className="space-y-3">
-                    {hadaraDjoumaEvents.map((event) => {
+                    {filteredHadaraDjoumaEvents.map((event) => {
                       const eventDate = new Date(event.date)
                       const isFuture = eventDate > new Date()
                       
@@ -1646,6 +1719,7 @@ const AdminDashboard = () => {
                       )
                     })}
                   </div>
+                  </>
                 )}
               </motion.div>
             )}
@@ -1809,8 +1883,21 @@ const AdminDashboard = () => {
                     </p>
                   </div>
                 ) : (
+                  <>
+                    <div className="relative mb-4">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <input
+                        value={productsSearch}
+                        onChange={(e) => setProductsSearch(e.target.value)}
+                        placeholder="Rechercher un produit..."
+                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                      />
+                    </div>
+                    {filteredProducts.length === 0 && (
+                      <div className="text-center py-8 text-gray-500">Aucun résultat pour "{productsSearch}"</div>
+                    )}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {products.map((product) => (
+                    {filteredProducts.map((product) => (
                       <div
                         key={product.id}
                         className="border border-gray-200 rounded-xl overflow-hidden bg-gray-50"
@@ -1857,6 +1944,7 @@ const AdminDashboard = () => {
                       </div>
                     ))}
                   </div>
+                  </>
                 )}
               </motion.div>
             )}
@@ -1875,8 +1963,21 @@ const AdminDashboard = () => {
                     <p className="text-gray-500">Aucune commande pour le moment</p>
                   </div>
                 ) : (
+                  <>
+                    <div className="relative mb-4">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <input
+                        value={ordersSearch}
+                        onChange={(e) => setOrdersSearch(e.target.value)}
+                        placeholder="Rechercher par client, téléphone ou article..."
+                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                      />
+                    </div>
+                    {filteredOrders.length === 0 && (
+                      <div className="text-center py-8 text-gray-500">Aucun résultat pour "{ordersSearch}"</div>
+                    )}
                   <div className="space-y-4">
-                    {orders.map((order) => {
+                    {filteredOrders.map((order) => {
                       const paymentLabels = {
                         cash: 'Espèces',
                         wave: 'Wave',
@@ -1958,6 +2059,7 @@ const AdminDashboard = () => {
                       )
                     })}
                   </div>
+                  </>
                 )}
               </motion.div>
             )}

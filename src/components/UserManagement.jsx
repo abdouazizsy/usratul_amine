@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Users, Plus, Edit, Trash2, Save, X, Mail, Lock, Shield, UserCheck } from 'lucide-react'
+import { Users, Plus, Edit, Trash2, Save, X, Mail, Lock, Shield, UserCheck, Search } from 'lucide-react'
 import { createUserWithEmailAndPassword, deleteUser } from 'firebase/auth'
 import { auth, db } from '../firebase/config'
 import { collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, updateDoc } from 'firebase/firestore'
@@ -10,7 +10,8 @@ const UserManagement = ({ setNotification, setConfirmModal }) => {
   const [loading, setLoading] = useState(true)
   const [showAddForm, setShowAddForm] = useState(false)
   const [editingUser, setEditingUser] = useState(null)
-  
+  const [searchTerm, setSearchTerm] = useState('')
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -178,6 +179,12 @@ const UserManagement = ({ setNotification, setConfirmModal }) => {
     }
   }
 
+  const filteredUsers = users.filter(u => {
+    const term = searchTerm.trim().toLowerCase()
+    if (!term) return true
+    return [u.displayName, u.email].filter(Boolean).some(v => v.toLowerCase().includes(term))
+  })
+
   return (
     <div className="bg-white rounded-xl shadow-sm p-6">
       <div className="flex justify-between items-center mb-6">
@@ -315,6 +322,18 @@ const UserManagement = ({ setNotification, setConfirmModal }) => {
         </motion.div>
       )}
 
+      {users.length > 0 && (
+        <div className="relative mb-4">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <input
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Rechercher un utilisateur..."
+            className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+          />
+        </div>
+      )}
+
       {loading ? (
         <div className="text-center py-8">
           <div className="text-gray-500">Chargement...</div>
@@ -324,9 +343,11 @@ const UserManagement = ({ setNotification, setConfirmModal }) => {
           <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
           <p className="text-gray-500">Aucun utilisateur trouvé</p>
         </div>
+      ) : filteredUsers.length === 0 ? (
+        <div className="text-center py-8 text-gray-500">Aucun résultat pour "{searchTerm}"</div>
       ) : (
         <div className="space-y-3">
-          {users.map((user) => (
+          {filteredUsers.map((user) => (
             <motion.div
               key={user.id}
               initial={{ opacity: 0, y: 10 }}
