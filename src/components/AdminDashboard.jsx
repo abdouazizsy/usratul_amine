@@ -22,7 +22,8 @@ import {
   Image as ImageIcon,
   ClipboardList,
   Phone,
-  Banknote
+  Banknote,
+  UsersRound
 } from 'lucide-react'
 import { collection, addDoc, updateDoc, deleteDoc, doc, getDocs, query, orderBy } from 'firebase/firestore'
 import { db } from '../firebase/config'
@@ -34,6 +35,7 @@ import { uploadImageToCloudinary } from '../utils/cloudinaryUpload'
 import ConfirmModal from './ConfirmModal'
 import NotificationToast from './NotificationToast'
 import UserManagement from './UserManagement'
+import SectionsManagement from './SectionsManagement'
 import Settings from './Settings'
 
 const SEASON_2025_2026_KEYS = new Set(tariqaEvents2025_2026.map(e => `${e.title}|${e.date}`))
@@ -793,6 +795,17 @@ const AdminDashboard = () => {
               >
                 <Users className="w-5 h-5 flex-shrink-0" />
                 Utilisateurs
+              </button>
+              <button
+                onClick={() => setActiveTab('sections')}
+                className={`flex-shrink-0 lg:w-full flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2 lg:py-3 rounded-lg transition-colors whitespace-nowrap text-sm lg:text-base ${
+                  activeTab === 'sections'
+                    ? 'bg-emerald-100 text-emerald-700'
+                    : 'text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                <UsersRound className="w-5 h-5 flex-shrink-0" />
+                Sections
               </button>
               <button
                 onClick={() => setActiveTab('settings')}
@@ -1955,6 +1968,18 @@ const AdminDashboard = () => {
                 animate={{ opacity: 1, y: 0 }}
               >
                 <UserManagement 
+                  setNotification={setNotification}
+                  setConfirmModal={setConfirmModal}
+                />
+              </motion.div>
+            )}
+
+            {activeTab === 'sections' && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <SectionsManagement
                   setNotification={setNotification}
                   setConfirmModal={setConfirmModal}
                 />
