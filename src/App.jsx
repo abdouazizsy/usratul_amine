@@ -5,6 +5,7 @@ import ProgrammePage from './pages/ProgrammePage'
 import CalendrierTariqaPage from './pages/CalendrierTariqaPage'
 import HadaraDjoumaPage from './pages/HadaraDjoumaPage'
 import ProduitsPage from './pages/ProduitsPage'
+import RealisationsPage from './pages/RealisationsPage'
 import LibraryPage from './pages/LibraryPage'
 import RayonDetailPage from './pages/RayonDetailPage'
 import CartPage from './pages/CartPage'
@@ -53,6 +54,7 @@ function App() {
           <Route path="/calendrier-tariqa" element={<CalendrierTariqaPage />} />
           <Route path="/hadara-djouma" element={<HadaraDjoumaPage />} />
           <Route path="/produits" element={<ProduitsPage />} />
+          <Route path="/realisations" element={<RealisationsPage />} />
           <Route path="/library" element={<LibraryPage />} />
           <Route path="/library/:rayonId" element={<RayonDetailPage />} />
           <Route path="/panier" element={<CartPage />} />

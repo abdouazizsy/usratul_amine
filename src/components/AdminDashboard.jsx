@@ -24,7 +24,8 @@ import {
   Phone,
   Banknote,
   UsersRound,
-  Search
+  Search,
+  Award
 } from 'lucide-react'
 import { collection, addDoc, updateDoc, deleteDoc, doc, getDocs, query, orderBy } from 'firebase/firestore'
 import { db } from '../firebase/config'
@@ -127,6 +128,18 @@ const AdminDashboard = () => {
   const [orders, setOrders] = useState([])
   const pendingOrdersCount = orders.filter(o => o.status === 'pending').length
 
+  // État Réalisations
+  const [realisations, setRealisations] = useState([])
+  const [realisationsSearch, setRealisationsSearch] = useState('')
+  const [showRealisationForm, setShowRealisationForm] = useState(false)
+  const [editingRealisation, setEditingRealisation] = useState(null)
+  const [uploadingRealisationImage, setUploadingRealisationImage] = useState(false)
+  const [realisationFormData, setRealisationFormData] = useState({
+    title: '',
+    description: '',
+    images: []
+  })
+
   useEffect(() => {
     if (isAdmin) {
       fetchPrograms()
@@ -134,6 +147,7 @@ const AdminDashboard = () => {
       fetchHadaraDjoumaEvents()
       fetchProducts()
       fetchOrders()
+      fetchRealisations()
     }
   }, [isAdmin])
 
@@ -210,6 +224,20 @@ const AdminDashboard = () => {
       setProducts(productsData)
     } catch (error) {
       console.error('Error fetching products:', error)
+    }
+  }
+
+  const fetchRealisations = async () => {
+    try {
+      const realisationsQuery = query(collection(db, 'realisations'), orderBy('createdAt', 'desc'))
+      const querySnapshot = await getDocs(realisationsQuery)
+      const realisationsData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }))
+      setRealisations(realisationsData)
+    } catch (error) {
+      console.error('Error fetching realisations:', error)
     }
   }
 
@@ -371,6 +399,113 @@ const AdminDashboard = () => {
             type: 'error',
             title: 'Erreur',
             message: 'Impossible de supprimer le produit.'
+          })
+        }
+      }
+    })
+  }
+
+  const handleRealisationImageChange = async (e) => {
+    const files = Array.from(e.target.files || [])
+    if (files.length === 0) return
+
+    setUploadingRealisationImage(true)
+    try {
+      const uploadedUrls = await Promise.all(files.map(file => uploadImageToCloudinary(file)))
+      setRealisationFormData(prev => ({ ...prev, images: [...prev.images, ...uploadedUrls] }))
+    } catch (error) {
+      console.error('Error uploading image:', error)
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: "Erreur d'upload",
+        message: error.message || "Impossible d'uploader l'image."
+      })
+    } finally {
+      setUploadingRealisationImage(false)
+      e.target.value = ''
+    }
+  }
+
+  const handleRemoveRealisationImage = (index) => {
+    setRealisationFormData(prev => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index)
+    }))
+  }
+
+  const handleRealisationSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      if (editingRealisation) {
+        await updateDoc(doc(db, 'realisations', editingRealisation.id), realisationFormData)
+        setNotification({
+          isOpen: true,
+          type: 'success',
+          title: 'Réalisation modifiée',
+          message: 'La réalisation a été modifiée avec succès.'
+        })
+      } else {
+        await addDoc(collection(db, 'realisations'), {
+          ...realisationFormData,
+          createdAt: new Date()
+        })
+        setNotification({
+          isOpen: true,
+          type: 'success',
+          title: 'Réalisation ajoutée',
+          message: 'La réalisation a été ajoutée avec succès.'
+        })
+      }
+
+      setRealisationFormData({ title: '', description: '', images: [] })
+      setShowRealisationForm(false)
+      setEditingRealisation(null)
+      fetchRealisations()
+    } catch (error) {
+      console.error('Error saving realisation:', error)
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: 'Erreur',
+        message: "Impossible d'enregistrer la réalisation."
+      })
+    }
+  }
+
+  const handleEditRealisation = (realisation) => {
+    setEditingRealisation(realisation)
+    setRealisationFormData({
+      title: realisation.title || '',
+      description: realisation.description || '',
+      images: realisation.images || (realisation.imageUrl ? [realisation.imageUrl] : [])
+    })
+    setShowRealisationForm(true)
+  }
+
+  const handleDeleteRealisation = (id) => {
+    setConfirmModal({
+      isOpen: true,
+      type: 'danger',
+      title: 'Supprimer la réalisation',
+      message: 'Êtes-vous sûr de vouloir supprimer cette réalisation ? Cette action est irréversible.',
+      onConfirm: async () => {
+        try {
+          await deleteDoc(doc(db, 'realisations', id))
+          setNotification({
+            isOpen: true,
+            type: 'success',
+            title: 'Réalisation supprimée',
+            message: 'La réalisation a été supprimée avec succès.'
+          })
+          fetchRealisations()
+        } catch (error) {
+          console.error('Error deleting realisation:', error)
+          setNotification({
+            isOpen: true,
+            type: 'error',
+            title: 'Erreur',
+            message: 'Impossible de supprimer la réalisation.'
           })
         }
       }
@@ -763,6 +898,12 @@ const AdminDashboard = () => {
     return [o.customerName, o.customerPhone, itemNames].filter(Boolean).some(v => v.toLowerCase().includes(term))
   })
 
+  const filteredRealisations = realisations.filter(r => {
+    const term = realisationsSearch.trim().toLowerCase()
+    if (!term) return true
+    return [r.title, r.description].filter(Boolean).some(v => v.toLowerCase().includes(term))
+  })
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-gold-50">
       <div className="bg-white shadow-sm border-b">
@@ -835,6 +976,17 @@ const AdminDashboard = () => {
               >
                 <ShoppingBag className="w-5 h-5 flex-shrink-0" />
                 Produits
+              </button>
+              <button
+                onClick={() => setActiveTab('realisations')}
+                className={`flex-shrink-0 lg:w-full flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2 lg:py-3 rounded-lg transition-colors whitespace-nowrap text-sm lg:text-base ${
+                  activeTab === 'realisations'
+                    ? 'bg-emerald-100 text-emerald-700'
+                    : 'text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                <Award className="w-5 h-5 flex-shrink-0" />
+                Réalisations
               </button>
               <button
                 onClick={() => setActiveTab('orders')}
@@ -2015,6 +2167,207 @@ const AdminDashboard = () => {
                             </button>
                             <button
                               onClick={() => handleDeleteProduct(product.id)}
+                              className="flex-1 flex items-center justify-center gap-1 p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors text-sm"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                              Supprimer
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  </>
+                )}
+              </motion.div>
+            )}
+
+            {activeTab === 'realisations' && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white rounded-xl shadow-sm p-4 sm:p-6"
+              >
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-3">
+                  <h2 className="text-lg sm:text-xl font-bold text-gray-800">
+                    Gestion des réalisations
+                  </h2>
+                  <button
+                    onClick={() => setShowRealisationForm(true)}
+                    className="flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Ajouter une réalisation
+                  </button>
+                </div>
+
+                {showRealisationForm && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="mb-6 p-6 bg-gray-50 rounded-lg"
+                  >
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-lg font-semibold">
+                        {editingRealisation ? 'Modifier la réalisation' : 'Nouvelle réalisation'}
+                      </h3>
+                      <button
+                        onClick={() => {
+                          setShowRealisationForm(false)
+                          setEditingRealisation(null)
+                          setRealisationFormData({ title: '', description: '', images: [] })
+                        }}
+                        className="text-gray-500 hover:text-gray-700"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    <form onSubmit={handleRealisationSubmit} className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Titre de la réalisation
+                        </label>
+                        <input
+                          type="text"
+                          value={realisationFormData.title}
+                          onChange={(e) => setRealisationFormData({ ...realisationFormData, title: e.target.value })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                          placeholder="ex: Construction de la mosquée"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Description
+                        </label>
+                        <textarea
+                          value={realisationFormData.description}
+                          onChange={(e) => setRealisationFormData({ ...realisationFormData, description: e.target.value })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                          rows={3}
+                          placeholder="Description de la réalisation (optionnel)"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Images de la réalisation
+                        </label>
+                        <div className="flex flex-wrap items-center gap-3">
+                          {realisationFormData.images.map((url, index) => (
+                            <div key={url} className="relative w-16 h-16 flex-shrink-0">
+                              <img
+                                src={url}
+                                alt={`Aperçu ${index + 1}`}
+                                className="w-16 h-16 object-cover rounded-lg border border-gray-200"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveRealisationImage(index)}
+                                className="absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors"
+                              >
+                                <X className="w-3 h-3" />
+                              </button>
+                            </div>
+                          ))}
+                          <label className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm flex-shrink-0">
+                            <Upload className="w-4 h-4" />
+                            {uploadingRealisationImage ? 'Envoi en cours...' : 'Ajouter des images'}
+                            <input
+                              type="file"
+                              accept="image/*"
+                              multiple
+                              onChange={handleRealisationImageChange}
+                              disabled={uploadingRealisationImage}
+                              className="hidden"
+                            />
+                          </label>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-2">
+                          La première image sera utilisée comme vignette. Les visiteurs pourront faire défiler toutes les images sur la page publique.
+                        </p>
+                      </div>
+
+                      <div className="flex gap-3">
+                        <button
+                          type="submit"
+                          disabled={uploadingRealisationImage}
+                          className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50"
+                        >
+                          <Save className="w-4 h-4" />
+                          {editingRealisation ? 'Mettre à jour' : 'Enregistrer'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowRealisationForm(false)
+                            setEditingRealisation(null)
+                          }}
+                          className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                        >
+                          Annuler
+                        </button>
+                      </div>
+                    </form>
+                  </motion.div>
+                )}
+
+                {realisations.length === 0 ? (
+                  <div className="text-center py-8">
+                    <Award className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                    <p className="text-gray-500">
+                      Aucune réalisation enregistrée pour le moment
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="relative mb-4">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <input
+                        value={realisationsSearch}
+                        onChange={(e) => setRealisationsSearch(e.target.value)}
+                        placeholder="Rechercher une réalisation..."
+                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                      />
+                    </div>
+                    {filteredRealisations.length === 0 && (
+                      <div className="text-center py-8 text-gray-500">Aucun résultat pour "{realisationsSearch}"</div>
+                    )}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {filteredRealisations.map((realisation) => (
+                      <div
+                        key={realisation.id}
+                        className="border border-gray-200 rounded-xl overflow-hidden bg-gray-50"
+                      >
+                        <div className="relative w-full h-40 bg-gray-100 flex items-center justify-center overflow-hidden">
+                          {realisation.images?.[0] ? (
+                            <img src={realisation.images[0]} alt={realisation.title} className="w-full h-full object-cover" />
+                          ) : (
+                            <ImageIcon className="w-10 h-10 text-gray-300" />
+                          )}
+                          {realisation.images?.length > 1 && (
+                            <span className="absolute bottom-2 right-2 px-2 py-0.5 text-xs font-semibold bg-black/60 text-white rounded-full">
+                              {realisation.images.length} photos
+                            </span>
+                          )}
+                        </div>
+                        <div className="p-4">
+                          <h3 className="font-semibold text-gray-800 mb-1">{realisation.title}</h3>
+                          {realisation.description && (
+                            <p className="text-sm text-gray-600 mb-3 line-clamp-2">{realisation.description}</p>
+                          )}
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => handleEditRealisation(realisation)}
+                              className="flex-1 flex items-center justify-center gap-1 p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors text-sm"
+                            >
+                              <Edit className="w-4 h-4" />
+                              Modifier
+                            </button>
+                            <button
+                              onClick={() => handleDeleteRealisation(realisation.id)}
                               className="flex-1 flex items-center justify-center gap-1 p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors text-sm"
                             >
                               <Trash2 className="w-4 h-4" />

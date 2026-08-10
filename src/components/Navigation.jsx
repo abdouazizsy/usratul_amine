@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ChevronDown, Calendar, Sparkles, BookOpen, ShoppingBag, ShoppingCart } from 'lucide-react'
+import { Menu, X, ChevronDown, Calendar, Sparkles, BookOpen, ShoppingBag, ShoppingCart, Award } from 'lucide-react'
 import LanguageSelector from './LanguageSelector'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useCart } from '../contexts/CartContext'
@@ -19,6 +19,8 @@ const Navigation = ({ scrolled }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [calendarsOpen, setCalendarsOpen] = useState(false)
   const [mobileCalendarsOpen, setMobileCalendarsOpen] = useState(false)
+  const [activitiesOpen, setActivitiesOpen] = useState(false)
+  const [mobileActivitiesOpen, setMobileActivitiesOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
   const isPWA = window.matchMedia('(display-mode: standalone)').matches
@@ -174,6 +176,51 @@ const Navigation = ({ scrolled }) => {
               </AnimatePresence>
             </div>
 
+            {/* Dropdown Nos activités */}
+            <div
+              className="relative"
+              onMouseEnter={() => setActivitiesOpen(true)}
+              onMouseLeave={() => setActivitiesOpen(false)}
+            >
+              <button
+                className={`flex items-center gap-1 font-medium transition-colors ${
+                  scrolled
+                    ? 'text-emerald-700 hover:text-gold-600'
+                    : 'text-white hover:text-gold-300'
+                }`}
+              >
+                Nos activités
+                <ChevronDown className={`w-4 h-4 transition-transform ${activitiesOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              <AnimatePresence>
+                {activitiesOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-full right-0 pt-3 w-72"
+                  >
+                    <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
+                      <Link
+                        to="/realisations"
+                        className="flex items-start gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-gold-50 transition-all group"
+                      >
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                          <Award className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-900 group-hover:text-emerald-700">Réalisations</p>
+                          <p className="text-xs text-gray-500">Nos projets et actions</p>
+                        </div>
+                      </Link>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             <Link
               to="/produits"
               className={`flex items-center gap-1 font-medium transition-colors ${
@@ -315,6 +362,38 @@ const Navigation = ({ scrolled }) => {
                         >
                           <Sparkles className="w-4 h-4 text-emerald-700" />
                           <span className="text-sm">Abna'u Hadara Tidiani</span>
+                        </Link>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Section Nos activités - Mobile Accordion */}
+                  <button
+                    onClick={() => setMobileActivitiesOpen(!mobileActivitiesOpen)}
+                    className={`flex items-center justify-between w-full px-6 py-3 text-emerald-700 hover:bg-emerald-50 hover:text-gold-600 font-medium transition-colors ${
+                      language === 'ar' ? 'font-arabic text-right' : ''
+                    }`}
+                  >
+                    <span>Nos activités</span>
+                    <ChevronDown className={`w-4 h-4 transition-transform ${mobileActivitiesOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  <AnimatePresence>
+                    {mobileActivitiesOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden bg-gray-50"
+                      >
+                        <Link
+                          to="/realisations"
+                          onClick={() => { setMobileMenuOpen(false); setMobileActivitiesOpen(false) }}
+                          className="flex items-center gap-3 px-8 py-3 text-gray-700 hover:bg-white transition-colors"
+                        >
+                          <Award className="w-4 h-4 text-emerald-600" />
+                          <span className="text-sm">Réalisations</span>
                         </Link>
                       </motion.div>
                     )}
