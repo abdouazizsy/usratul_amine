@@ -63,6 +63,7 @@ const AdminDashboard = () => {
   const [showAddForm, setShowAddForm] = useState(false)
   const [editingProgram, setEditingProgram] = useState(null)
   const [dateConflict, setDateConflict] = useState(null)
+  const [programHadaraConflict, setProgramHadaraConflict] = useState(null)
   const [importing, setImporting] = useState(false)
   const [importing2026, setImporting2026] = useState(false)
   const [tariqaSeasonTab, setTariqaSeasonTab] = useState('2025-2026')
@@ -107,6 +108,7 @@ const AdminDashboard = () => {
     location: '',
     description: ''
   })
+  const [hadaraDateConflict, setHadaraDateConflict] = useState(null)
 
   // État Produits (e-commerce)
   const [products, setProducts] = useState([])
@@ -138,10 +140,20 @@ const AdminDashboard = () => {
   useEffect(() => {
     if (formData.date) {
       checkDateConflict(formData.date)
+      checkProgramHadaraConflict(formData.date)
     } else {
       setDateConflict(null)
+      setProgramHadaraConflict(null)
     }
-  }, [formData.date])
+  }, [formData.date, hadaraDjoumaEvents])
+
+  useEffect(() => {
+    if (hadaraDjoumaFormData.date) {
+      checkHadaraDateConflict(hadaraDjoumaFormData.date)
+    } else {
+      setHadaraDateConflict(null)
+    }
+  }, [hadaraDjoumaFormData.date])
 
   const fetchPrograms = async () => {
     try {
@@ -485,6 +497,16 @@ const AdminDashboard = () => {
     setDateConflict(conflict)
   }
 
+  const checkProgramHadaraConflict = (selectedDate) => {
+    const conflict = hadaraDjoumaEvents.find(event => event.date === selectedDate)
+    setProgramHadaraConflict(conflict)
+  }
+
+  const checkHadaraDateConflict = (selectedDate) => {
+    const conflict = tariqaEvents.find(event => event.date === selectedDate)
+    setHadaraDateConflict(conflict)
+  }
+
   const handleImportTariqaEvents = () => {
     setConfirmModal({
       isOpen: true,
@@ -547,6 +569,15 @@ const AdminDashboard = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (programHadaraConflict) {
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: 'Création refusée',
+        message: `Une Abna'u Hadara Tidiani ("${programHadaraConflict.title}") est déjà prévue ce jour-là. Choisissez une autre date.`
+      })
+      return
+    }
     try {
       if (editingProgram) {
         await updateDoc(doc(db, 'programs', editingProgram.id), formData)
@@ -934,6 +965,25 @@ const AdminDashboard = () => {
                         </div>
                       </div>
 
+                      {programHadaraConflict && (
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                          <div className="flex items-start gap-3">
+                            <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                            <div>
+                              <h4 className="font-semibold text-red-800 mb-1">
+                                Création impossible
+                              </h4>
+                              <p className="text-sm text-red-700">
+                                Une Abna'u Hadara Tidiani (<strong>{programHadaraConflict.title}</strong>) est déjà prévue ce jour-là{programHadaraConflict.location ? ` à ${programHadaraConflict.location}` : ''}.
+                              </p>
+                              <p className="text-xs text-red-600 mt-2">
+                                Choisissez une autre date pour pouvoir enregistrer ce programme.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
                       {dateConflict && (
                         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                           <div className="flex items-start gap-3">
@@ -953,7 +1003,7 @@ const AdminDashboard = () => {
                         </div>
                       )}
 
-                      {formData.date && !dateConflict && (
+                      {formData.date && !dateConflict && !programHadaraConflict && (
                         <div className="bg-green-50 border border-green-200 rounded-lg p-3">
                           <div className="flex items-center gap-2">
                             <CheckCircle className="w-4 h-4 text-green-600" />
@@ -1021,7 +1071,8 @@ const AdminDashboard = () => {
                       <div className="flex gap-3">
                         <button
                           type="submit"
-                          className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
+                          disabled={!!programHadaraConflict}
+                          className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-emerald-600"
                         >
                           <Save className="w-4 h-4" />
                           {editingProgram ? 'Mettre à jour' : 'Enregistrer'}
@@ -1573,6 +1624,36 @@ const AdminDashboard = () => {
                           />
                         </div>
                       </div>
+
+                      {hadaraDateConflict && (
+                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                          <div className="flex items-start gap-3">
+                            <AlertTriangle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                            <div>
+                              <h4 className="font-semibold text-yellow-800 mb-1">
+                                Conflit avec un événement de la Tariqa
+                              </h4>
+                              <p className="text-sm text-yellow-700">
+                                <strong>{hadaraDateConflict.title}</strong> est prévu le même jour à {hadaraDateConflict.location || 'un lieu non spécifié'}.
+                              </p>
+                              <p className="text-xs text-yellow-600 mt-2">
+                                ⚠️ Il est recommandé de choisir une autre date pour éviter les chevauchements.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {hadaraDjoumaFormData.date && !hadaraDateConflict && (
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="w-4 h-4 text-green-600" />
+                            <p className="text-sm text-green-700">
+                              Aucun conflit détecté avec le calendrier de la Tariqa
+                            </p>
+                          </div>
+                        </div>
+                      )}
 
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
