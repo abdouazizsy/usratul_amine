@@ -14,6 +14,7 @@ import AdminLogin from './components/AdminLogin'
 import AdminDashboard from './components/AdminDashboard'
 import PWAInstallBanner from './components/PWAInstallBanner'
 import ScrollToTop from './components/ScrollToTop'
+import LaunchGate from './components/LaunchGate'
 import { AdminProvider, useAdmin } from './contexts/AdminContext'
 
 // Composant pour protéger les routes admin
@@ -48,28 +49,30 @@ function App() {
     <AdminProvider>
       <Router>
         <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/programme" element={<ProgrammePage />} />
-          <Route path="/calendrier-tariqa" element={<CalendrierTariqaPage />} />
-          <Route path="/hadara-djouma" element={<HadaraDjoumaPage />} />
-          <Route path="/produits" element={<ProduitsPage />} />
-          <Route path="/realisations" element={<RealisationsPage />} />
-          <Route path="/library" element={<LibraryPage />} />
-          <Route path="/library/:rayonId" element={<RayonDetailPage />} />
-          <Route path="/panier" element={<CartPage />} />
-          <Route path="/commande" element={<CheckoutPage />} />
-          <Route 
-            path="/admin" 
-            element={
-              <ProtectedAdminRoute>
-                <AdminDashboard />
-              </ProtectedAdminRoute>
-            } 
-          />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-        <PWAInstallBanner />
+        <LaunchGate>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/programme" element={<ProgrammePage />} />
+            <Route path="/calendrier-tariqa" element={<CalendrierTariqaPage />} />
+            <Route path="/hadara-djouma" element={<HadaraDjoumaPage />} />
+            <Route path="/produits" element={<ProduitsPage />} />
+            <Route path="/realisations" element={<RealisationsPage />} />
+            <Route path="/library" element={<LibraryPage />} />
+            <Route path="/library/:rayonId" element={<RayonDetailPage />} />
+            <Route path="/panier" element={<CartPage />} />
+            <Route path="/commande" element={<CheckoutPage />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedAdminRoute>
+                  <AdminDashboard />
+                </ProtectedAdminRoute>
+              }
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+          <PWAInstallBanner />
+        </LaunchGate>
       </Router>
     </AdminProvider>
   )
