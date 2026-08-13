@@ -89,6 +89,7 @@ const ComingSoonPage = ({ targetDate, onReveal }) => {
           --gold-soft:#e8d9a8;
           --gold-dim:rgba(201,162,39,.35);
           --parchment:#f6f1e4;
+          direction: ltr;
           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
         .usa-stage {

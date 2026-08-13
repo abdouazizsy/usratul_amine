@@ -8,6 +8,7 @@ import Footer from '../components/Footer'
 import Chatbot from '../components/Chatbot'
 import { useTranslation } from '../hooks/useTranslation'
 import { useCart } from '../contexts/CartContext'
+import { pickLocalized } from '../utils/localizedField'
 
 const ProduitsPage = () => {
   const { t, language } = useTranslation()
@@ -118,7 +119,7 @@ const ProduitsPage = () => {
                     {product.imageUrl ? (
                       <img
                         src={product.imageUrl}
-                        alt={product.name}
+                        alt={pickLocalized(product, 'name', language)}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     ) : (
@@ -130,7 +131,7 @@ const ProduitsPage = () => {
 
                   <div className="p-6">
                     <div className="flex items-start justify-between gap-2 mb-2">
-                      <h3 className="text-lg font-bold text-gray-900">{product.name}</h3>
+                      <h3 className={`text-lg font-bold text-gray-900 ${language === 'ar' ? 'font-arabic' : ''}`}>{pickLocalized(product, 'name', language)}</h3>
                       {product.available === false && (
                         <span className="px-2 py-1 text-xs font-semibold bg-red-100 text-red-700 rounded-full whitespace-nowrap">
                           {t('products.outOfStock')}
@@ -138,8 +139,8 @@ const ProduitsPage = () => {
                       )}
                     </div>
 
-                    {product.description && (
-                      <p className="text-sm text-gray-600 mb-4 line-clamp-3">{product.description}</p>
+                    {pickLocalized(product, 'description', language) && (
+                      <p className={`text-sm text-gray-600 mb-4 line-clamp-3 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{pickLocalized(product, 'description', language)}</p>
                     )}
 
                     <p className="text-2xl font-bold text-emerald-700 mb-4">

@@ -34,6 +34,7 @@ import { tariqaEvents2025_2026 } from '../data/tariqa_events_2025_2026'
 import { tariqaEvents2026_2027 } from '../data/tariqa_events_2026_2027'
 import { importHadaraDjoumaToFirebase } from '../utils/importHadaraDjouma'
 import { uploadImageToCloudinary } from '../utils/cloudinaryUpload'
+import { translateAndPatchDoc } from '../utils/translateContent'
 import ConfirmModal from './ConfirmModal'
 import NotificationToast from './NotificationToast'
 import UserManagement from './UserManagement'
@@ -330,6 +331,7 @@ const AdminDashboard = () => {
 
       if (editingProduct) {
         await updateDoc(doc(db, 'products', editingProduct.id), dataToSave)
+        translateAndPatchDoc('products', editingProduct.id, { name: dataToSave.name, description: dataToSave.description })
         setNotification({
           isOpen: true,
           type: 'success',
@@ -337,10 +339,11 @@ const AdminDashboard = () => {
           message: 'Le produit a été modifié avec succès.'
         })
       } else {
-        await addDoc(collection(db, 'products'), {
+        const newDocRef = await addDoc(collection(db, 'products'), {
           ...dataToSave,
           createdAt: new Date()
         })
+        translateAndPatchDoc('products', newDocRef.id, { name: dataToSave.name, description: dataToSave.description })
         setNotification({
           isOpen: true,
           type: 'success',
@@ -439,6 +442,7 @@ const AdminDashboard = () => {
     try {
       if (editingRealisation) {
         await updateDoc(doc(db, 'realisations', editingRealisation.id), realisationFormData)
+        translateAndPatchDoc('realisations', editingRealisation.id, { title: realisationFormData.title, description: realisationFormData.description })
         setNotification({
           isOpen: true,
           type: 'success',
@@ -446,10 +450,11 @@ const AdminDashboard = () => {
           message: 'La réalisation a été modifiée avec succès.'
         })
       } else {
-        await addDoc(collection(db, 'realisations'), {
+        const newDocRef = await addDoc(collection(db, 'realisations'), {
           ...realisationFormData,
           createdAt: new Date()
         })
+        translateAndPatchDoc('realisations', newDocRef.id, { title: realisationFormData.title, description: realisationFormData.description })
         setNotification({
           isOpen: true,
           type: 'success',
@@ -547,6 +552,7 @@ const AdminDashboard = () => {
     try {
       if (editingHadaraDjouma) {
         await updateDoc(doc(db, 'hadara_djouma_events', editingHadaraDjouma.id), hadaraDjoumaFormData)
+        translateAndPatchDoc('hadara_djouma_events', editingHadaraDjouma.id, { title: hadaraDjoumaFormData.title, description: hadaraDjoumaFormData.description })
         setNotification({
           isOpen: true,
           type: 'success',
@@ -554,11 +560,12 @@ const AdminDashboard = () => {
           message: 'L\'Abna\'u Hadara Tidiani a été modifiée avec succès.'
         })
       } else {
-        await addDoc(collection(db, 'hadara_djouma_events'), {
+        const newDocRef = await addDoc(collection(db, 'hadara_djouma_events'), {
           ...hadaraDjoumaFormData,
           category: 'HADARA_DJOUMA',
           createdAt: new Date().toISOString()
         })
+        translateAndPatchDoc('hadara_djouma_events', newDocRef.id, { title: hadaraDjoumaFormData.title, description: hadaraDjoumaFormData.description })
         setNotification({
           isOpen: true,
           type: 'success',
@@ -716,11 +723,13 @@ const AdminDashboard = () => {
     try {
       if (editingProgram) {
         await updateDoc(doc(db, 'programs', editingProgram.id), formData)
+        translateAndPatchDoc('programs', editingProgram.id, { title: formData.title, description: formData.description })
       } else {
-        await addDoc(collection(db, 'programs'), {
+        const newDocRef = await addDoc(collection(db, 'programs'), {
           ...formData,
           createdAt: new Date()
         })
+        translateAndPatchDoc('programs', newDocRef.id, { title: formData.title, description: formData.description })
       }
       
       setFormData({
@@ -786,6 +795,7 @@ const AdminDashboard = () => {
     try {
       if (editingTariqaEvent) {
         await updateDoc(doc(db, 'tariqa_events', editingTariqaEvent.id), tariqaFormData)
+        translateAndPatchDoc('tariqa_events', editingTariqaEvent.id, { title: tariqaFormData.title, description: tariqaFormData.description })
         setNotification({
           isOpen: true,
           type: 'success',
@@ -793,10 +803,11 @@ const AdminDashboard = () => {
           message: 'L\'événement a été modifié avec succès.'
         })
       } else {
-        await addDoc(collection(db, 'tariqa_events'), {
+        const newDocRef = await addDoc(collection(db, 'tariqa_events'), {
           ...tariqaFormData,
           createdAt: new Date()
         })
+        translateAndPatchDoc('tariqa_events', newDocRef.id, { title: tariqaFormData.title, description: tariqaFormData.description })
         setNotification({
           isOpen: true,
           type: 'success',

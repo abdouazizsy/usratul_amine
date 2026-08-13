@@ -6,11 +6,16 @@ import { db } from '../firebase/config'
 import Navigation from '../components/Navigation'
 import Footer from '../components/Footer'
 import Chatbot from '../components/Chatbot'
+import { useLanguage } from '../contexts/LanguageContext'
+import { pickLocalized } from '../utils/localizedField'
 
 const RealisationLightbox = ({ realisation, onClose }) => {
+  const { language } = useLanguage()
   const [currentIndex, setCurrentIndex] = useState(0)
   const touchStartX = useRef(null)
   const images = realisation.images || []
+  const title = pickLocalized(realisation, 'title', language)
+  const description = pickLocalized(realisation, 'description', language)
 
   const goToPrev = useCallback(() => {
     setCurrentIndex((i) => (i === 0 ? images.length - 1 : i - 1))
@@ -56,7 +61,7 @@ const RealisationLightbox = ({ realisation, onClose }) => {
     >
       <div className="flex items-center justify-between px-4 sm:px-6 py-4 text-white flex-shrink-0" onClick={(e) => e.stopPropagation()}>
         <div>
-          <h3 className="font-bold text-lg">{realisation.title}</h3>
+          <h3 className={`font-bold text-lg${language === 'ar' ? ' font-arabic' : ''}`}>{title}</h3>
           {images.length > 1 && (
             <p className="text-sm text-white/70">{currentIndex + 1} / {images.length}</p>
           )}
@@ -94,7 +99,7 @@ const RealisationLightbox = ({ realisation, onClose }) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             src={images[currentIndex]}
-            alt={`${realisation.title} - photo ${currentIndex + 1}`}
+            alt={`${title} - photo ${currentIndex + 1}`}
             className="max-w-full max-h-full object-contain rounded-lg"
           />
         </AnimatePresence>
@@ -123,13 +128,13 @@ const RealisationLightbox = ({ realisation, onClose }) => {
         </div>
       )}
 
-      {realisation.description && (
+      {description && (
         <div
           className="flex-shrink-0 max-h-[30vh] overflow-y-auto px-4 sm:px-6 pb-6"
           onClick={(e) => e.stopPropagation()}
         >
-          <p className="max-w-2xl mx-auto text-sm sm:text-base text-white/90 whitespace-pre-line">
-            {realisation.description}
+          <p className={`max-w-2xl mx-auto text-sm sm:text-base text-white/90 whitespace-pre-line${language === 'ar' ? ' font-arabic text-right' : ''}`}>
+            {description}
           </p>
         </div>
       )}
@@ -138,6 +143,7 @@ const RealisationLightbox = ({ realisation, onClose }) => {
 }
 
 const RealisationsPage = () => {
+  const { language } = useLanguage()
   const [realisations, setRealisations] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
@@ -237,7 +243,7 @@ const RealisationsPage = () => {
                     {realisation.images?.[0] ? (
                       <img
                         src={realisation.images[0]}
-                        alt={realisation.title}
+                        alt={pickLocalized(realisation, 'title', language)}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     ) : (
@@ -254,9 +260,9 @@ const RealisationsPage = () => {
                   </div>
 
                   <div className="p-6">
-                    <h3 className="text-lg font-bold text-gray-900 mb-2">{realisation.title}</h3>
-                    {realisation.description && (
-                      <p className="text-sm text-gray-600 line-clamp-4">{realisation.description}</p>
+                    <h3 className={`text-lg font-bold text-gray-900 mb-2${language === 'ar' ? ' font-arabic' : ''}`}>{pickLocalized(realisation, 'title', language)}</h3>
+                    {pickLocalized(realisation, 'description', language) && (
+                      <p className={`text-sm text-gray-600 line-clamp-4${language === 'ar' ? ' font-arabic text-right' : ''}`}>{pickLocalized(realisation, 'description', language)}</p>
                     )}
                   </div>
                 </motion.button>

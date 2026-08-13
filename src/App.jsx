@@ -64,9 +64,11 @@ function App() {
             <Route
               path="/admin"
               element={
-                <ProtectedAdminRoute>
-                  <AdminDashboard />
-                </ProtectedAdminRoute>
+                <div lang="fr" dir="ltr">
+                  <ProtectedAdminRoute>
+                    <AdminDashboard />
+                  </ProtectedAdminRoute>
+                </div>
               }
             />
             <Route path="*" element={<Navigate to="/" replace />} />

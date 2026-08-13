@@ -3,8 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown, Calendar, Clock, MapPin, Users, Sparkles, ArrowRight } from 'lucide-react'
 import { collection, getDocs, query, orderBy, where } from 'firebase/firestore'
 import { db } from '../firebase/config'
+import { useLanguage } from '../contexts/LanguageContext'
+import { pickLocalized } from '../utils/localizedField'
 
 const ProgramDynamic = () => {
+  const { language } = useLanguage()
   const [programs, setPrograms] = useState([])
   const [loading, setLoading] = useState(true)
   const [openProgram, setOpenProgram] = useState(null)
@@ -119,8 +122,8 @@ const ProgramDynamic = () => {
                     </div>
 
                     {/* Titre */}
-                    <h4 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-emerald-700 transition-colors">
-                      {program.title}
+                    <h4 className={`text-xl font-bold text-gray-900 mb-3 group-hover:text-emerald-700 transition-colors ${language === 'ar' ? 'font-arabic' : ''}`}>
+                      {pickLocalized(program, 'title', language)}
                     </h4>
 
                     {/* Date mise en évidence */}
@@ -159,8 +162,8 @@ const ProgramDynamic = () => {
 
                     {/* Description */}
                     <div className="p-4 bg-gray-50 rounded-xl border border-gray-100">
-                      <p className="text-sm text-gray-700 leading-relaxed line-clamp-3">
-                        {program.description}
+                      <p className={`text-sm text-gray-700 leading-relaxed line-clamp-3 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>
+                        {pickLocalized(program, 'description', language)}
                       </p>
                     </div>
 
@@ -210,7 +213,7 @@ const ProgramDynamic = () => {
                   {pastPrograms.slice(0, 5).map((program) => (
                     <div key={program.id} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
                       <div>
-                        <h4 className="font-medium text-gray-800">{program.title}</h4>
+                        <h4 className={`font-medium text-gray-800 ${language === 'ar' ? 'font-arabic' : ''}`}>{pickLocalized(program, 'title', language)}</h4>
                         <p className="text-sm text-gray-500">{formatDate(program.date)} • {program.location}</p>
                       </div>
                       <div className="text-right">
@@ -376,8 +379,8 @@ const ProgramDynamic = () => {
               {/* Contenu */}
               <div className="p-8">
                 {/* Titre */}
-                <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                  {selectedProgram.title}
+                <h2 className={`text-3xl font-bold text-gray-900 mb-6 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>
+                  {pickLocalized(selectedProgram, 'title', language)}
                 </h2>
 
                 {/* Informations principales */}
@@ -431,8 +434,8 @@ const ProgramDynamic = () => {
                 <div className="mb-6">
                   <h3 className="text-lg font-bold text-gray-900 mb-3">Description</h3>
                   <div className="p-6 bg-gray-50 rounded-xl border border-gray-100">
-                    <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                      {selectedProgram.description}
+                    <p className={`text-gray-700 leading-relaxed whitespace-pre-line ${language === 'ar' ? 'font-arabic text-right' : ''}`}>
+                      {pickLocalized(selectedProgram, 'description', language)}
                     </p>
                   </div>
                 </div>

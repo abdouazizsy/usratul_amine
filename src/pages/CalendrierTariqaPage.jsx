@@ -7,6 +7,7 @@ import Navigation from '../components/Navigation'
 import Footer from '../components/Footer'
 import Chatbot from '../components/Chatbot'
 import { useTranslation } from '../hooks/useTranslation'
+import { pickLocalized } from '../utils/localizedField'
 import { tariqaEvents2025_2026 } from '../data/tariqa_events_2025_2026'
 import { tariqaEvents2026_2027 } from '../data/tariqa_events_2026_2027'
 
@@ -263,8 +264,8 @@ const CalendrierTariqaPage = () => {
                           {/* Titre */}
                           <h3 className={`text-xl font-bold mb-3 transition-colors ${
                             featured ? 'text-amber-900 group-hover:text-amber-700' : 'text-gray-900 group-hover:text-emerald-700'
-                          }`}>
-                            {event.title}
+                          } ${language === 'ar' ? 'font-arabic' : ''}`}>
+                            {pickLocalized(event, 'title', language)}
                           </h3>
 
                           {/* Date */}
@@ -288,10 +289,10 @@ const CalendrierTariqaPage = () => {
                           )}
 
                           {/* Description */}
-                          {event.description && (
+                          {pickLocalized(event, 'description', language) && (
                             <div className="p-4 bg-gray-50 rounded-xl border border-gray-100">
-                              <p className="text-sm text-gray-700 leading-relaxed line-clamp-2">
-                                {event.description}
+                              <p className={`text-sm text-gray-700 leading-relaxed line-clamp-2 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>
+                                {pickLocalized(event, 'description', language)}
                               </p>
                             </div>
                           )}
@@ -332,9 +333,9 @@ const CalendrierTariqaPage = () => {
                   {pastEvents.slice(0, 10).map((event) => (
                     <div key={event.id} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
                       <div className="flex-1">
-                        <h4 className="font-medium text-gray-800 flex items-center gap-1.5">
+                        <h4 className={`font-medium text-gray-800 flex items-center gap-1.5 ${language === 'ar' ? 'font-arabic' : ''}`}>
                           {isFeaturedEvent(event) && <Star className="w-3.5 h-3.5 text-gold-500 fill-gold-500" />}
-                          {event.title}
+                          {pickLocalized(event, 'title', language)}
                         </h4>
                         <p className="text-sm text-gray-500">
                           {formatDate(event.date)} • {event.location}
@@ -406,8 +407,8 @@ const CalendrierTariqaPage = () => {
 
             {/* Contenu */}
             <div className="p-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                {selectedEvent.title}
+              <h2 className={`text-3xl font-bold text-gray-900 mb-6 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>
+                {pickLocalized(selectedEvent, 'title', language)}
               </h2>
 
               <div className="grid md:grid-cols-2 gap-4 mb-6">
@@ -434,12 +435,12 @@ const CalendrierTariqaPage = () => {
                 )}
               </div>
 
-              {selectedEvent.description && (
+              {pickLocalized(selectedEvent, 'description', language) && (
                 <div className="mb-6">
                   <h3 className="text-lg font-bold text-gray-900 mb-3">{t('tariqa.description')}</h3>
                   <div className="p-6 bg-gray-50 rounded-xl border border-gray-100">
-                    <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                      {selectedEvent.description}
+                    <p className={`text-gray-700 leading-relaxed whitespace-pre-line ${language === 'ar' ? 'font-arabic text-right' : ''}`}>
+                      {pickLocalized(selectedEvent, 'description', language)}
                     </p>
                   </div>
                 </div>

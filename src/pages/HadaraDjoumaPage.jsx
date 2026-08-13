@@ -7,6 +7,7 @@ import Navigation from '../components/Navigation'
 import Footer from '../components/Footer'
 import Chatbot from '../components/Chatbot'
 import { useTranslation } from '../hooks/useTranslation'
+import { pickLocalized } from '../utils/localizedField'
 
 const LOCALE_MAP = { fr: 'fr-FR', ar: 'ar-MA', en: 'en-US' }
 
@@ -218,8 +219,8 @@ const HadaraDjoumaPage = () => {
 
                         {/* Contenu */}
                         <div className="p-5">
-                          <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-emerald-700 transition-colors line-clamp-2 min-h-[3.5rem]">
-                            {event.title}
+                          <h3 className={`text-lg font-bold text-gray-900 mb-3 group-hover:text-emerald-700 transition-colors line-clamp-2 min-h-[3.5rem] ${language === 'ar' ? 'font-arabic' : ''}`}>
+                            {pickLocalized(event, 'title', language)}
                           </h3>
 
                           {event.location && (
@@ -263,7 +264,7 @@ const HadaraDjoumaPage = () => {
                       className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-emerald-50 transition-colors cursor-pointer"
                     >
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-gray-800 text-sm truncate">{event.title}</p>
+                        <p className={`font-medium text-gray-800 text-sm truncate ${language === 'ar' ? 'font-arabic' : ''}`}>{pickLocalized(event, 'title', language)}</p>
                         <p className="text-xs text-gray-500">
                           {new Date(event.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })} • {event.location}
                         </p>
@@ -338,8 +339,8 @@ const HadaraDjoumaPage = () => {
 
               {/* Contenu */}
               <div className="p-8">
-                <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                  {selectedEvent.title}
+                <h2 className={`text-3xl font-bold text-gray-900 mb-6 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>
+                  {pickLocalized(selectedEvent, 'title', language)}
                 </h2>
 
                 <div className="grid md:grid-cols-2 gap-4 mb-6">
@@ -366,12 +367,12 @@ const HadaraDjoumaPage = () => {
                   )}
                 </div>
 
-                {selectedEvent.description && (
+                {pickLocalized(selectedEvent, 'description', language) && (
                   <div className="mb-6">
                     <h3 className="text-lg font-bold text-gray-900 mb-3">{t('hadara.description')}</h3>
                     <div className="p-6 bg-gray-50 rounded-xl border border-gray-100">
-                      <p className="text-gray-700 leading-relaxed">
-                        {selectedEvent.description}
+                      <p className={`text-gray-700 leading-relaxed ${language === 'ar' ? 'font-arabic text-right' : ''}`}>
+                        {pickLocalized(selectedEvent, 'description', language)}
                       </p>
                     </div>
                   </div>
