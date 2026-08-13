@@ -8,7 +8,17 @@ export const translations = {
       library: "Bibliothèque",
       message: "Message",
       contact: "Contact",
-      products: "Boutique en ligne"
+      products: "Boutique en ligne",
+      calendars: "Calendriers",
+      activities: "Nos activités",
+      programsTitle: "Programmes de Usratul Amine",
+      programsDesc: "Nos activités et événements",
+      coskasTitle: "COSKAS",
+      coskasDesc: "Calendrier officiel de la Tariqa",
+      hadaraTitle: "Abna'u Hadara Tidiani",
+      hadaraDesc: "70 Hadaratoul Jumu'ah",
+      realisationsTitle: "Réalisations",
+      realisationsDesc: "Nos projets et actions"
     },
 
     // Hero
@@ -331,7 +341,17 @@ export const translations = {
       library: "المكتبة",
       message: "الرسالة",
       contact: "اتصل بنا",
-      products: "المتجر"
+      products: "المتجر",
+      calendars: "التقويمات",
+      activities: "أنشطتنا",
+      programsTitle: "برامج أسرة الأمين",
+      programsDesc: "أنشطتنا وفعالياتنا",
+      coskasTitle: "COSKAS",
+      coskasDesc: "التقويم الرسمي للطريقة",
+      hadaraTitle: "Abna'u Hadara Tidiani",
+      hadaraDesc: "70 Hadaratoul Jumu'ah",
+      realisationsTitle: "الإنجازات",
+      realisationsDesc: "مشاريعنا وأعمالنا"
     },
 
     // Hero
@@ -654,7 +674,17 @@ export const translations = {
       library: "Library",
       message: "Message",
       contact: "Contact",
-      products: "Shop"
+      products: "Shop",
+      calendars: "Calendars",
+      activities: "Our Activities",
+      programsTitle: "Usratul Amine Programs",
+      programsDesc: "Our activities and events",
+      coskasTitle: "COSKAS",
+      coskasDesc: "Official Tariqa calendar",
+      hadaraTitle: "Abna'u Hadara Tidiani",
+      hadaraDesc: "70 Hadaratoul Jumu'ah",
+      realisationsTitle: "Achievements",
+      realisationsDesc: "Our projects and initiatives"
     },
 
     // Hero

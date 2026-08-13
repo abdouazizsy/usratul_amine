@@ -113,12 +113,12 @@ const Navigation = ({ scrolled }) => {
             >
               <button
                 className={`flex items-center gap-1 font-medium transition-colors ${
-                  scrolled 
-                    ? 'text-emerald-700 hover:text-gold-600' 
+                  scrolled
+                    ? 'text-emerald-700 hover:text-gold-600'
                     : 'text-white hover:text-gold-300'
-                }`}
+                } ${language === 'ar' ? 'font-arabic' : ''}`}
               >
-                Calendriers
+                {t('nav.calendars')}
                 <ChevronDown className={`w-4 h-4 transition-transform ${calendarsOpen ? 'rotate-180' : ''}`} />
               </button>
 
@@ -140,8 +140,8 @@ const Navigation = ({ scrolled }) => {
                           <BookOpen className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                          <p className="font-semibold text-gray-900 group-hover:text-emerald-700">Programmes de Usratul Amine</p>
-                          <p className="text-xs text-gray-500">Nos activités et événements</p>
+                          <p className={`font-semibold text-gray-900 group-hover:text-emerald-700 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('nav.programsTitle')}</p>
+                          <p className={`text-xs text-gray-500 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('nav.programsDesc')}</p>
                         </div>
                       </Link>
 
@@ -153,8 +153,8 @@ const Navigation = ({ scrolled }) => {
                           <Calendar className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                          <p className="font-semibold text-gray-900 group-hover:text-emerald-700">COSKAS</p>
-                          <p className="text-xs text-gray-500">Calendrier officiel de la Tariqa</p>
+                          <p className="font-semibold text-gray-900 group-hover:text-emerald-700">{t('nav.coskasTitle')}</p>
+                          <p className={`text-xs text-gray-500 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('nav.coskasDesc')}</p>
                         </div>
                       </Link>
 
@@ -166,8 +166,8 @@ const Navigation = ({ scrolled }) => {
                           <Sparkles className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                          <p className="font-semibold text-gray-900 group-hover:text-emerald-700">Abna'u Hadara Tidiani</p>
-                          <p className="text-xs text-gray-500">70 Hadaratoul Jumu'ah {getGregorianYearLabel()}</p>
+                          <p className="font-semibold text-gray-900 group-hover:text-emerald-700">{t('nav.hadaraTitle')}</p>
+                          <p className={`text-xs text-gray-500 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('nav.hadaraDesc')} {getGregorianYearLabel()}</p>
                         </div>
                       </Link>
                     </div>
@@ -187,9 +187,9 @@ const Navigation = ({ scrolled }) => {
                   scrolled
                     ? 'text-emerald-700 hover:text-gold-600'
                     : 'text-white hover:text-gold-300'
-                }`}
+                } ${language === 'ar' ? 'font-arabic' : ''}`}
               >
-                Nos activités
+                {t('nav.activities')}
                 <ChevronDown className={`w-4 h-4 transition-transform ${activitiesOpen ? 'rotate-180' : ''}`} />
               </button>
 
@@ -211,8 +211,8 @@ const Navigation = ({ scrolled }) => {
                           <Award className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                          <p className="font-semibold text-gray-900 group-hover:text-emerald-700">Réalisations</p>
-                          <p className="text-xs text-gray-500">Nos projets et actions</p>
+                          <p className={`font-semibold text-gray-900 group-hover:text-emerald-700 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('nav.realisationsTitle')}</p>
+                          <p className={`text-xs text-gray-500 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('nav.realisationsDesc')}</p>
                         </div>
                       </Link>
                     </div>
@@ -326,7 +326,7 @@ const Navigation = ({ scrolled }) => {
                       language === 'ar' ? 'font-arabic text-right' : ''
                     }`}
                   >
-                    <span>Calendriers</span>
+                    <span>{t('nav.calendars')}</span>
                     <ChevronDown className={`w-4 h-4 transition-transform ${mobileCalendarsOpen ? 'rotate-180' : ''}`} />
                   </button>
                   
@@ -345,7 +345,7 @@ const Navigation = ({ scrolled }) => {
                           className="flex items-center gap-3 px-8 py-3 text-gray-700 hover:bg-white transition-colors"
                         >
                           <BookOpen className="w-4 h-4 text-emerald-600" />
-                          <span className="text-sm">Programmes de Usratul Amine</span>
+                          <span className={`text-sm ${language === 'ar' ? 'font-arabic' : ''}`}>{t('nav.programsTitle')}</span>
                         </Link>
                         <Link
                           to="/calendrier-tariqa"
@@ -353,7 +353,7 @@ const Navigation = ({ scrolled }) => {
                           className="flex items-center gap-3 px-8 py-3 text-gray-700 hover:bg-white transition-colors"
                         >
                           <Calendar className="w-4 h-4 text-gold-600" />
-                          <span className="text-sm">COSKAS</span>
+                          <span className="text-sm">{t('nav.coskasTitle')}</span>
                         </Link>
                         <Link
                           to="/hadara-djouma"
@@ -361,7 +361,7 @@ const Navigation = ({ scrolled }) => {
                           className="flex items-center gap-3 px-8 py-3 text-gray-700 hover:bg-white transition-colors"
                         >
                           <Sparkles className="w-4 h-4 text-emerald-700" />
-                          <span className="text-sm">Abna'u Hadara Tidiani</span>
+                          <span className="text-sm">{t('nav.hadaraTitle')}</span>
                         </Link>
                       </motion.div>
                     )}
@@ -374,7 +374,7 @@ const Navigation = ({ scrolled }) => {
                       language === 'ar' ? 'font-arabic text-right' : ''
                     }`}
                   >
-                    <span>Nos activités</span>
+                    <span>{t('nav.activities')}</span>
                     <ChevronDown className={`w-4 h-4 transition-transform ${mobileActivitiesOpen ? 'rotate-180' : ''}`} />
                   </button>
 
@@ -393,7 +393,7 @@ const Navigation = ({ scrolled }) => {
                           className="flex items-center gap-3 px-8 py-3 text-gray-700 hover:bg-white transition-colors"
                         >
                           <Award className="w-4 h-4 text-emerald-600" />
-                          <span className="text-sm">Réalisations</span>
+                          <span className={`text-sm ${language === 'ar' ? 'font-arabic' : ''}`}>{t('nav.realisationsTitle')}</span>
                         </Link>
                       </motion.div>
                     )}
