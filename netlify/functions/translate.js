@@ -1,19 +1,28 @@
+const LANGUAGE_NAMES = {
+  ar: 'arabe littéraire moderne',
+  en: 'anglais'
+};
+
 export const handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
   try {
-    const { fields } = JSON.parse(event.body);
+    const { fields, languages } = JSON.parse(event.body);
 
     if (!fields || typeof fields !== 'object') {
       return { statusCode: 400, body: JSON.stringify({ error: 'fields is required' }) };
     }
 
+    const targetLanguages = Array.isArray(languages) && languages.length > 0 ? languages : ['ar'];
+
     const entries = Object.entries(fields).filter(([, value]) => typeof value === 'string' && value.trim());
     if (entries.length === 0) {
       return { statusCode: 200, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) };
     }
+
+    const languageLabels = targetLanguages.map((code) => LANGUAGE_NAMES[code] || code).join(' et ');
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -28,7 +37,7 @@ export const handler = async (event) => {
         messages: [
           {
             role: 'system',
-            content: 'Tu traduis du français vers l\'arabe littéraire moderne pour le site d\'une association soufie tidiane (Usratul Amine, Tivaouane, Sénégal). Respecte le registre religieux et culturel (noms propres, titres comme "Serigne", termes de la Tariqa) sans les dénaturer. Réponds uniquement avec un objet JSON dont les clés sont exactement celles fournies en entrée et les valeurs leur traduction arabe.'
+            content: `Tu traduis du français vers ${languageLabels} pour le site d'une association soufie tidiane (Usratul Amine, Tivaouane, Sénégal). Respecte le registre religieux et culturel (noms propres, titres comme "Serigne", termes de la Tariqa) sans les dénaturer. Réponds uniquement avec un objet JSON de la forme {${targetLanguages.map((c) => `"${c}": {...}`).join(', ')}}, où chaque sous-objet a exactement les mêmes clés que celles fournies en entrée et leur traduction dans la langue correspondante.`
           },
           {
             role: 'user',
