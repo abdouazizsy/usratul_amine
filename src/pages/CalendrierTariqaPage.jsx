@@ -171,7 +171,7 @@ const CalendrierTariqaPage = () => {
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                     >
-                      {category === 'all' ? t('tariqa.all') : category}
+                      {category === 'all' ? t('tariqa.all') : category === 'COSKAS' ? t('tariqa.title') : category}
                     </button>
                   ))}
                 </div>

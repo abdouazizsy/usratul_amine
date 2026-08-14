@@ -259,6 +259,7 @@ export const translations = {
 
     // Hadara Djouma page
     hadara: {
+      title: "Hadaratoul Jumu'ah",
       calendarSubtitle: "Calendrier Annuel",
       search: "Rechercher une Hadara...",
       upcoming: "à venir",
@@ -370,10 +371,10 @@ export const translations = {
       activities: "أنشطتنا",
       programsTitle: "برامج أسرة الأمين",
       programsDesc: "أنشطتنا وفعالياتنا",
-      coskasTitle: "COSKAS",
+      coskasTitle: "كوسكاس",
       coskasDesc: "التقويم الرسمي للطريقة",
-      hadaraTitle: "Abna'u Hadara Tidiani",
-      hadaraDesc: "70 Hadaratoul Jumu'ah",
+      hadaraTitle: "أبناء حضرة التجانية",
+      hadaraDesc: "70 حضرة الجمعة",
       hijriCalendarTitle: "التقويم الهجري",
       hijriCalendarDesc: "التقويم الهجري الشهري للتحميل",
       realisationsTitle: "الإنجازات",
@@ -616,6 +617,7 @@ export const translations = {
 
     // Hadara Djouma page
     hadara: {
+      title: "حضرة الجمعة",
       calendarSubtitle: "التقويم السنوي",
       search: "البحث عن حضرة...",
       upcoming: "القادمة",
@@ -626,14 +628,14 @@ export const translations = {
       tryOther: "جرّب مصطلح بحث آخر",
       comingSoon: "ستتوفر الحضرات قريباً",
       close: "إغلاق",
-      loading: "جارٍ تحميل الأبناء الحضرة التيجانية...",
+      loading: "جارٍ تحميل أبناء حضرة التجانية...",
       location: "المكان",
       description: "الوصف"
     },
 
     // Calendrier Tariqa page
     tariqa: {
-      title: "COSKAS",
+      title: "كوسكاس",
       subtitle: "اكتشف الأحداث الرسمية لحضرة الطريقة التجانية",
       loading: "جارٍ تحميل التقويم...",
       search: "البحث عن حدث...",
@@ -973,6 +975,7 @@ export const translations = {
 
     // Hadara Djouma page
     hadara: {
+      title: "Hadaratoul Jumu'ah",
       calendarSubtitle: "Annual Calendar",
       search: "Search for a Hadara...",
       upcoming: "upcoming",

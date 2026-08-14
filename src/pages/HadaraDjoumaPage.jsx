@@ -111,8 +111,8 @@ const HadaraDjoumaPage = () => {
             <div className="inline-block mb-6">
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-emerald-700 to-gold-600 blur-2xl opacity-40 animate-pulse"></div>
-                <h1 className="relative text-5xl md:text-7xl font-elegant font-bold bg-gradient-to-r from-emerald-700 via-emerald-600 to-gold-600 bg-clip-text text-transparent">
-                  Hadaratoul Jumu'ah
+                <h1 className={`relative text-5xl md:text-7xl font-elegant font-bold bg-gradient-to-r from-emerald-700 via-emerald-600 to-gold-600 bg-clip-text text-transparent ${language === 'ar' ? 'font-arabic' : ''}`}>
+                  {t('hadara.title')}
                 </h1>
               </div>
             </div>
