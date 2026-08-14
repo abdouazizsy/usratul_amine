@@ -17,6 +17,8 @@ export const translations = {
       coskasDesc: "Calendrier officiel de la Tariqa",
       hadaraTitle: "Abna'u Hadara Tidiani",
       hadaraDesc: "70 Hadaratoul Jumu'ah",
+      hijriCalendarTitle: "Calendrier musulman",
+      hijriCalendarDesc: "Calendrier Hijri mensuel à télécharger",
       realisationsTitle: "Réalisations",
       realisationsDesc: "Nos projets et actions"
     },
@@ -180,7 +182,18 @@ export const translations = {
         loading: "Chargement..."
       }
     },
-    
+
+    // Calendrier Hijri
+    hijriCalendar: {
+      title: "Calendrier musulman",
+      subtitle: "Téléchargez le calendrier Hijri mensuel de Usratul Amine",
+      current: "Mois en cours",
+      archive: "Calendriers précédents",
+      download: "Télécharger",
+      noCalendars: "Aucun calendrier disponible pour le moment",
+      loading: "Chargement..."
+    },
+
     // Program
     program: {
       title: "Programme",
@@ -361,6 +374,8 @@ export const translations = {
       coskasDesc: "التقويم الرسمي للطريقة",
       hadaraTitle: "Abna'u Hadara Tidiani",
       hadaraDesc: "70 Hadaratoul Jumu'ah",
+      hijriCalendarTitle: "التقويم الهجري",
+      hijriCalendarDesc: "التقويم الهجري الشهري للتحميل",
       realisationsTitle: "الإنجازات",
       realisationsDesc: "مشاريعنا وأعمالنا"
     },
@@ -524,7 +539,18 @@ export const translations = {
         loading: "جارٍ التحميل..."
       }
     },
-    
+
+    // Calendrier Hijri
+    hijriCalendar: {
+      title: "التقويم الهجري",
+      subtitle: "حمّل التقويم الهجري الشهري لأسرة الأمين",
+      current: "الشهر الحالي",
+      archive: "التقاويم السابقة",
+      download: "تحميل",
+      noCalendars: "لا يوجد أي تقويم متاح حالياً",
+      loading: "جارٍ التحميل..."
+    },
+
     // Program
     program: {
       title: "برنامج ٢٠٢٥",
@@ -705,6 +731,8 @@ export const translations = {
       coskasDesc: "Official Tariqa calendar",
       hadaraTitle: "Abna'u Hadara Tidiani",
       hadaraDesc: "70 Hadaratoul Jumu'ah",
+      hijriCalendarTitle: "Hijri Calendar",
+      hijriCalendarDesc: "Monthly Hijri calendar to download",
       realisationsTitle: "Achievements",
       realisationsDesc: "Our projects and initiatives"
     },
@@ -868,7 +896,18 @@ export const translations = {
         loading: "Loading..."
       }
     },
-    
+
+    // Calendrier Hijri
+    hijriCalendar: {
+      title: "Hijri Calendar",
+      subtitle: "Download the monthly Hijri calendar from Usratul Amine",
+      current: "Current month",
+      archive: "Previous calendars",
+      download: "Download",
+      noCalendars: "No calendar available at the moment",
+      loading: "Loading..."
+    },
+
     // Program
     program: {
       title: "Program",

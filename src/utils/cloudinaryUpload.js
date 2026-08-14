@@ -25,3 +25,10 @@ export const uploadImageToCloudinary = async (file, folder = 'usratul-amine/prod
   const data = await response.json()
   return data.secure_url
 }
+
+// Transforme une URL Cloudinary en lien de téléchargement forcé (Content-Disposition: attachment),
+// nécessaire car un simple <a download> ne fonctionne pas sur une URL cross-origin.
+export const getCloudinaryDownloadUrl = (url) => {
+  if (!url || !url.includes('/upload/')) return url
+  return url.replace('/upload/', '/upload/fl_attachment/')
+}

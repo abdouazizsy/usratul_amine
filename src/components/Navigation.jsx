@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ChevronDown, Calendar, Sparkles, BookOpen, ShoppingBag, ShoppingCart, Award } from 'lucide-react'
+import { Menu, X, ChevronDown, Calendar, Sparkles, BookOpen, ShoppingBag, ShoppingCart, Award, Moon } from 'lucide-react'
 import LanguageSelector from './LanguageSelector'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useCart } from '../contexts/CartContext'
@@ -168,6 +168,19 @@ const Navigation = ({ scrolled }) => {
                         <div>
                           <p className="font-semibold text-gray-900 group-hover:text-emerald-700">{t('nav.hadaraTitle')}</p>
                           <p className={`text-xs text-gray-500 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('nav.hadaraDesc')} {getGregorianYearLabel()}</p>
+                        </div>
+                      </Link>
+
+                      <Link
+                        to="/calendrier-hijri"
+                        className="flex items-start gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-gold-50 transition-all group"
+                      >
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-emerald-700 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                          <Moon className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <p className={`font-semibold text-gray-900 group-hover:text-emerald-700 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('nav.hijriCalendarTitle')}</p>
+                          <p className={`text-xs text-gray-500 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('nav.hijriCalendarDesc')}</p>
                         </div>
                       </Link>
                     </div>
@@ -362,6 +375,14 @@ const Navigation = ({ scrolled }) => {
                         >
                           <Sparkles className="w-4 h-4 text-emerald-700" />
                           <span className="text-sm">{t('nav.hadaraTitle')}</span>
+                        </Link>
+                        <Link
+                          to="/calendrier-hijri"
+                          onClick={() => { setMobileMenuOpen(false); setMobileCalendarsOpen(false) }}
+                          className="flex items-center gap-3 px-8 py-3 text-gray-700 hover:bg-white transition-colors"
+                        >
+                          <Moon className="w-4 h-4 text-amber-600" />
+                          <span className={`text-sm ${language === 'ar' ? 'font-arabic' : ''}`}>{t('nav.hijriCalendarTitle')}</span>
                         </Link>
                       </motion.div>
                     )}

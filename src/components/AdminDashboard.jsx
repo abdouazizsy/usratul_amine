@@ -27,7 +27,8 @@ import {
   Search,
   Award,
   BookOpen,
-  FileText
+  FileText,
+  Moon
 } from 'lucide-react'
 import { collection, addDoc, updateDoc, deleteDoc, doc, getDocs, query, orderBy } from 'firebase/firestore'
 import { db } from '../firebase/config'
@@ -159,6 +160,17 @@ const AdminDashboard = () => {
     diwans: []
   })
 
+  // État Calendrier Hijri
+  const [calendriersHijri, setCalendriersHijri] = useState([])
+  const [calendriersHijriSearch, setCalendriersHijriSearch] = useState('')
+  const [showCalendrierHijriForm, setShowCalendrierHijriForm] = useState(false)
+  const [editingCalendrierHijri, setEditingCalendrierHijri] = useState(null)
+  const [uploadingCalendrierHijriImage, setUploadingCalendrierHijriImage] = useState(false)
+  const [calendrierHijriFormData, setCalendrierHijriFormData] = useState({
+    title: '',
+    imageUrl: ''
+  })
+
   useEffect(() => {
     if (isAdmin) {
       fetchPrograms()
@@ -168,6 +180,7 @@ const AdminDashboard = () => {
       fetchOrders()
       fetchRealisations()
       fetchAuteurs()
+      fetchCalendriersHijri()
     }
   }, [isAdmin])
 
@@ -272,6 +285,20 @@ const AdminDashboard = () => {
       setAuteurs(auteursData)
     } catch (error) {
       console.error('Error fetching auteurs:', error)
+    }
+  }
+
+  const fetchCalendriersHijri = async () => {
+    try {
+      const calendriersQuery = query(collection(db, 'calendriers_hijri'), orderBy('createdAt', 'desc'))
+      const querySnapshot = await getDocs(calendriersQuery)
+      const calendriersData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }))
+      setCalendriersHijri(calendriersData)
+    } catch (error) {
+      console.error('Error fetching calendriers hijri:', error)
     }
   }
 
@@ -698,6 +725,105 @@ const AdminDashboard = () => {
     })
   }
 
+  const handleCalendrierHijriImageChange = async (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+
+    setUploadingCalendrierHijriImage(true)
+    try {
+      const imageUrl = await uploadImageToCloudinary(file, 'usratul-amine/calendriers')
+      setCalendrierHijriFormData(prev => ({ ...prev, imageUrl }))
+    } catch (error) {
+      console.error('Error uploading image:', error)
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: "Erreur d'upload",
+        message: error.message || "Impossible d'uploader l'image."
+      })
+    } finally {
+      setUploadingCalendrierHijriImage(false)
+      e.target.value = ''
+    }
+  }
+
+  const handleCalendrierHijriSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      if (editingCalendrierHijri) {
+        await updateDoc(doc(db, 'calendriers_hijri', editingCalendrierHijri.id), calendrierHijriFormData)
+        setNotification({
+          isOpen: true,
+          type: 'success',
+          title: 'Calendrier modifié',
+          message: 'Le calendrier a été modifié avec succès.'
+        })
+      } else {
+        await addDoc(collection(db, 'calendriers_hijri'), {
+          ...calendrierHijriFormData,
+          createdAt: new Date()
+        })
+        setNotification({
+          isOpen: true,
+          type: 'success',
+          title: 'Calendrier ajouté',
+          message: 'Le calendrier a été ajouté avec succès.'
+        })
+      }
+
+      setCalendrierHijriFormData({ title: '', imageUrl: '' })
+      setShowCalendrierHijriForm(false)
+      setEditingCalendrierHijri(null)
+      fetchCalendriersHijri()
+    } catch (error) {
+      console.error('Error saving calendrier hijri:', error)
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: 'Erreur',
+        message: "Impossible d'enregistrer le calendrier."
+      })
+    }
+  }
+
+  const handleEditCalendrierHijri = (calendrier) => {
+    setEditingCalendrierHijri(calendrier)
+    setCalendrierHijriFormData({
+      title: calendrier.title || '',
+      imageUrl: calendrier.imageUrl || ''
+    })
+    setShowCalendrierHijriForm(true)
+  }
+
+  const handleDeleteCalendrierHijri = (id) => {
+    setConfirmModal({
+      isOpen: true,
+      type: 'danger',
+      title: 'Supprimer le calendrier',
+      message: 'Êtes-vous sûr de vouloir supprimer ce calendrier ? Cette action est irréversible.',
+      onConfirm: async () => {
+        try {
+          await deleteDoc(doc(db, 'calendriers_hijri', id))
+          setNotification({
+            isOpen: true,
+            type: 'success',
+            title: 'Calendrier supprimé',
+            message: 'Le calendrier a été supprimé avec succès.'
+          })
+          fetchCalendriersHijri()
+        } catch (error) {
+          console.error('Error deleting calendrier hijri:', error)
+          setNotification({
+            isOpen: true,
+            type: 'error',
+            title: 'Erreur',
+            message: 'Impossible de supprimer le calendrier.'
+          })
+        }
+      }
+    })
+  }
+
   const handleImportHadaraDjouma = () => {
     setConfirmModal({
       isOpen: true,
@@ -1102,6 +1228,12 @@ const AdminDashboard = () => {
     return [a.name, ...(a.diwans || []).map(d => d.title)].filter(Boolean).some(v => v.toLowerCase().includes(term))
   })
 
+  const filteredCalendriersHijri = calendriersHijri.filter(c => {
+    const term = calendriersHijriSearch.trim().toLowerCase()
+    if (!term) return true
+    return [c.title].filter(Boolean).some(v => v.toLowerCase().includes(term))
+  })
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-gold-50">
       <div className="bg-white shadow-sm border-b">
@@ -1196,6 +1328,17 @@ const AdminDashboard = () => {
               >
                 <BookOpen className="w-5 h-5 flex-shrink-0" />
                 Auteurs & Diwans
+              </button>
+              <button
+                onClick={() => setActiveTab('calendrier-hijri')}
+                className={`flex-shrink-0 lg:w-full flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2 lg:py-3 rounded-lg transition-colors whitespace-nowrap text-sm lg:text-base ${
+                  activeTab === 'calendrier-hijri'
+                    ? 'bg-emerald-100 text-emerald-700'
+                    : 'text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                <Moon className="w-5 h-5 flex-shrink-0" />
+                Calendrier Hijri
               </button>
               <button
                 onClick={() => setActiveTab('orders')}
@@ -2804,6 +2947,177 @@ const AdminDashboard = () => {
                               </button>
                               <button
                                 onClick={() => handleDeleteAuteur(auteur.id)}
+                                className="flex-1 flex items-center justify-center gap-1 p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors text-sm"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                                Supprimer
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </motion.div>
+            )}
+
+            {activeTab === 'calendrier-hijri' && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white rounded-xl shadow-sm p-4 sm:p-6"
+              >
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-3">
+                  <h2 className="text-lg sm:text-xl font-bold text-gray-800">
+                    Gestion du Calendrier Hijri
+                  </h2>
+                  <button
+                    onClick={() => setShowCalendrierHijriForm(true)}
+                    className="flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Ajouter un calendrier
+                  </button>
+                </div>
+
+                {showCalendrierHijriForm && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="mb-6 p-6 bg-gray-50 rounded-lg"
+                  >
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-lg font-semibold">
+                        {editingCalendrierHijri ? 'Modifier le calendrier' : 'Nouveau calendrier'}
+                      </h3>
+                      <button
+                        onClick={() => {
+                          setShowCalendrierHijriForm(false)
+                          setEditingCalendrierHijri(null)
+                          setCalendrierHijriFormData({ title: '', imageUrl: '' })
+                        }}
+                        className="text-gray-500 hover:text-gray-700"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    <form onSubmit={handleCalendrierHijriSubmit} className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Titre du calendrier
+                        </label>
+                        <input
+                          type="text"
+                          value={calendrierHijriFormData.title}
+                          onChange={(e) => setCalendrierHijriFormData({ ...calendrierHijriFormData, title: e.target.value })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                          placeholder="ex: Robiyul Awal 1448H — Août 2026"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Image du calendrier (PNG/JPG)
+                        </label>
+                        <div className="flex items-center gap-4">
+                          <label className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm">
+                            <Upload className="w-4 h-4" />
+                            {uploadingCalendrierHijriImage ? 'Envoi en cours...' : 'Choisir une image'}
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleCalendrierHijriImageChange}
+                              disabled={uploadingCalendrierHijriImage}
+                              className="hidden"
+                            />
+                          </label>
+                          {calendrierHijriFormData.imageUrl ? (
+                            <img
+                              src={calendrierHijriFormData.imageUrl}
+                              alt="Aperçu"
+                              className="w-16 h-16 object-cover rounded-lg border border-gray-200"
+                            />
+                          ) : (
+                            <div className="w-16 h-16 rounded-lg border border-dashed border-gray-300 flex items-center justify-center text-gray-300">
+                              <ImageIcon className="w-6 h-6" />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="flex gap-3">
+                        <button
+                          type="submit"
+                          disabled={uploadingCalendrierHijriImage}
+                          className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50"
+                        >
+                          <Save className="w-4 h-4" />
+                          {editingCalendrierHijri ? 'Mettre à jour' : 'Enregistrer'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowCalendrierHijriForm(false)
+                            setEditingCalendrierHijri(null)
+                          }}
+                          className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                        >
+                          Annuler
+                        </button>
+                      </div>
+                    </form>
+                  </motion.div>
+                )}
+
+                {calendriersHijri.length === 0 ? (
+                  <div className="text-center py-8">
+                    <Moon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                    <p className="text-gray-500">
+                      Aucun calendrier enregistré pour le moment
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="relative mb-4">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <input
+                        value={calendriersHijriSearch}
+                        onChange={(e) => setCalendriersHijriSearch(e.target.value)}
+                        placeholder="Rechercher un calendrier..."
+                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                      />
+                    </div>
+                    {filteredCalendriersHijri.length === 0 && (
+                      <div className="text-center py-8 text-gray-500">Aucun résultat pour "{calendriersHijriSearch}"</div>
+                    )}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {filteredCalendriersHijri.map((calendrier) => (
+                        <div
+                          key={calendrier.id}
+                          className="border border-gray-200 rounded-xl overflow-hidden bg-gray-50"
+                        >
+                          <div className="w-full h-40 bg-gray-100 flex items-center justify-center overflow-hidden">
+                            {calendrier.imageUrl ? (
+                              <img src={calendrier.imageUrl} alt={calendrier.title} className="w-full h-full object-cover" />
+                            ) : (
+                              <ImageIcon className="w-10 h-10 text-gray-300" />
+                            )}
+                          </div>
+                          <div className="p-4">
+                            <h3 className="font-semibold text-gray-800 mb-3">{calendrier.title}</h3>
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => handleEditCalendrierHijri(calendrier)}
+                                className="flex-1 flex items-center justify-center gap-1 p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors text-sm"
+                              >
+                                <Edit className="w-4 h-4" />
+                                Modifier
+                              </button>
+                              <button
+                                onClick={() => handleDeleteCalendrierHijri(calendrier.id)}
                                 className="flex-1 flex items-center justify-center gap-1 p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors text-sm"
                               >
                                 <Trash2 className="w-4 h-4" />

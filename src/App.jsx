@@ -9,6 +9,7 @@ import RealisationsPage from './pages/RealisationsPage'
 import LibraryPage from './pages/LibraryPage'
 import RayonDetailPage from './pages/RayonDetailPage'
 import AuteursDiwansPage from './pages/AuteursDiwansPage'
+import CalendrierHijriPage from './pages/CalendrierHijriPage'
 import CartPage from './pages/CartPage'
 import CheckoutPage from './pages/CheckoutPage'
 import AdminLogin from './components/AdminLogin'
@@ -55,6 +56,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/programme" element={<ProgrammePage />} />
             <Route path="/calendrier-tariqa" element={<CalendrierTariqaPage />} />
+            <Route path="/calendrier-hijri" element={<CalendrierHijriPage />} />
             <Route path="/hadara-djouma" element={<HadaraDjoumaPage />} />
             <Route path="/produits" element={<ProduitsPage />} />
             <Route path="/realisations" element={<RealisationsPage />} />
