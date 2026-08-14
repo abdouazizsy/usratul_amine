@@ -289,17 +289,17 @@ const Navigation = ({ scrolled }) => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setMobileMenuOpen(false)}
-                className="md:hidden fixed inset-0 bg-black/50 z-40"
+                className="md:hidden fixed inset-0 bg-black/50 z-[55]"
                 style={{ top: '80px' }}
               />
-              
+
               {/* Menu déroulant */}
               <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.3 }}
-                className="md:hidden absolute left-0 right-0 top-full z-50"
+                className="md:hidden absolute left-0 right-0 top-full z-[60] max-h-[calc(100vh-100px)] overflow-y-auto"
               >
                 <div className="mx-4 mt-2 py-4 space-y-1 bg-white rounded-2xl shadow-2xl border border-gray-200">
                   {/* Liens avec scroll */}
