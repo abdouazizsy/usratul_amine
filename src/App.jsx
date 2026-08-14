@@ -8,6 +8,7 @@ import ProduitsPage from './pages/ProduitsPage'
 import RealisationsPage from './pages/RealisationsPage'
 import LibraryPage from './pages/LibraryPage'
 import RayonDetailPage from './pages/RayonDetailPage'
+import AuteursDiwansPage from './pages/AuteursDiwansPage'
 import CartPage from './pages/CartPage'
 import CheckoutPage from './pages/CheckoutPage'
 import AdminLogin from './components/AdminLogin'
@@ -58,6 +59,7 @@ function App() {
             <Route path="/produits" element={<ProduitsPage />} />
             <Route path="/realisations" element={<RealisationsPage />} />
             <Route path="/library" element={<LibraryPage />} />
+            <Route path="/library/auteurs" element={<AuteursDiwansPage />} />
             <Route path="/library/:rayonId" element={<RayonDetailPage />} />
             <Route path="/panier" element={<CartPage />} />
             <Route path="/commande" element={<CheckoutPage />} />

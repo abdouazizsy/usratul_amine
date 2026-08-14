@@ -25,7 +25,9 @@ import {
   Banknote,
   UsersRound,
   Search,
-  Award
+  Award,
+  BookOpen,
+  FileText
 } from 'lucide-react'
 import { collection, addDoc, updateDoc, deleteDoc, doc, getDocs, query, orderBy } from 'firebase/firestore'
 import { db } from '../firebase/config'
@@ -34,6 +36,7 @@ import { tariqaEvents2025_2026 } from '../data/tariqa_events_2025_2026'
 import { tariqaEvents2026_2027 } from '../data/tariqa_events_2026_2027'
 import { importHadaraDjoumaToFirebase } from '../utils/importHadaraDjouma'
 import { uploadImageToCloudinary } from '../utils/cloudinaryUpload'
+import { uploadFileToStorage } from '../utils/firebaseStorageUpload'
 import { translateAndPatchDoc } from '../utils/translateContent'
 import ConfirmModal from './ConfirmModal'
 import NotificationToast from './NotificationToast'
@@ -141,6 +144,21 @@ const AdminDashboard = () => {
     images: []
   })
 
+  // État Auteurs & Diwans
+  const [auteurs, setAuteurs] = useState([])
+  const [auteursSearch, setAuteursSearch] = useState('')
+  const [showAuteurForm, setShowAuteurForm] = useState(false)
+  const [editingAuteur, setEditingAuteur] = useState(null)
+  const [uploadingAuteurPhoto, setUploadingAuteurPhoto] = useState(false)
+  const [newDiwanTitle, setNewDiwanTitle] = useState('')
+  const [uploadingDiwan, setUploadingDiwan] = useState(false)
+  const [diwanUploadProgress, setDiwanUploadProgress] = useState(0)
+  const [auteurFormData, setAuteurFormData] = useState({
+    name: '',
+    photo: '',
+    diwans: []
+  })
+
   useEffect(() => {
     if (isAdmin) {
       fetchPrograms()
@@ -149,6 +167,7 @@ const AdminDashboard = () => {
       fetchProducts()
       fetchOrders()
       fetchRealisations()
+      fetchAuteurs()
     }
   }, [isAdmin])
 
@@ -239,6 +258,20 @@ const AdminDashboard = () => {
       setRealisations(realisationsData)
     } catch (error) {
       console.error('Error fetching realisations:', error)
+    }
+  }
+
+  const fetchAuteurs = async () => {
+    try {
+      const auteursQuery = query(collection(db, 'auteurs'), orderBy('createdAt', 'desc'))
+      const querySnapshot = await getDocs(auteursQuery)
+      const auteursData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }))
+      setAuteurs(auteursData)
+    } catch (error) {
+      console.error('Error fetching auteurs:', error)
     }
   }
 
@@ -511,6 +544,154 @@ const AdminDashboard = () => {
             type: 'error',
             title: 'Erreur',
             message: 'Impossible de supprimer la réalisation.'
+          })
+        }
+      }
+    })
+  }
+
+  const handleAuteurPhotoChange = async (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+
+    setUploadingAuteurPhoto(true)
+    try {
+      const photo = await uploadImageToCloudinary(file, 'usratul-amine/auteurs')
+      setAuteurFormData(prev => ({ ...prev, photo }))
+    } catch (error) {
+      console.error('Error uploading photo:', error)
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: "Erreur d'upload",
+        message: error.message || "Impossible d'uploader la photo."
+      })
+    } finally {
+      setUploadingAuteurPhoto(false)
+      e.target.value = ''
+    }
+  }
+
+  const handleAddDiwanFile = async (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+
+    if (file.type !== 'application/pdf') {
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: 'Fichier invalide',
+        message: 'Seuls les fichiers PDF sont acceptés pour les diwans.'
+      })
+      e.target.value = ''
+      return
+    }
+
+    const title = newDiwanTitle.trim() || file.name.replace(/\.pdf$/i, '')
+    setUploadingDiwan(true)
+    setDiwanUploadProgress(0)
+    try {
+      const url = await uploadFileToStorage(file, 'diwans', setDiwanUploadProgress)
+      setAuteurFormData(prev => ({
+        ...prev,
+        diwans: [...prev.diwans, { title, url, sizeMB: +(file.size / (1024 * 1024)).toFixed(1) }]
+      }))
+      setNewDiwanTitle('')
+    } catch (error) {
+      console.error('Error uploading PDF:', error)
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: "Erreur d'upload",
+        message: "Impossible d'uploader le document PDF."
+      })
+    } finally {
+      setUploadingDiwan(false)
+      setDiwanUploadProgress(0)
+      e.target.value = ''
+    }
+  }
+
+  const handleRemoveDiwan = (index) => {
+    setAuteurFormData(prev => ({
+      ...prev,
+      diwans: prev.diwans.filter((_, i) => i !== index)
+    }))
+  }
+
+  const handleAuteurSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      if (editingAuteur) {
+        await updateDoc(doc(db, 'auteurs', editingAuteur.id), auteurFormData)
+        setNotification({
+          isOpen: true,
+          type: 'success',
+          title: 'Auteur modifié',
+          message: "L'auteur a été modifié avec succès."
+        })
+      } else {
+        await addDoc(collection(db, 'auteurs'), {
+          ...auteurFormData,
+          createdAt: new Date()
+        })
+        setNotification({
+          isOpen: true,
+          type: 'success',
+          title: 'Auteur ajouté',
+          message: "L'auteur a été ajouté avec succès."
+        })
+      }
+
+      setAuteurFormData({ name: '', photo: '', diwans: [] })
+      setNewDiwanTitle('')
+      setShowAuteurForm(false)
+      setEditingAuteur(null)
+      fetchAuteurs()
+    } catch (error) {
+      console.error('Error saving auteur:', error)
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: 'Erreur',
+        message: "Impossible d'enregistrer l'auteur."
+      })
+    }
+  }
+
+  const handleEditAuteur = (auteur) => {
+    setEditingAuteur(auteur)
+    setAuteurFormData({
+      name: auteur.name || '',
+      photo: auteur.photo || '',
+      diwans: auteur.diwans || []
+    })
+    setShowAuteurForm(true)
+  }
+
+  const handleDeleteAuteur = (id) => {
+    setConfirmModal({
+      isOpen: true,
+      type: 'danger',
+      title: "Supprimer l'auteur",
+      message: 'Êtes-vous sûr de vouloir supprimer cet auteur et tous ses documents ? Cette action est irréversible.',
+      onConfirm: async () => {
+        try {
+          await deleteDoc(doc(db, 'auteurs', id))
+          setNotification({
+            isOpen: true,
+            type: 'success',
+            title: 'Auteur supprimé',
+            message: "L'auteur a été supprimé avec succès."
+          })
+          fetchAuteurs()
+        } catch (error) {
+          console.error('Error deleting auteur:', error)
+          setNotification({
+            isOpen: true,
+            type: 'error',
+            title: 'Erreur',
+            message: "Impossible de supprimer l'auteur."
           })
         }
       }
@@ -915,6 +1096,12 @@ const AdminDashboard = () => {
     return [r.title, r.description].filter(Boolean).some(v => v.toLowerCase().includes(term))
   })
 
+  const filteredAuteurs = auteurs.filter(a => {
+    const term = auteursSearch.trim().toLowerCase()
+    if (!term) return true
+    return [a.name, ...(a.diwans || []).map(d => d.title)].filter(Boolean).some(v => v.toLowerCase().includes(term))
+  })
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-gold-50">
       <div className="bg-white shadow-sm border-b">
@@ -998,6 +1185,17 @@ const AdminDashboard = () => {
               >
                 <Award className="w-5 h-5 flex-shrink-0" />
                 Réalisations
+              </button>
+              <button
+                onClick={() => setActiveTab('auteurs')}
+                className={`flex-shrink-0 lg:w-full flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2 lg:py-3 rounded-lg transition-colors whitespace-nowrap text-sm lg:text-base ${
+                  activeTab === 'auteurs'
+                    ? 'bg-emerald-100 text-emerald-700'
+                    : 'text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                <BookOpen className="w-5 h-5 flex-shrink-0" />
+                Auteurs & Diwans
               </button>
               <button
                 onClick={() => setActiveTab('orders')}
@@ -2389,6 +2587,233 @@ const AdminDashboard = () => {
                       </div>
                     ))}
                   </div>
+                  </>
+                )}
+              </motion.div>
+            )}
+
+            {activeTab === 'auteurs' && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white rounded-xl shadow-sm p-4 sm:p-6"
+              >
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-3">
+                  <h2 className="text-lg sm:text-xl font-bold text-gray-800">
+                    Gestion des Auteurs & Diwans
+                  </h2>
+                  <button
+                    onClick={() => setShowAuteurForm(true)}
+                    className="flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Ajouter un auteur
+                  </button>
+                </div>
+
+                {showAuteurForm && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="mb-6 p-6 bg-gray-50 rounded-lg"
+                  >
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-lg font-semibold">
+                        {editingAuteur ? "Modifier l'auteur" : 'Nouvel auteur'}
+                      </h3>
+                      <button
+                        onClick={() => {
+                          setShowAuteurForm(false)
+                          setEditingAuteur(null)
+                          setAuteurFormData({ name: '', photo: '', diwans: [] })
+                          setNewDiwanTitle('')
+                        }}
+                        className="text-gray-500 hover:text-gray-700"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    <form onSubmit={handleAuteurSubmit} className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Nom de l'auteur
+                        </label>
+                        <input
+                          type="text"
+                          value={auteurFormData.name}
+                          onChange={(e) => setAuteurFormData({ ...auteurFormData, name: e.target.value })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                          placeholder="ex: Seydil Hadji Malick SY"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Photo
+                        </label>
+                        <div className="flex items-center gap-3">
+                          {auteurFormData.photo && (
+                            <img src={auteurFormData.photo} alt="Aperçu" className="w-16 h-16 object-cover rounded-lg border border-gray-200" />
+                          )}
+                          <label className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm">
+                            <Upload className="w-4 h-4" />
+                            {uploadingAuteurPhoto ? 'Envoi en cours...' : (auteurFormData.photo ? 'Changer la photo' : 'Ajouter une photo')}
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleAuteurPhotoChange}
+                              disabled={uploadingAuteurPhoto}
+                              className="hidden"
+                            />
+                          </label>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Diwan & écrits (PDF)
+                        </label>
+
+                        {auteurFormData.diwans.length > 0 && (
+                          <div className="space-y-2 mb-3">
+                            {auteurFormData.diwans.map((docItem, index) => (
+                              <div key={`${docItem.url}-${index}`} className="flex items-center gap-3 p-2 bg-white border border-gray-200 rounded-lg">
+                                <FileText className="w-5 h-5 text-emerald-600 flex-shrink-0" />
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm font-medium text-gray-800 truncate">{docItem.title}</p>
+                                  <p className="text-xs text-gray-500">{docItem.sizeMB} Mo</p>
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() => handleRemoveDiwan(index)}
+                                  className="w-6 h-6 flex items-center justify-center text-red-600 hover:bg-red-50 rounded-full transition-colors flex-shrink-0"
+                                >
+                                  <X className="w-4 h-4" />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        <div className="flex flex-col sm:flex-row gap-2">
+                          <input
+                            type="text"
+                            value={newDiwanTitle}
+                            onChange={(e) => setNewDiwanTitle(e.target.value)}
+                            placeholder="Titre du document (ex: Diwan complet)"
+                            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm"
+                            disabled={uploadingDiwan}
+                          />
+                          <label className={`flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm flex-shrink-0 ${uploadingDiwan ? 'opacity-50 pointer-events-none' : ''}`}>
+                            <Upload className="w-4 h-4" />
+                            {uploadingDiwan ? `Envoi... ${diwanUploadProgress}%` : 'Ajouter un PDF'}
+                            <input
+                              type="file"
+                              accept="application/pdf"
+                              onChange={handleAddDiwanFile}
+                              disabled={uploadingDiwan}
+                              className="hidden"
+                            />
+                          </label>
+                        </div>
+                        {uploadingDiwan && (
+                          <div className="w-full h-1.5 bg-gray-200 rounded-full mt-2 overflow-hidden">
+                            <div
+                              className="h-full bg-emerald-600 transition-all duration-300"
+                              style={{ width: `${diwanUploadProgress}%` }}
+                            />
+                          </div>
+                        )}
+                        <p className="text-xs text-gray-500 mt-2">
+                          Renseigne un titre puis choisis le PDF correspondant. Tu peux ajouter plusieurs documents pour un même auteur.
+                        </p>
+                      </div>
+
+                      <div className="flex gap-3">
+                        <button
+                          type="submit"
+                          disabled={uploadingAuteurPhoto || uploadingDiwan}
+                          className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50"
+                        >
+                          <Save className="w-4 h-4" />
+                          {editingAuteur ? 'Mettre à jour' : 'Enregistrer'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowAuteurForm(false)
+                            setEditingAuteur(null)
+                          }}
+                          className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                        >
+                          Annuler
+                        </button>
+                      </div>
+                    </form>
+                  </motion.div>
+                )}
+
+                {auteurs.length === 0 ? (
+                  <div className="text-center py-8">
+                    <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                    <p className="text-gray-500">
+                      Aucun auteur enregistré pour le moment
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="relative mb-4">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <input
+                        value={auteursSearch}
+                        onChange={(e) => setAuteursSearch(e.target.value)}
+                        placeholder="Rechercher un auteur..."
+                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                      />
+                    </div>
+                    {filteredAuteurs.length === 0 && (
+                      <div className="text-center py-8 text-gray-500">Aucun résultat pour "{auteursSearch}"</div>
+                    )}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {filteredAuteurs.map((auteur) => (
+                        <div
+                          key={auteur.id}
+                          className="border border-gray-200 rounded-xl overflow-hidden bg-gray-50"
+                        >
+                          <div className="relative w-full h-40 bg-gray-100 flex items-center justify-center overflow-hidden">
+                            {auteur.photo ? (
+                              <img src={auteur.photo} alt={auteur.name} className="w-full h-full object-cover" />
+                            ) : (
+                              <ImageIcon className="w-10 h-10 text-gray-300" />
+                            )}
+                          </div>
+                          <div className="p-4">
+                            <h3 className="font-semibold text-gray-800 mb-1">{auteur.name}</h3>
+                            <p className="text-sm text-gray-600 mb-3">
+                              {(auteur.diwans || []).length} document{(auteur.diwans || []).length !== 1 ? 's' : ''}
+                            </p>
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => handleEditAuteur(auteur)}
+                                className="flex-1 flex items-center justify-center gap-1 p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors text-sm"
+                              >
+                                <Edit className="w-4 h-4" />
+                                Modifier
+                              </button>
+                              <button
+                                onClick={() => handleDeleteAuteur(auteur.id)}
+                                className="flex-1 flex items-center justify-center gap-1 p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors text-sm"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                                Supprimer
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </>
                 )}
               </motion.div>

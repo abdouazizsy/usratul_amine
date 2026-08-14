@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Library as LibraryIcon, Sparkles, ArrowRight, Phone } from 'lucide-react'
+import { Library as LibraryIcon, Sparkles, ArrowRight, Phone, BookOpen } from 'lucide-react'
 import { useLanguage } from '../contexts/LanguageContext'
 import { getTranslation } from '../translations/translations'
 import { rayonBooks } from '../data/rayonBooks'
@@ -239,6 +239,37 @@ const Library = () => {
               </motion.div>
             )
           })}
+        </motion.div>
+
+        {/* Auteurs & Diwans teaser */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mt-16 relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-50 via-white to-amber-50 border border-emerald-100 p-10 sm:p-14 text-center shadow-sm"
+        >
+          <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-amber-100 rounded-full">
+            <BookOpen className="w-5 h-5 text-amber-600" />
+            <span className="text-sm font-semibold text-amber-800">
+              {t('library.authors.sectionTitle')}
+            </span>
+          </div>
+          <h3
+            className={`text-2xl md:text-3xl font-bold mb-3 bg-gradient-to-r from-amber-800 via-emerald-700 to-amber-800 bg-clip-text text-transparent ${language === 'ar' ? 'font-arabic' : ''}`}
+          >
+            {t('library.authors.sectionTitle')}
+          </h3>
+          <p className={`text-gray-600 max-w-2xl mx-auto mb-8 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>
+            {t('library.authors.sectionSubtitle')}
+          </p>
+          <Link
+            to="/library/auteurs"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded-xl shadow-lg transition-colors"
+          >
+            {t('library.authors.cta')}
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </motion.div>
       </div>
     </section>

@@ -167,6 +167,17 @@ export const translations = {
           titleFr: "Revues",
           description: "Collection de périodiques et publications islamiques"
         }
+      },
+      authors: {
+        sectionTitle: "Auteurs & Diwans",
+        sectionSubtitle: "Découvrez les écrits et diwans des grandes figures de la Tariqa Tidianiyya de Tivaouane, à consulter et télécharger librement.",
+        cta: "Voir les auteurs & diwans",
+        pageTitle: "Auteurs & Diwans",
+        pageSubtitle: "Les écrits spirituels des Serigne de la Tariqa Tidianiyya de Tivaouane",
+        backToLibrary: "Retour à la bibliothèque",
+        noAuthors: "Aucun auteur n'a encore été ajouté",
+        noDocuments: "Aucun document disponible pour le moment",
+        loading: "Chargement..."
       }
     },
     
@@ -500,6 +511,17 @@ export const translations = {
           titleFr: "Revues",
           description: "مجموعة من الدوريات والمنشورات الإسلامية"
         }
+      },
+      authors: {
+        sectionTitle: "المؤلفون والدواوين",
+        sectionSubtitle: "اكتشف كتابات ودواوين كبار أعلام الطريقة التجانية بتيفاوان، للاطلاع والتحميل مجاناً.",
+        cta: "عرض المؤلفين والدواوين",
+        pageTitle: "المؤلفون والدواوين",
+        pageSubtitle: "الكتابات الروحية لسادات الطريقة التجانية بتيفاوان",
+        backToLibrary: "العودة إلى المكتبة",
+        noAuthors: "لم تتم إضافة أي مؤلف بعد",
+        noDocuments: "لا يوجد أي مستند متاح حالياً",
+        loading: "جارٍ التحميل..."
       }
     },
     
@@ -833,6 +855,17 @@ export const translations = {
           titleFr: "Magazines",
           description: "Collection of Islamic periodicals and publications"
         }
+      },
+      authors: {
+        sectionTitle: "Authors & Diwans",
+        sectionSubtitle: "Discover the writings and diwans of the great figures of the Tidiani Tariqa of Tivaouane, free to read and download.",
+        cta: "View authors & diwans",
+        pageTitle: "Authors & Diwans",
+        pageSubtitle: "The spiritual writings of the Serigne of the Tidiani Tariqa of Tivaouane",
+        backToLibrary: "Back to the library",
+        noAuthors: "No author has been added yet",
+        noDocuments: "No document available at the moment",
+        loading: "Loading..."
       }
     },
     
