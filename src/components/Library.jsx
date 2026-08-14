@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Library as LibraryIcon, Sparkles, ArrowRight, Phone, BookOpen } from 'lucide-react'
+import { Library as LibraryIcon, Sparkles, ArrowRight, Phone, BookOpen, ScrollText, Scale, Languages, Globe, Newspaper } from 'lucide-react'
 import { useLanguage } from '../contexts/LanguageContext'
 import { getTranslation } from '../translations/translations'
 import { rayonBooks } from '../data/rayonBooks'
@@ -18,48 +18,13 @@ const Library = () => {
   const t = (key) => getTranslation(language, key)
 
   const shelves = [
-    {
-      id: 'tafsir',
-      color: 'from-sky-500 to-blue-600',
-      icon: '📕',
-      image: '/library-tafsir.jpg'
-    },
-    {
-      id: 'hadith',
-      color: 'from-amber-500 to-orange-600',
-      icon: '📖',
-      image: '/library-hadith.jpg'
-    },
-    {
-      id: 'fiqh',
-      color: 'from-emerald-500 to-teal-600',
-      icon: '⚖️',
-      image: '/library-fiqh.jpg'
-    },
-    {
-      id: 'sufism',
-      color: 'from-purple-500 to-indigo-600',
-      icon: '✨',
-      image: '/library-sufism.jpg'
-    },
-    {
-      id: 'language',
-      color: 'from-blue-500 to-cyan-600',
-      icon: '📚',
-      image: '/library-language.jpg'
-    },
-    {
-      id: 'foreignLanguages',
-      color: 'from-teal-500 to-green-600',
-      icon: '🌍',
-      image: '/library-foreign-languages.jpg'
-    },
-    {
-      id: 'magazines',
-      color: 'from-rose-500 to-pink-600',
-      icon: '📰',
-      image: '/library-magazines.jpg'
-    }
+    { id: 'tafsir', icon: BookOpen },
+    { id: 'hadith', icon: ScrollText },
+    { id: 'fiqh', icon: Scale },
+    { id: 'sufism', icon: Sparkles },
+    { id: 'language', icon: Languages },
+    { id: 'foreignLanguages', icon: Globe },
+    { id: 'magazines', icon: Newspaper }
   ]
 
   const containerVariants = {
@@ -85,7 +50,7 @@ const Library = () => {
   }
 
   return (
-    <section id="library" className="py-24 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+    <section id="library" className="py-24 bg-gradient-to-b from-amber-50/50 via-white to-white relative overflow-hidden">
       {/* Background decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-amber-100 rounded-full blur-3xl opacity-30" />
@@ -164,6 +129,7 @@ const Library = () => {
           {shelves.map((shelf) => {
             const shelfData = t(`library.shelves.${shelf.id}`)
             const hasBooks = Boolean(rayonBooks[shelf.id]?.length)
+            const Icon = shelf.icon
 
             const CardWrapper = hasBooks ? Link : 'div'
             const cardWrapperProps = hasBooks ? { to: `/library/${shelf.id}` } : {}
@@ -177,35 +143,24 @@ const Library = () => {
               >
                 <CardWrapper
                   {...cardWrapperProps}
-                  className="relative bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-2xl transition-all duration-300 block"
+                  className="relative bg-gradient-to-br from-white to-amber-50/40 rounded-2xl shadow-lg overflow-hidden border border-amber-100 hover:shadow-2xl transition-all duration-300 block"
                 >
-                  {/* Shelf Number Badge */}
-                  <div className="absolute top-4 right-4 z-20">
-                    <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${shelf.color} flex items-center justify-center shadow-lg`}>
-                      <span className="text-white font-bold text-lg">
-                        {shelfData.number}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Background Pattern */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white">
-                    <div className="absolute inset-0 opacity-10">
-                      <div className={`w-full h-full bg-gradient-to-br ${shelf.color}`} />
-                    </div>
-                  </div>
-
                   {/* Content */}
                   <div className="relative p-8 min-h-[320px] flex flex-col">
                     {/* Icon */}
                     <div className="mb-6">
-                      <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br ${shelf.color} shadow-lg transform group-hover:scale-110 transition-transform duration-300`}>
-                        <span className="text-3xl">{shelf.icon}</span>
+                      <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-800 shadow-lg transform group-hover:scale-110 transition-transform duration-300">
+                        <Icon className="w-7 h-7 text-amber-300" />
                       </div>
                     </div>
 
+                    {/* Rayon label */}
+                    <span className="font-elegant text-amber-700 text-xs font-semibold tracking-widest uppercase mb-2">
+                      {t('library.section')} {shelfData.number}
+                    </span>
+
                     {/* Arabic Title */}
-                    <h3 
+                    <h3
                       className="text-2xl font-bold mb-3 text-gray-800 text-right"
                       style={{ fontFamily: "'Amiri', serif" }}
                       dir="rtl"
@@ -233,7 +188,7 @@ const Library = () => {
 
                   {/* Decorative Corner */}
                   <div className="absolute top-0 right-0 w-32 h-32 overflow-hidden pointer-events-none">
-                    <div className={`absolute transform rotate-45 translate-x-16 -translate-y-16 w-32 h-32 bg-gradient-to-br ${shelf.color} opacity-10`} />
+                    <div className="absolute transform rotate-45 translate-x-16 -translate-y-16 w-32 h-32 bg-emerald-800 opacity-[0.06]" />
                   </div>
                 </CardWrapper>
               </motion.div>
