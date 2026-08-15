@@ -41,7 +41,7 @@ export const translations = {
       intro1: "Nous sommes réunis au sein de l'association «Usratul Amine» pour célébrer et préserver l'héritage exceptionnel de Serigne Abdou Aziz Sy Al Amine, digne héritier de Khalifa Ababacar Sy.",
       intro2: "Serigne Abdou Aziz Sy Al Amine a marqué son époque par la revivification de l'héritage de Seydi Hadji Malick Sy. Son riche parcours et sa solide formation intellectuelle lui ont permis d'éduquer et de former des millions de personnes.",
       intro3: "Afin de préserver et honorer sa mémoire, nous avons formé l'association «Usratul Amine» dédiée à perpétuer l'impact positif de Al Amine dans la vie de tout un chacun.",
-      valuesTitle: "À travers ces « 72 heures », Usratul Amine réaffirme son engagement autour de cinq (5) axes majeurs :",
+      valuesTitle: "À travers ses « 72 heures », Usratul Amine réaffirme son engagement autour de cinq (5) axes majeurs :",
       values: {
         youth: {
           title: "Formation de la jeunesse",
