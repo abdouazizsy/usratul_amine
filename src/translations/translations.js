@@ -219,7 +219,7 @@ export const translations = {
     
     // Message
     message: {
-      title: "Message du Coordinateur",
+      title: "Message du Responsable Moral",
       signature: "Responsable Moral - Usratul Amine",
       para1: "C'est avec une profonde gratitude et un sens mesuré du devoir que je m'adresse à vous en tant que coordinateur de notre organisation,",
       para2: "pour vous inviter, comme je m'y invite moi-même, à unir nos forces pour préserver l'héritage exceptionnel laissé par Serigne Abdou Aziz Sy Al Amine.",
