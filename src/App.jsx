@@ -16,6 +16,7 @@ import AdminLogin from './components/AdminLogin'
 import AdminDashboard from './components/AdminDashboard'
 import PWAInstallBanner from './components/PWAInstallBanner'
 import ScrollToTop from './components/ScrollToTop'
+import AnalyticsTracker from './components/AnalyticsTracker'
 import LaunchGate from './components/LaunchGate'
 import { AdminProvider, useAdmin } from './contexts/AdminContext'
 
@@ -51,6 +52,7 @@ function App() {
     <AdminProvider>
       <Router>
         <ScrollToTop />
+        <AnalyticsTracker />
         <LaunchGate>
           <Routes>
             <Route path="/" element={<HomePage />} />
