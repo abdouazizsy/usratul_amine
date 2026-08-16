@@ -19,8 +19,8 @@ export const rayonBooks = {
       image: '/rayon1/livre3.jpeg'
     },
     {
-      titleAr: 'تفسير القرآن الكريم — ضياء السرين',
-      titleFr: "Diyâ' as-Sirrayn (Tome 1)",
+      titleAr: 'تفسير القرآن الكريم - ضياء النيرين',
+      titleFr: "Diya' al-Narayn (Tome 1)",
       author: 'Cheikh Ahmad Dum al-Shinqiti',
       image: '/rayon1/livre4.jpeg'
     }
