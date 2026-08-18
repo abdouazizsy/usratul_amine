@@ -34,7 +34,7 @@ const PWAInstallBanner = () => {
   if (!showBanner) return null
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 p-4">
+    <div className="fixed bottom-16 md:bottom-0 left-0 right-0 z-50 p-4">
       <div className="max-w-lg mx-auto bg-white rounded-2xl shadow-2xl border border-gray-100 p-4 flex items-center gap-3">
         <img src="/pwa-192x192.png" alt="Usratul Amine" className="w-12 h-12 rounded-xl flex-shrink-0" />
         <div className="flex-1 min-w-0">

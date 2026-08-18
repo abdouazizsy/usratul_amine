@@ -2,6 +2,7 @@ export const translations = {
   fr: {
     // Navigation
     nav: {
+      home: "Accueil",
       presentation: "Présentation",
       biography: "Biographie",
       program: "Programme Usratul Amine",
@@ -20,7 +21,8 @@ export const translations = {
       hijriCalendarTitle: "Calendrier musulman",
       hijriCalendarDesc: "Calendrier Hijri mensuel à télécharger",
       realisationsTitle: "Réalisations",
-      realisationsDesc: "Nos projets et actions"
+      realisationsDesc: "Nos projets et actions",
+      more: "Plus"
     },
 
     // Hero
@@ -360,6 +362,7 @@ export const translations = {
   ar: {
     // Navigation
     nav: {
+      home: "الرئيسية",
       presentation: "التقديم",
       biography: "السيرة الذاتية",
       program: "البرنامج",
@@ -378,7 +381,8 @@ export const translations = {
       hijriCalendarTitle: "التقويم الهجري",
       hijriCalendarDesc: "التقويم الهجري الشهري للتحميل",
       realisationsTitle: "الإنجازات",
-      realisationsDesc: "مشاريعنا وأعمالنا"
+      realisationsDesc: "مشاريعنا وأعمالنا",
+      more: "المزيد"
     },
 
     // Hero
@@ -718,6 +722,7 @@ export const translations = {
   en: {
     // Navigation
     nav: {
+      home: "Home",
       presentation: "About",
       biography: "Biography",
       program: "Program",
@@ -736,7 +741,8 @@ export const translations = {
       hijriCalendarTitle: "Hijri Calendar",
       hijriCalendarDesc: "Monthly Hijri calendar to download",
       realisationsTitle: "Achievements",
-      realisationsDesc: "Our projects and initiatives"
+      realisationsDesc: "Our projects and initiatives",
+      more: "More"
     },
 
     // Hero

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ChevronDown, Calendar, Sparkles, BookOpen, ShoppingBag, ShoppingCart, Award, Moon } from 'lucide-react'
+import { Menu, X, ChevronDown, Calendar, Sparkles, BookOpen, ShoppingBag, ShoppingCart, Award, Moon, Home } from 'lucide-react'
 import LanguageSelector from './LanguageSelector'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useCart } from '../contexts/CartContext'
@@ -20,10 +20,8 @@ const Navigation = ({ scrolled }) => {
   const [calendarsOpen, setCalendarsOpen] = useState(false)
   const [mobileCalendarsOpen, setMobileCalendarsOpen] = useState(false)
   const [activitiesOpen, setActivitiesOpen] = useState(false)
-  const [mobileActivitiesOpen, setMobileActivitiesOpen] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
-  const isPWA = window.matchMedia('(display-mode: standalone)').matches
   
   const scrollToSection = (id) => {
     // Si on n'est pas sur la page d'accueil, naviguer d'abord vers la page d'accueil
@@ -45,13 +43,22 @@ const Navigation = ({ scrolled }) => {
     setMobileMenuOpen(false)
   }
 
+  const bottomNavItems = [
+    { id: 'home', labelKey: 'nav.home', to: '/', icon: Home, match: (path) => path === '/' },
+    { id: 'library', labelKey: 'nav.library', to: '/library', icon: BookOpen, match: (path) => path.startsWith('/library') },
+    { id: 'produits', labelKey: 'nav.products', to: '/produits', icon: ShoppingBag, match: (path) => path === '/produits' },
+    { id: 'activites', labelKey: 'nav.realisationsTitle', to: '/realisations', icon: Award, match: (path) => path === '/realisations' },
+    { id: 'panier', labelKey: 'cart.title', to: '/panier', icon: ShoppingCart, match: (path) => path === '/panier' }
+  ]
+
   return (
+    <>
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled 
-          ? 'bg-white/95 backdrop-blur-md shadow-lg' 
+        scrolled
+          ? 'bg-white/95 backdrop-blur-md shadow-lg'
           : 'bg-transparent'
       }`}
     >
@@ -81,9 +88,9 @@ const Navigation = ({ scrolled }) => {
           <div className="hidden md:flex items-center gap-6">
             {[
               { id: 'about', key: 'nav.presentation', scroll: true },
-              { id: 'library', key: 'nav.library', link: '/library', pwaHidden: true },
+              { id: 'library', key: 'nav.library', link: '/library' },
               { id: 'contact', key: 'nav.contact', scroll: true }
-            ].filter(item => !(isPWA && item.pwaHidden)).map((item) => {
+            ].map((item) => {
               const linkClassName = `font-medium transition-colors ${
                 scrolled
                   ? 'text-emerald-700 hover:text-gold-600'
@@ -266,17 +273,6 @@ const Navigation = ({ scrolled }) => {
             <LanguageSelector scrolled={scrolled} />
           </div>
 
-          {/* Bouton burger mobile */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
-          >
-            {mobileMenuOpen ? (
-              <X className={`w-6 h-6 ${scrolled ? 'text-emerald-800' : 'text-white'}`} />
-            ) : (
-              <Menu className={`w-6 h-6 ${scrolled ? 'text-emerald-800' : 'text-white'}`} />
-            )}
-          </button>
         </div>
 
         {/* Menu mobile */}
@@ -305,9 +301,8 @@ const Navigation = ({ scrolled }) => {
                   {/* Liens avec scroll */}
                   {[
                     { id: 'about', key: 'nav.presentation' },
-                    { id: 'library', key: 'nav.library', link: '/library', pwaHidden: true },
                     { id: 'contact', key: 'nav.contact' }
-                  ].filter(item => !(isPWA && item.pwaHidden)).map((item) => {
+                  ].map((item) => {
                     const linkClassName = `block w-full text-left px-6 py-3 text-emerald-700 hover:bg-emerald-50 hover:text-gold-600 font-medium transition-colors ${
                       language === 'ar' ? 'font-arabic text-right' : ''
                     }`
@@ -388,65 +383,6 @@ const Navigation = ({ scrolled }) => {
                     )}
                   </AnimatePresence>
 
-                  {/* Section Nos activités - Mobile Accordion */}
-                  <button
-                    onClick={() => setMobileActivitiesOpen(!mobileActivitiesOpen)}
-                    className={`flex items-center justify-between w-full px-6 py-3 text-emerald-700 hover:bg-emerald-50 hover:text-gold-600 font-medium transition-colors ${
-                      language === 'ar' ? 'font-arabic text-right' : ''
-                    }`}
-                  >
-                    <span>{t('nav.activities')}</span>
-                    <ChevronDown className={`w-4 h-4 transition-transform ${mobileActivitiesOpen ? 'rotate-180' : ''}`} />
-                  </button>
-
-                  <AnimatePresence>
-                    {mobileActivitiesOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="overflow-hidden bg-gray-50"
-                      >
-                        <Link
-                          to="/realisations"
-                          onClick={() => { setMobileMenuOpen(false); setMobileActivitiesOpen(false) }}
-                          className="flex items-center gap-3 px-8 py-3 text-gray-700 hover:bg-white transition-colors"
-                        >
-                          <Award className="w-4 h-4 text-emerald-600" />
-                          <span className={`text-sm ${language === 'ar' ? 'font-arabic' : ''}`}>{t('nav.realisationsTitle')}</span>
-                        </Link>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  <Link
-                    to="/produits"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-2 px-6 py-3 text-emerald-700 hover:bg-emerald-50 hover:text-gold-600 font-medium transition-colors ${
-                      language === 'ar' ? 'font-arabic text-right' : ''
-                    }`}
-                  >
-                    <ShoppingBag className="w-4 h-4" />
-                    {t('nav.products')}
-                  </Link>
-
-                  <Link
-                    to="/panier"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-2 px-6 py-3 text-emerald-700 hover:bg-emerald-50 hover:text-gold-600 font-medium transition-colors ${
-                      language === 'ar' ? 'font-arabic text-right' : ''
-                    }`}
-                  >
-                    <ShoppingCart className="w-4 h-4" />
-                    {t('cart.title')}
-                    {totalItems > 0 && (
-                      <span className="w-5 h-5 flex items-center justify-center bg-gold-500 text-white text-xs font-bold rounded-full">
-                        {totalItems}
-                      </span>
-                    )}
-                  </Link>
-
                   {/* Sélecteur de langue pour mobile */}
                   <div className="px-6 py-3 border-t border-gray-200 mt-2">
                     <p className="text-sm text-gray-600 mb-2 font-medium">Langue / Language</p>
@@ -459,6 +395,50 @@ const Navigation = ({ scrolled }) => {
         </AnimatePresence>
       </div>
     </motion.nav>
+
+    {/* Barre de navigation mobile fixe en bas (façon app native) */}
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-[70] bg-white border-t border-gray-200 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]">
+      <div className="grid grid-cols-6 h-16">
+        {bottomNavItems.map((item) => {
+          const active = item.match(location.pathname)
+          const Icon = item.icon
+          return (
+            <Link
+              key={item.id}
+              to={item.to}
+              onClick={() => setMobileMenuOpen(false)}
+              className={`flex flex-col items-center justify-center gap-0.5 transition-colors ${
+                active ? 'text-emerald-600' : 'text-gray-500'
+              }`}
+            >
+              <span className="relative">
+                <Icon className="w-5 h-5" />
+                {item.id === 'panier' && totalItems > 0 && (
+                  <span className="absolute -top-1.5 -right-2 min-w-[16px] h-4 px-1 flex items-center justify-center bg-gold-500 text-white text-[10px] font-bold rounded-full">
+                    {totalItems}
+                  </span>
+                )}
+              </span>
+              <span className={`text-[10px] font-medium leading-none ${language === 'ar' ? 'font-arabic' : ''}`}>
+                {t(item.labelKey)}
+              </span>
+            </Link>
+          )
+        })}
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className={`flex flex-col items-center justify-center gap-0.5 transition-colors ${
+            mobileMenuOpen ? 'text-emerald-600' : 'text-gray-500'
+          }`}
+        >
+          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          <span className={`text-[10px] font-medium leading-none ${language === 'ar' ? 'font-arabic' : ''}`}>
+            {t('nav.more')}
+          </span>
+        </button>
+      </div>
+    </nav>
+    </>
   )
 }
 

@@ -572,7 +572,7 @@ Répondez toujours avec respect, précision et bienveillance. Utilisez ces infor
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-24 left-4 right-4 sm:left-auto sm:right-6 w-auto sm:w-96 h-[70vh] max-h-[600px] sm:h-[600px] bg-white rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden border border-gray-200"
+            className="fixed bottom-40 md:bottom-24 left-4 right-4 sm:left-auto sm:right-6 w-auto sm:w-96 h-[60vh] md:h-[70vh] max-h-[600px] sm:h-[600px] bg-white rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden border border-gray-200"
           >
             <div className="bg-gradient-to-r from-emerald-600 to-teal-600 p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -675,7 +675,7 @@ Répondez toujours avec respect, précision et bienveillance. Utilisez ces infor
 
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-full shadow-2xl hover:shadow-3xl transition-all z-50 flex items-center justify-center group"
+        className="fixed bottom-20 md:bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-full shadow-2xl hover:shadow-3xl transition-all z-50 flex items-center justify-center group"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
       >

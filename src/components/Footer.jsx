@@ -43,7 +43,7 @@ const Footer = () => {
   ]
 
   return (
-    <footer className="relative bg-gradient-to-br from-emerald-950 via-emerald-900 to-emerald-950 text-white overflow-hidden">
+    <footer className="relative bg-gradient-to-br from-emerald-950 via-emerald-900 to-emerald-950 text-white overflow-hidden pb-20 md:pb-0">
       {/* Islamic Pattern Background */}
       <div className="absolute inset-0 islamic-pattern opacity-10"></div>
       
