@@ -46,7 +46,7 @@ const Navigation = ({ scrolled }) => {
   const bottomNavItems = [
     { id: 'home', labelKey: 'nav.home', to: '/', icon: Home, match: (path) => path === '/' },
     { id: 'library', labelKey: 'nav.library', to: '/library', icon: BookOpen, match: (path) => path.startsWith('/library') },
-    { id: 'produits', labelKey: 'nav.products', to: '/produits', icon: ShoppingBag, match: (path) => path === '/produits' },
+    { id: 'produits', labelKey: 'nav.shop', to: '/produits', icon: ShoppingBag, match: (path) => path === '/produits' },
     { id: 'activites', labelKey: 'nav.realisationsTitle', to: '/realisations', icon: Award, match: (path) => path === '/realisations' },
     { id: 'panier', labelKey: 'cart.title', to: '/panier', icon: ShoppingCart, match: (path) => path === '/panier' }
   ]

@@ -22,7 +22,8 @@ export const translations = {
       hijriCalendarDesc: "Calendrier Hijri mensuel à télécharger",
       realisationsTitle: "Réalisations",
       realisationsDesc: "Nos projets et actions",
-      more: "Plus"
+      more: "Plus",
+      shop: "Boutique"
     },
 
     // Hero
@@ -382,7 +383,8 @@ export const translations = {
       hijriCalendarDesc: "التقويم الهجري الشهري للتحميل",
       realisationsTitle: "الإنجازات",
       realisationsDesc: "مشاريعنا وأعمالنا",
-      more: "المزيد"
+      more: "المزيد",
+      shop: "المتجر"
     },
 
     // Hero
@@ -742,7 +744,8 @@ export const translations = {
       hijriCalendarDesc: "Monthly Hijri calendar to download",
       realisationsTitle: "Achievements",
       realisationsDesc: "Our projects and initiatives",
-      more: "More"
+      more: "More",
+      shop: "Shop"
     },
 
     // Hero
