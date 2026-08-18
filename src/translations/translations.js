@@ -20,6 +20,8 @@ export const translations = {
       hadaraDesc: "70 Hadaratoul Jumu'ah",
       hijriCalendarTitle: "Calendrier musulman",
       hijriCalendarDesc: "Calendrier Hijri mensuel à télécharger",
+      dateCheckerTitle: "Vérifier une date",
+      dateCheckerDesc: "Détecter les conflits entre les 3 calendriers",
       realisationsTitle: "Réalisations",
       realisationsDesc: "Nos projets et actions",
       more: "Plus",
@@ -299,6 +301,25 @@ export const translations = {
       close: "Fermer"
     },
 
+    // Vérificateur de dates
+    dateChecker: {
+      title: "Vérifier une date",
+      subtitle: "Sélectionnez une date pour voir si un événement Usratul Amine, COSKAS ou Hadara Djouma est prévu, et repérer d'éventuels conflits.",
+      pickLabel: "Choisissez une date",
+      emptyPrompt: "Choisissez une date ci-dessus pour lancer la vérification.",
+      usra: "Usratul Amine",
+      coskas: "COSKAS",
+      hadara: "Hadara Djouma",
+      noEventForSource: "Aucun événement",
+      conflictTitle: "Conflit détecté",
+      conflictDesc: "Plusieurs événements sont prévus le même jour à cette date.",
+      allClearTitle: "Événement trouvé",
+      allClearDesc: "Un événement {source} est prévu à cette date :",
+      noneAtAllTitle: "Aucun événement",
+      noneAtAllDesc: "Aucun événement n'est prévu à cette date sur les trois calendriers.",
+      loading: "Chargement des calendriers..."
+    },
+
     // Produits
     products: {
       title: "Boutique Usratul Amine",
@@ -381,6 +402,8 @@ export const translations = {
       hadaraDesc: "70 حضرة الجمعة",
       hijriCalendarTitle: "التقويم الهجري",
       hijriCalendarDesc: "التقويم الهجري الشهري للتحميل",
+      dateCheckerTitle: "التحقق من تاريخ",
+      dateCheckerDesc: "اكتشاف التعارضات بين التقويمات الثلاثة",
       realisationsTitle: "الإنجازات",
       realisationsDesc: "مشاريعنا وأعمالنا",
       more: "المزيد",
@@ -660,6 +683,25 @@ export const translations = {
       close: "إغلاق"
     },
 
+    // التحقق من تاريخ
+    dateChecker: {
+      title: "التحقق من تاريخ",
+      subtitle: "اختر تاريخًا لمعرفة ما إذا كان هناك حدث لأسرة الأمين أو كوسكاس أو حضرة الجمعة، واكتشاف أي تعارض محتمل.",
+      pickLabel: "اختر تاريخًا",
+      emptyPrompt: "اختر تاريخًا أعلاه لبدء التحقق.",
+      usra: "أسرة الأمين",
+      coskas: "كوسكاس",
+      hadara: "حضرة الجمعة",
+      noEventForSource: "لا يوجد حدث",
+      conflictTitle: "تم اكتشاف تعارض",
+      conflictDesc: "هناك عدة أحداث مقررة في نفس هذا اليوم.",
+      allClearTitle: "تم العثور على حدث",
+      allClearDesc: "هناك حدث {source} مقرر في هذا التاريخ:",
+      noneAtAllTitle: "لا يوجد حدث",
+      noneAtAllDesc: "لا يوجد أي حدث مقرر في هذا التاريخ في التقويمات الثلاثة.",
+      loading: "جارٍ تحميل التقويمات..."
+    },
+
     // المنتجات
     products: {
       title: "متجر أسرة الأمين",
@@ -742,6 +784,8 @@ export const translations = {
       hadaraDesc: "70 Hadaratoul Jumu'ah",
       hijriCalendarTitle: "Hijri Calendar",
       hijriCalendarDesc: "Monthly Hijri calendar to download",
+      dateCheckerTitle: "Check a Date",
+      dateCheckerDesc: "Detect conflicts across the 3 calendars",
       realisationsTitle: "Achievements",
       realisationsDesc: "Our projects and initiatives",
       more: "More",
@@ -1019,6 +1063,25 @@ export const translations = {
       location: "Location",
       description: "Description",
       close: "Close"
+    },
+
+    // Date checker
+    dateChecker: {
+      title: "Check a Date",
+      subtitle: "Pick a date to see whether an Usratul Amine, COSKAS or Hadara Djouma event is planned, and spot any conflicts.",
+      pickLabel: "Choose a date",
+      emptyPrompt: "Choose a date above to run the check.",
+      usra: "Usratul Amine",
+      coskas: "COSKAS",
+      hadara: "Hadara Djouma",
+      noEventForSource: "No event",
+      conflictTitle: "Conflict detected",
+      conflictDesc: "Several events are scheduled on this same day.",
+      allClearTitle: "Event found",
+      allClearDesc: "A {source} event is scheduled on this date:",
+      noneAtAllTitle: "No event",
+      noneAtAllDesc: "No event is scheduled on this date across the three calendars.",
+      loading: "Loading calendars..."
     },
 
     // Products

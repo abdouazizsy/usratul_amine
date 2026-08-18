@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ChevronDown, Calendar, Sparkles, BookOpen, ShoppingBag, ShoppingCart, Award, Moon, Home } from 'lucide-react'
+import { Menu, X, ChevronDown, Calendar, Sparkles, BookOpen, ShoppingBag, ShoppingCart, Award, Moon, Home, Search } from 'lucide-react'
 import LanguageSelector from './LanguageSelector'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useCart } from '../contexts/CartContext'
@@ -188,6 +188,19 @@ const Navigation = ({ scrolled }) => {
                         <div>
                           <p className={`font-semibold text-gray-900 group-hover:text-emerald-700 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('nav.hijriCalendarTitle')}</p>
                           <p className={`text-xs text-gray-500 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('nav.hijriCalendarDesc')}</p>
+                        </div>
+                      </Link>
+
+                      <Link
+                        to="/verifier-date"
+                        className="flex items-start gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-gold-50 transition-all group"
+                      >
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                          <Search className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <p className={`font-semibold text-gray-900 group-hover:text-emerald-700 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('nav.dateCheckerTitle')}</p>
+                          <p className={`text-xs text-gray-500 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('nav.dateCheckerDesc')}</p>
                         </div>
                       </Link>
                     </div>
@@ -378,6 +391,14 @@ const Navigation = ({ scrolled }) => {
                         >
                           <Moon className="w-4 h-4 text-amber-600" />
                           <span className={`text-sm ${language === 'ar' ? 'font-arabic' : ''}`}>{t('nav.hijriCalendarTitle')}</span>
+                        </Link>
+                        <Link
+                          to="/verifier-date"
+                          onClick={() => { setMobileMenuOpen(false); setMobileCalendarsOpen(false) }}
+                          className="flex items-center gap-3 px-8 py-3 text-gray-700 hover:bg-white transition-colors"
+                        >
+                          <Search className="w-4 h-4 text-purple-600" />
+                          <span className={`text-sm ${language === 'ar' ? 'font-arabic' : ''}`}>{t('nav.dateCheckerTitle')}</span>
                         </Link>
                       </motion.div>
                     )}
