@@ -45,7 +45,7 @@ const Navigation = ({ scrolled }) => {
 
   const bottomNavItems = [
     { id: 'home', labelKey: 'nav.home', to: '/', icon: Home, match: (path) => path === '/' },
-    { id: 'library', labelKey: 'nav.library', to: '/library', icon: BookOpen, match: (path) => path.startsWith('/library') },
+    { id: 'library', labelKey: 'nav.library', to: '/library', icon: BookOpen, match: (path) => path.startsWith('/library') || path.startsWith('/actualites') },
     { id: 'produits', labelKey: 'nav.shop', to: '/produits', icon: ShoppingBag, match: (path) => path === '/produits' },
     { id: 'activites', labelKey: 'nav.realisationsTitle', to: '/realisations', icon: Award, match: (path) => path === '/realisations' },
     { id: 'panier', labelKey: 'cart.title', to: '/panier', icon: ShoppingCart, match: (path) => path === '/panier' }
@@ -88,7 +88,7 @@ const Navigation = ({ scrolled }) => {
           <div className="hidden md:flex items-center gap-6">
             {[
               { id: 'about', key: 'nav.presentation', scroll: true },
-              { id: 'library', key: 'nav.library', link: '/library' },
+              { id: 'library', key: 'nav.newsLibrary', link: '/library' },
               { id: 'contact', key: 'nav.contact', scroll: true }
             ].map((item) => {
               const linkClassName = `font-medium transition-colors ${

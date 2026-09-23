@@ -1,200 +1,149 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Library as LibraryIcon, Sparkles, ArrowRight, Phone, BookOpen, ScrollText, Scale, Languages, Globe, Newspaper } from 'lucide-react'
+import { Library as LibraryIcon, Sparkles, ArrowRight, Phone, BookOpen, ScrollText, Scale, Languages, Globe, Newspaper, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useLanguage } from '../contexts/LanguageContext'
 import { getTranslation } from '../translations/translations'
 import { rayonBooks } from '../data/rayonBooks'
 
-const galleryPhotos = [
-  '/library-photo-1.jpeg',
-  '/library-photo-2.jpeg',
-  '/library-photo-3.jpeg',
-  '/library-photo-4.jpeg'
+const shelves = [
+  { id: 'tafsir', icon: BookOpen },
+  { id: 'hadith', icon: ScrollText },
+  { id: 'fiqh', icon: Scale },
+  { id: 'sufism', icon: Sparkles },
+  { id: 'language', icon: Languages },
+  { id: 'foreignLanguages', icon: Globe },
+  { id: 'magazines', icon: Newspaper }
 ]
+
+const ShelfCard = ({ shelf, t, language }) => {
+  const shelfData = t(`library.shelves.${shelf.id}`)
+  const books = rayonBooks[shelf.id] || []
+  const cover = books[0]?.image
+  const Icon = shelf.icon
+  const isAr = language === 'ar'
+
+  const Wrapper = books.length ? Link : 'div'
+  const wrapperProps = books.length ? { to: `/library/${shelf.id}` } : {}
+
+  return (
+    <Wrapper
+      {...wrapperProps}
+      className="group snap-start flex-shrink-0 w-[230px] sm:w-[240px] flex flex-col bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-xl transition-shadow"
+    >
+      <div className="relative h-44 bg-gradient-to-br from-emerald-50 to-amber-50 flex items-center justify-center overflow-hidden">
+        {cover ? (
+          <img src={cover} alt={shelfData.titleFr} className="h-full w-auto object-contain py-3 group-hover:scale-105 transition-transform duration-300" />
+        ) : (
+          <div className="w-16 h-16 rounded-2xl bg-emerald-800 flex items-center justify-center">
+            <Icon className="w-7 h-7 text-amber-300" />
+          </div>
+        )}
+        <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-emerald-700 text-white text-[11px] font-semibold">
+          {t('library.section')} {shelfData.number}
+        </span>
+      </div>
+      <div className="p-4 flex flex-col flex-1">
+        <p className="text-right text-lg text-gray-800 leading-snug mb-1" style={{ fontFamily: "'Amiri', serif" }} dir="rtl">
+          {shelfData.titleAr}
+        </p>
+        <p className={`text-sm font-semibold text-emerald-800 line-clamp-2 ${isAr ? 'font-arabic text-right' : ''}`}>
+          {isAr ? shelfData.description : shelfData.titleFr}
+        </p>
+        <div className="mt-auto pt-4 flex items-center justify-between gap-2">
+          <span className="text-xs text-gray-500">
+            {books.length ? `${books.length} ${t('news.books')}` : t('news.soon')}
+          </span>
+          {books.length > 0 && (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-emerald-700 text-emerald-700 group-hover:bg-emerald-700 group-hover:text-white rounded-lg text-xs font-semibold transition-colors">
+              <BookOpen className="w-3.5 h-3.5" />
+              {t('news.browse')}
+            </span>
+          )}
+        </div>
+      </div>
+    </Wrapper>
+  )
+}
 
 const Library = () => {
   const { language } = useLanguage()
   const t = (key) => getTranslation(language, key)
+  const isAr = language === 'ar'
+  const scrollerRef = useRef(null)
 
-  const shelves = [
-    { id: 'tafsir', icon: BookOpen },
-    { id: 'hadith', icon: ScrollText },
-    { id: 'fiqh', icon: Scale },
-    { id: 'sufism', icon: Sparkles },
-    { id: 'language', icon: Languages },
-    { id: 'foreignLanguages', icon: Globe },
-    { id: 'magazines', icon: Newspaper }
-  ]
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  }
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: 'spring',
-        stiffness: 100
-      }
-    }
+  const scroll = (direction) => {
+    scrollerRef.current?.scrollBy({ left: direction * 260, behavior: 'smooth' })
   }
 
   return (
-    <section id="library" className="py-24 bg-gradient-to-b from-amber-50/50 via-white to-white relative overflow-hidden">
-      {/* Background decorations */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-amber-100 rounded-full blur-3xl opacity-30" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-emerald-100 rounded-full blur-3xl opacity-30" />
-      </div>
+    <section id="library" className="py-16 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="border-t border-gray-100 pt-12" />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-amber-100 rounded-full">
-            <LibraryIcon className="w-5 h-5 text-amber-600" />
-            <span className="text-sm font-semibold text-amber-800">
-              {t('library.section')}
-            </span>
-          </div>
-          
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-800 via-emerald-700 to-amber-800 bg-clip-text text-transparent">
-            {t('library.title')}
-          </h2>
-          
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            {t('library.subtitle')}
-          </p>
-
-          <div className="mt-6 inline-flex items-center gap-2 px-5 py-3 bg-emerald-50 border border-emerald-200 rounded-2xl max-w-2xl mx-auto">
-            <Sparkles className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-            <p className="text-sm text-emerald-800 text-left">
-              {t('library.comingSoon')}
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+          <div>
+            <p className={`flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-emerald-700 mb-2 ${isAr ? 'font-arabic' : ''}`}>
+              <LibraryIcon className="w-4 h-4" />
+              {t('news.librarySection')}
             </p>
+            <h2 className={`text-3xl md:text-4xl font-bold text-gray-900 ${isAr ? 'font-arabic' : 'font-elegant'}`}>
+              {t('news.libraryTitle')}
+            </h2>
+            <p className={`text-gray-600 mt-2 max-w-2xl ${isAr ? 'font-arabic' : ''}`}>{t('news.librarySubtitle')}</p>
           </div>
-
-          <div className="mt-4 inline-flex items-center gap-2 px-5 py-3 bg-amber-50 border border-amber-200 rounded-2xl max-w-2xl mx-auto">
-            <Phone className="w-5 h-5 text-amber-700 flex-shrink-0" />
-            <p className="text-sm text-amber-900 text-left">
-              <span className="font-semibold">{t('library.contactLabel')}</span> — +221 33 955 85 25 / +221 77 021 29 00
-            </p>
-          </div>
-        </motion.div>
-
-        {/* Photo Gallery */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-16"
-        >
-          {galleryPhotos.map((photo) => (
-            <div
-              key={photo}
-              className="aspect-square rounded-2xl overflow-hidden shadow-lg border border-gray-100"
+          <div className="hidden sm:flex items-center gap-2">
+            <button
+              onClick={() => scroll(-1)}
+              className="w-9 h-9 flex items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+              aria-label="Précédent"
             >
-              <img
-                src={photo}
-                alt="Bibliothèque Al Amine"
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-              />
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => scroll(1)}
+              className="w-9 h-9 flex items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+              aria-label="Suivant"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Carrousel des rayons + encart "bientôt en ligne" */}
+        <div className="flex flex-col lg:flex-row gap-5">
+          <div
+            ref={scrollerRef}
+            className="flex-1 min-w-0 flex gap-5 overflow-x-auto snap-x snap-mandatory pb-3 scrollbar-hide"
+          >
+            {shelves.map((shelf) => (
+              <ShelfCard key={shelf.id} shelf={shelf} t={t} language={language} />
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative lg:w-[300px] flex-shrink-0 rounded-2xl overflow-hidden bg-emerald-900 text-white min-h-[300px]"
+          >
+            <img src="/library-photo-1.jpeg" alt="" className="absolute inset-0 w-full h-full object-cover opacity-40" />
+            <div className="absolute inset-0 bg-gradient-to-t from-emerald-900 via-emerald-900/80 to-emerald-900/20" />
+            <div className={`relative h-full flex flex-col justify-end p-6 ${isAr ? 'text-right' : ''}`}>
+              <h3 className={`text-2xl font-bold mb-2 ${isAr ? 'font-arabic' : 'font-elegant'}`}>{t('news.promoTitle')}</h3>
+              <p className={`text-sm text-white/85 mb-4 ${isAr ? 'font-arabic' : ''}`}>{t('news.promoText')}</p>
+              <p className="flex items-start gap-2 text-xs text-white/80">
+                <Phone className="w-4 h-4 flex-shrink-0 text-amber-300" />
+                <span>
+                  <span className="font-semibold">{t('library.contactLabel')}</span>
+                  <br />
+                  +221 33 955 85 25 / +221 77 021 29 00
+                </span>
+              </p>
             </div>
-          ))}
-        </motion.div>
-
-        {/* Shelves Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
-          {shelves.map((shelf) => {
-            const shelfData = t(`library.shelves.${shelf.id}`)
-            const hasBooks = Boolean(rayonBooks[shelf.id]?.length)
-            const Icon = shelf.icon
-
-            const CardWrapper = hasBooks ? Link : 'div'
-            const cardWrapperProps = hasBooks ? { to: `/library/${shelf.id}` } : {}
-
-            return (
-              <motion.div
-                key={shelf.id}
-                variants={itemVariants}
-                whileHover={{ y: -10, transition: { duration: 0.3 } }}
-                className="group relative"
-              >
-                <CardWrapper
-                  {...cardWrapperProps}
-                  className="relative bg-gradient-to-br from-white to-amber-50/40 rounded-2xl shadow-lg overflow-hidden border border-amber-100 hover:shadow-2xl transition-all duration-300 block"
-                >
-                  {/* Content */}
-                  <div className="relative p-8 min-h-[320px] flex flex-col">
-                    {/* Icon */}
-                    <div className="mb-6">
-                      <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-800 shadow-lg transform group-hover:scale-110 transition-transform duration-300">
-                        <Icon className="w-7 h-7 text-amber-300" />
-                      </div>
-                    </div>
-
-                    {/* Rayon label */}
-                    <span className="font-elegant text-amber-700 text-xs font-semibold tracking-widest uppercase mb-2">
-                      {t('library.section')} {shelfData.number}
-                    </span>
-
-                    {/* Arabic Title */}
-                    <h3
-                      className="text-2xl font-bold mb-3 text-gray-800 text-right"
-                      style={{ fontFamily: "'Amiri', serif" }}
-                      dir="rtl"
-                    >
-                      {shelfData.titleAr}
-                    </h3>
-
-                    {/* French Title */}
-                    <h4 className="text-lg font-semibold mb-4 text-gray-700">
-                      {shelfData.titleFr}
-                    </h4>
-
-                    {/* Description */}
-                    <p className="text-gray-600 leading-relaxed mb-6 flex-grow">
-                      {shelfData.description}
-                    </p>
-
-                    {hasBooks && (
-                      <div className="flex items-center gap-2 text-emerald-700 font-semibold text-sm group-hover:gap-3 transition-all">
-                        Voir les ouvrages
-                        <ArrowRight className="w-4 h-4" />
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Decorative Corner */}
-                  <div className="absolute top-0 right-0 w-32 h-32 overflow-hidden pointer-events-none">
-                    <div className="absolute transform rotate-45 translate-x-16 -translate-y-16 w-32 h-32 bg-emerald-800 opacity-[0.06]" />
-                  </div>
-                </CardWrapper>
-              </motion.div>
-            )
-          })}
-        </motion.div>
+          </motion.div>
+        </div>
 
         {/* Auteurs & Diwans teaser */}
         <motion.div
@@ -202,7 +151,7 @@ const Library = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mt-16 relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-50 via-white to-amber-50 border border-emerald-100 p-10 sm:p-14 text-center shadow-sm"
+          className="mt-12 relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-50 via-white to-amber-50 border border-emerald-100 p-8 sm:p-12 text-center shadow-sm"
         >
           <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-amber-100 rounded-full">
             <BookOpen className="w-5 h-5 text-amber-600" />
@@ -210,12 +159,7 @@ const Library = () => {
               {t('library.authors.sectionTitle')}
             </span>
           </div>
-          <h3
-            className={`text-2xl md:text-3xl font-bold mb-3 bg-gradient-to-r from-amber-800 via-emerald-700 to-amber-800 bg-clip-text text-transparent ${language === 'ar' ? 'font-arabic' : ''}`}
-          >
-            {t('library.authors.sectionTitle')}
-          </h3>
-          <p className={`text-gray-600 max-w-2xl mx-auto mb-8 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>
+          <p className={`text-gray-600 max-w-2xl mx-auto mb-6 ${isAr ? 'font-arabic' : ''}`}>
             {t('library.authors.sectionSubtitle')}
           </p>
           <Link

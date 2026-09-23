@@ -28,7 +28,8 @@ import {
   Award,
   BookOpen,
   FileText,
-  Moon
+  Moon,
+  Newspaper
 } from 'lucide-react'
 import { collection, addDoc, updateDoc, deleteDoc, doc, getDocs, query, orderBy } from 'firebase/firestore'
 import { db } from '../firebase/config'
@@ -39,6 +40,7 @@ import { importHadaraDjoumaToFirebase } from '../utils/importHadaraDjouma'
 import { uploadImageToCloudinary } from '../utils/cloudinaryUpload'
 import { uploadFileToStorage } from '../utils/firebaseStorageUpload'
 import { translateAndPatchDoc } from '../utils/translateContent'
+import { NEWS_CATEGORIES, formatNewsDate, getNewsCover, getVideoEmbed } from '../utils/news'
 import ConfirmModal from './ConfirmModal'
 import NotificationToast from './NotificationToast'
 import UserManagement from './UserManagement'
@@ -146,6 +148,14 @@ const AdminDashboard = () => {
   })
 
   // État Auteurs & Diwans
+  const emptyNewsForm = { title: '', excerpt: '', content: '', category: 'actualite', date: '', location: '', images: [], videos: [], featured: false, published: true }
+  const [news, setNews] = useState([])
+  const [newsSearch, setNewsSearch] = useState('')
+  const [showNewsForm, setShowNewsForm] = useState(false)
+  const [editingNews, setEditingNews] = useState(null)
+  const [uploadingNewsImage, setUploadingNewsImage] = useState(false)
+  const [newsFormData, setNewsFormData] = useState(emptyNewsForm)
+
   const [auteurs, setAuteurs] = useState([])
   const [auteursSearch, setAuteursSearch] = useState('')
   const [showAuteurForm, setShowAuteurForm] = useState(false)
@@ -179,6 +189,7 @@ const AdminDashboard = () => {
       fetchProducts()
       fetchOrders()
       fetchRealisations()
+      fetchNews()
       fetchAuteurs()
       fetchCalendriersHijri()
     }
@@ -571,6 +582,134 @@ const AdminDashboard = () => {
             type: 'error',
             title: 'Erreur',
             message: 'Impossible de supprimer la réalisation.'
+          })
+        }
+      }
+    })
+  }
+
+  const fetchNews = async () => {
+    try {
+      const newsQuery = query(collection(db, 'actualites'), orderBy('date', 'desc'))
+      const querySnapshot = await getDocs(newsQuery)
+      setNews(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
+    } catch (error) {
+      console.error('Error fetching news:', error)
+    }
+  }
+
+  const resetNewsForm = () => {
+    setShowNewsForm(false)
+    setEditingNews(null)
+    setNewsFormData(emptyNewsForm)
+  }
+
+  const handleNewsImageChange = async (e) => {
+    const files = Array.from(e.target.files || [])
+    if (files.length === 0) return
+
+    setUploadingNewsImage(true)
+    try {
+      const uploadedUrls = await Promise.all(files.map(file => uploadImageToCloudinary(file)))
+      setNewsFormData(prev => ({ ...prev, images: [...prev.images, ...uploadedUrls] }))
+    } catch (error) {
+      console.error('Error uploading image:', error)
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: "Erreur d'upload",
+        message: error.message || "Impossible d'uploader l'image."
+      })
+    } finally {
+      setUploadingNewsImage(false)
+      e.target.value = ''
+    }
+  }
+
+  const handleRemoveNewsImage = (index) => {
+    setNewsFormData(prev => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index)
+    }))
+  }
+
+  const handleNewsSubmit = async (e) => {
+    e.preventDefault()
+    const fieldsToTranslate = { title: newsFormData.title, excerpt: newsFormData.excerpt, content: newsFormData.content }
+    const data = { ...newsFormData, videos: newsFormData.videos.map(v => v.trim()).filter(Boolean) }
+    try {
+      if (editingNews) {
+        await updateDoc(doc(db, 'actualites', editingNews.id), { ...data, updatedAt: new Date() })
+        translateAndPatchDoc('actualites', editingNews.id, fieldsToTranslate)
+      } else {
+        const newDocRef = await addDoc(collection(db, 'actualites'), { ...data, createdAt: new Date() })
+        translateAndPatchDoc('actualites', newDocRef.id, fieldsToTranslate)
+      }
+      // Une seule actualité "à la une" à la fois
+      if (newsFormData.featured) {
+        const others = news.filter(n => n.featured && n.id !== editingNews?.id)
+        await Promise.all(others.map(n => updateDoc(doc(db, 'actualites', n.id), { featured: false })))
+      }
+      setNotification({
+        isOpen: true,
+        type: 'success',
+        title: editingNews ? 'Actualité modifiée' : 'Actualité ajoutée',
+        message: editingNews ? "L'actualité a été modifiée avec succès." : "L'actualité a été publiée avec succès."
+      })
+      resetNewsForm()
+      fetchNews()
+    } catch (error) {
+      console.error('Error saving news:', error)
+      setNotification({
+        isOpen: true,
+        type: 'error',
+        title: 'Erreur',
+        message: "Impossible d'enregistrer l'actualité."
+      })
+    }
+  }
+
+  const handleEditNews = (item) => {
+    setEditingNews(item)
+    setNewsFormData({
+      ...emptyNewsForm,
+      title: item.title || '',
+      excerpt: item.excerpt || '',
+      content: item.content || '',
+      category: item.category || 'actualite',
+      date: item.date || '',
+      location: item.location || '',
+      images: item.images || [],
+      videos: item.videos || [],
+      featured: Boolean(item.featured),
+      published: item.published !== false
+    })
+    setShowNewsForm(true)
+  }
+
+  const handleDeleteNews = (id) => {
+    setConfirmModal({
+      isOpen: true,
+      type: 'danger',
+      title: "Supprimer l'actualité",
+      message: 'Êtes-vous sûr de vouloir supprimer cette actualité ? Cette action est irréversible.',
+      onConfirm: async () => {
+        try {
+          await deleteDoc(doc(db, 'actualites', id))
+          setNotification({
+            isOpen: true,
+            type: 'success',
+            title: 'Actualité supprimée',
+            message: "L'actualité a été supprimée avec succès."
+          })
+          fetchNews()
+        } catch (error) {
+          console.error('Error deleting news:', error)
+          setNotification({
+            isOpen: true,
+            type: 'error',
+            title: 'Erreur',
+            message: "Impossible de supprimer l'actualité."
           })
         }
       }
@@ -1222,6 +1361,12 @@ const AdminDashboard = () => {
     return [r.title, r.description].filter(Boolean).some(v => v.toLowerCase().includes(term))
   })
 
+  const filteredNews = news.filter(n => {
+    const term = newsSearch.trim().toLowerCase()
+    if (!term) return true
+    return [n.title, n.excerpt, n.location].filter(Boolean).some(v => v.toLowerCase().includes(term))
+  })
+
   const filteredAuteurs = auteurs.filter(a => {
     const term = auteursSearch.trim().toLowerCase()
     if (!term) return true
@@ -1317,6 +1462,17 @@ const AdminDashboard = () => {
               >
                 <Award className="w-5 h-5 flex-shrink-0" />
                 Réalisations
+              </button>
+              <button
+                onClick={() => setActiveTab('actualites')}
+                className={`flex-shrink-0 lg:w-full flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2 lg:py-3 rounded-lg transition-colors whitespace-nowrap text-sm lg:text-base ${
+                  activeTab === 'actualites'
+                    ? 'bg-emerald-100 text-emerald-700'
+                    : 'text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                <Newspaper className="w-5 h-5 flex-shrink-0" />
+                Actualités
               </button>
               <button
                 onClick={() => setActiveTab('auteurs')}
@@ -2529,6 +2685,275 @@ const AdminDashboard = () => {
                       </div>
                     ))}
                   </div>
+                  </>
+                )}
+              </motion.div>
+            )}
+
+            {activeTab === 'actualites' && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white rounded-xl shadow-sm p-4 sm:p-6"
+              >
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-3">
+                  <div>
+                    <h2 className="text-lg sm:text-xl font-bold text-gray-800">
+                      Gestion des actualités
+                    </h2>
+                    <p className="text-sm text-gray-500">Affichées sur la page « Actualités & Bibliothèque ». Traduction arabe/anglaise automatique.</p>
+                  </div>
+                  <button
+                    onClick={() => { setEditingNews(null); setNewsFormData(emptyNewsForm); setShowNewsForm(true) }}
+                    className="flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Ajouter une actualité
+                  </button>
+                </div>
+
+                {showNewsForm && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="mb-6 p-6 bg-gray-50 rounded-lg"
+                  >
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-lg font-semibold">
+                        {editingNews ? "Modifier l'actualité" : 'Nouvelle actualité'}
+                      </h3>
+                      <button onClick={resetNewsForm} className="text-gray-500 hover:text-gray-700">
+                        <X className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    <form onSubmit={handleNewsSubmit} className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Titre</label>
+                        <input
+                          type="text"
+                          value={newsFormData.title}
+                          onChange={(e) => setNewsFormData({ ...newsFormData, title: e.target.value })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                          placeholder="ex: Lancement du programme « Jeunesse & Savoir »"
+                          required
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
+                          <select
+                            value={newsFormData.category}
+                            onChange={(e) => setNewsFormData({ ...newsFormData, category: e.target.value })}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                          >
+                            {NEWS_CATEGORIES.map(c => (
+                              <option key={c.id} value={c.id}>{c.label}</option>
+                            ))}
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                          <input
+                            type="date"
+                            value={newsFormData.date}
+                            onChange={(e) => setNewsFormData({ ...newsFormData, date: e.target.value })}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Lieu (optionnel)</label>
+                          <input
+                            type="text"
+                            value={newsFormData.location}
+                            onChange={(e) => setNewsFormData({ ...newsFormData, location: e.target.value })}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                            placeholder="ex: Tivaouane"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Résumé</label>
+                        <textarea
+                          value={newsFormData.excerpt}
+                          onChange={(e) => setNewsFormData({ ...newsFormData, excerpt: e.target.value })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                          rows={2}
+                          placeholder="2-3 phrases affichées sur la carte de l'actualité"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Contenu complet (optionnel)</label>
+                        <textarea
+                          value={newsFormData.content}
+                          onChange={(e) => setNewsFormData({ ...newsFormData, content: e.target.value })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                          rows={6}
+                          placeholder="Texte affiché sur la page de l'actualité (« Lire la suite »)"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Images</label>
+                        <div className="flex flex-wrap items-center gap-3">
+                          {newsFormData.images.map((url, index) => (
+                            <div key={url} className="relative w-16 h-16 flex-shrink-0">
+                              <img src={url} alt={`Aperçu ${index + 1}`} className="w-16 h-16 object-cover rounded-lg border border-gray-200" />
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveNewsImage(index)}
+                                className="absolute -top-2 -right-2 w-5 h-5 flex items-center justify-center bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors"
+                              >
+                                <X className="w-3 h-3" />
+                              </button>
+                            </div>
+                          ))}
+                          <label className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors text-sm flex-shrink-0">
+                            <Upload className="w-4 h-4" />
+                            {uploadingNewsImage ? 'Envoi en cours...' : 'Ajouter des images'}
+                            <input
+                              type="file"
+                              accept="image/*"
+                              multiple
+                              onChange={handleNewsImageChange}
+                              disabled={uploadingNewsImage}
+                              className="hidden"
+                            />
+                          </label>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-2">La première image sert de vignette.</p>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Vidéos YouTube / Facebook (optionnel)</label>
+                        <textarea
+                          value={newsFormData.videos.join('\n')}
+                          onChange={(e) => setNewsFormData({ ...newsFormData, videos: e.target.value.split('\n') })}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 font-mono text-sm"
+                          rows={2}
+                          placeholder={'https://www.youtube.com/watch?v=...\nhttps://www.facebook.com/...'}
+                        />
+                        <p className="text-xs text-gray-500 mt-1">
+                          Un lien par ligne. Les vidéos sont lues directement sur la page de l'actualité ; sans photo, la miniature YouTube sert de vignette.
+                        </p>
+                        {newsFormData.videos.some(v => v.trim() && !getVideoEmbed(v)) && (
+                          <p className="text-xs text-red-600 mt-1">Un des liens n'est ni YouTube ni Facebook : il ne sera pas affiché.</p>
+                        )}
+                      </div>
+
+                      <div className="flex flex-col sm:flex-row gap-3 sm:gap-6">
+                        <label className="flex items-center gap-2 text-sm text-gray-700">
+                          <input
+                            type="checkbox"
+                            checked={newsFormData.featured}
+                            onChange={(e) => setNewsFormData({ ...newsFormData, featured: e.target.checked })}
+                            className="w-4 h-4 text-emerald-600 rounded"
+                          />
+                          <Star className="w-4 h-4 text-gold-500" />
+                          Mettre à la une (grande carte)
+                        </label>
+                        <label className="flex items-center gap-2 text-sm text-gray-700">
+                          <input
+                            type="checkbox"
+                            checked={newsFormData.published}
+                            onChange={(e) => setNewsFormData({ ...newsFormData, published: e.target.checked })}
+                            className="w-4 h-4 text-emerald-600 rounded"
+                          />
+                          Publiée (visible sur le site)
+                        </label>
+                      </div>
+
+                      <div className="flex gap-3">
+                        <button
+                          type="submit"
+                          disabled={uploadingNewsImage}
+                          className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50"
+                        >
+                          <Save className="w-4 h-4" />
+                          {editingNews ? 'Mettre à jour' : 'Enregistrer'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={resetNewsForm}
+                          className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                        >
+                          Annuler
+                        </button>
+                      </div>
+                    </form>
+                  </motion.div>
+                )}
+
+                {news.length === 0 ? (
+                  <div className="text-center py-8">
+                    <Newspaper className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                    <p className="text-gray-500">Aucune actualité enregistrée pour le moment</p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="relative mb-4">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <input
+                        value={newsSearch}
+                        onChange={(e) => setNewsSearch(e.target.value)}
+                        placeholder="Rechercher une actualité..."
+                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                      />
+                    </div>
+                    {filteredNews.length === 0 && (
+                      <div className="text-center py-8 text-gray-500">Aucun résultat pour "{newsSearch}"</div>
+                    )}
+                    <div className="space-y-3">
+                      {filteredNews.map((item) => (
+                        <div key={item.id} className="flex items-center gap-4 p-3 border border-gray-200 rounded-xl bg-gray-50">
+                          <div className="w-20 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
+                            {getNewsCover(item) ? (
+                              <img src={getNewsCover(item)} alt={item.title} className="w-full h-full object-cover" />
+                            ) : (
+                              <ImageIcon className="w-6 h-6 text-gray-300" />
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex flex-wrap items-center gap-2 mb-1">
+                              <span className="px-2 py-0.5 text-xs font-semibold bg-emerald-100 text-emerald-700 rounded-full">
+                                {NEWS_CATEGORIES.find(c => c.id === item.category)?.label || item.category}
+                              </span>
+                              <span className="text-xs text-gray-500">{formatNewsDate(item.date, 'fr')}</span>
+                              {item.featured && (
+                                <span className="flex items-center gap-1 px-2 py-0.5 text-xs font-semibold bg-amber-100 text-amber-700 rounded-full">
+                                  <Star className="w-3 h-3" /> À la une
+                                </span>
+                              )}
+                              {item.published === false && (
+                                <span className="px-2 py-0.5 text-xs font-semibold bg-gray-200 text-gray-600 rounded-full">Brouillon</span>
+                              )}
+                            </div>
+                            <h3 className="font-semibold text-gray-800 truncate">{item.title}</h3>
+                          </div>
+                          <div className="flex items-center gap-1 flex-shrink-0">
+                            <button
+                              onClick={() => handleEditNews(item)}
+                              className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                              aria-label="Modifier"
+                            >
+                              <Edit className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteNews(item.id)}
+                              className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                              aria-label="Supprimer"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </>
                 )}
               </motion.div>

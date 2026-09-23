@@ -7,6 +7,7 @@ export const translations = {
       biography: "Biographie",
       program: "Programme Usratul Amine",
       library: "Bibliothèque",
+      newsLibrary: "Actualités & Bibliothèque",
       message: "Message",
       contact: "Contact",
       products: "Boutique en ligne",
@@ -186,6 +187,42 @@ export const translations = {
         noDocuments: "Aucun document disponible pour le moment",
         loading: "Chargement..."
       }
+    },
+
+    // Actualités
+    news: {
+      heroTitle: "Actualités & Bibliothèque",
+      heroSubtitle: "Restez informés de nos actualités et explorez notre bibliothèque pour enrichir votre savoir et votre cheminement.",
+      heroQuote: "« Le savoir est une lumière qui guide vers le bien. »",
+      section: "Actualités",
+      title: "Nos dernières actualités",
+      subtitle: "Découvrez les événements, initiatives et temps forts de l'association Usratul Amine.",
+      seeAll: "Voir toutes les actualités",
+      readMore: "Lire la suite",
+      empty: "Aucune actualité pour le moment",
+      nextEvent: "Prochain événement",
+      noEvent: "Aucun événement à venir pour le moment",
+      seeDetail: "Voir le programme",
+      allTitle: "Toutes les actualités",
+      all: "Toutes",
+      back: "Retour aux actualités",
+      notFound: "Cette actualité est introuvable",
+      loading: "Chargement...",
+      categories: {
+        evenement: "Événement",
+        association: "Vie de l'association",
+        formation: "Formation",
+        actualite: "Actualité",
+        boutique: "Boutique"
+      },
+      librarySection: "Bibliothèque",
+      libraryTitle: "Notre bibliothèque",
+      librarySubtitle: "Accédez à une sélection d'ouvrages organisée par rayons pour approfondir vos connaissances sur l'islam, la spiritualité et les sciences religieuses.",
+      browse: "Voir",
+      books: "ouvrages",
+      soon: "Bientôt",
+      promoTitle: "La bibliothèque Al Amine bientôt en ligne !",
+      promoText: "Une riche collection d'ouvrages à consulter et télécharger très prochainement, in shā' Allāh."
     },
 
     // Calendrier Hijri
@@ -389,6 +426,7 @@ export const translations = {
       biography: "السيرة الذاتية",
       program: "البرنامج",
       library: "المكتبة",
+      newsLibrary: "الأخبار والمكتبة",
       message: "الرسالة",
       contact: "اتصل بنا",
       products: "المتجر",
@@ -568,6 +606,42 @@ export const translations = {
         noDocuments: "لا يوجد أي مستند متاح حالياً",
         loading: "جارٍ التحميل..."
       }
+    },
+
+    // Actualités
+    news: {
+      heroTitle: "الأخبار والمكتبة",
+      heroSubtitle: "تابعوا آخر أخبارنا واستكشفوا مكتبتنا لإثراء معارفكم ومسيرتكم.",
+      heroQuote: "« العلم نور يهدي إلى الخير »",
+      section: "الأخبار",
+      title: "آخر أخبارنا",
+      subtitle: "اكتشفوا فعاليات ومبادرات وأبرز محطات جمعية أسرة الأمين.",
+      seeAll: "عرض كل الأخبار",
+      readMore: "اقرأ المزيد",
+      empty: "لا توجد أخبار حالياً",
+      nextEvent: "الحدث القادم",
+      noEvent: "لا توجد أحداث قادمة حالياً",
+      seeDetail: "عرض البرنامج",
+      allTitle: "كل الأخبار",
+      all: "الكل",
+      back: "العودة إلى الأخبار",
+      notFound: "هذا الخبر غير موجود",
+      loading: "جارٍ التحميل...",
+      categories: {
+        evenement: "حدث",
+        association: "حياة الجمعية",
+        formation: "تكوين",
+        actualite: "خبر",
+        boutique: "المتجر"
+      },
+      librarySection: "المكتبة",
+      libraryTitle: "مكتبتنا",
+      librarySubtitle: "مجموعة مختارة من الكتب مرتبة حسب الرفوف لتعميق معارفكم في الإسلام والروحانية والعلوم الشرعية.",
+      browse: "عرض",
+      books: "كتب",
+      soon: "قريباً",
+      promoTitle: "مكتبة الأمين قريباً على الإنترنت!",
+      promoText: "مجموعة غنية من الكتب للاطلاع والتحميل قريباً إن شاء الله."
     },
 
     // Calendrier Hijri
@@ -771,6 +845,7 @@ export const translations = {
       biography: "Biography",
       program: "Program",
       library: "Library",
+      newsLibrary: "News & Library",
       message: "Message",
       contact: "Contact",
       products: "Shop",
@@ -950,6 +1025,42 @@ export const translations = {
         noDocuments: "No document available at the moment",
         loading: "Loading..."
       }
+    },
+
+    // Actualités
+    news: {
+      heroTitle: "News & Library",
+      heroSubtitle: "Stay informed about our news and explore our library to enrich your knowledge and your spiritual path.",
+      heroQuote: "“Knowledge is a light that guides towards good.”",
+      section: "News",
+      title: "Our latest news",
+      subtitle: "Discover the events, initiatives and highlights of the Usratul Amine association.",
+      seeAll: "See all news",
+      readMore: "Read more",
+      empty: "No news at the moment",
+      nextEvent: "Next event",
+      noEvent: "No upcoming event at the moment",
+      seeDetail: "See the programme",
+      allTitle: "All news",
+      all: "All",
+      back: "Back to news",
+      notFound: "This news item could not be found",
+      loading: "Loading...",
+      categories: {
+        evenement: "Event",
+        association: "Association life",
+        formation: "Training",
+        actualite: "News",
+        boutique: "Shop"
+      },
+      librarySection: "Library",
+      libraryTitle: "Our library",
+      librarySubtitle: "Browse a selection of books organised by shelf to deepen your knowledge of Islam, spirituality and religious sciences.",
+      browse: "View",
+      books: "books",
+      soon: "Coming soon",
+      promoTitle: "The Al Amine library, online soon!",
+      promoText: "A rich collection of books to read and download very soon, in shā' Allāh."
     },
 
     // Calendrier Hijri

@@ -8,6 +8,8 @@ import ProduitsPage from './pages/ProduitsPage'
 import RealisationsPage from './pages/RealisationsPage'
 import LibraryPage from './pages/LibraryPage'
 import RayonDetailPage from './pages/RayonDetailPage'
+import ActualitesPage from './pages/ActualitesPage'
+import ActualiteDetailPage from './pages/ActualiteDetailPage'
 import AuteursDiwansPage from './pages/AuteursDiwansPage'
 import CalendrierHijriPage from './pages/CalendrierHijriPage'
 import DateCheckerPage from './pages/DateCheckerPage'
@@ -67,6 +69,8 @@ function App() {
             <Route path="/library" element={<LibraryPage />} />
             <Route path="/library/auteurs" element={<AuteursDiwansPage />} />
             <Route path="/library/:rayonId" element={<RayonDetailPage />} />
+            <Route path="/actualites" element={<ActualitesPage />} />
+            <Route path="/actualites/:id" element={<ActualiteDetailPage />} />
             <Route path="/panier" element={<CartPage />} />
             <Route path="/commande" element={<CheckoutPage />} />
             <Route
