@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
   Plus, Edit, Trash2, Save, X, Upload, ArrowLeft, ArrowUp, ArrowDown,
-  Headphones, ChevronDown, Check
+  Headphones, ChevronDown, Check, Merge
 } from 'lucide-react'
 import { collection, addDoc, updateDoc, deleteDoc, doc, getDoc, getDocs } from 'firebase/firestore'
 import { db } from '../firebase/config'
@@ -37,6 +37,7 @@ const AudioManagement = ({ setNotification, setConfirmModal }) => {
   const [newPartTitle, setNewPartTitle] = useState('')
   const [openPartId, setOpenPartId] = useState(null)
   const [upload, setUpload] = useState(null) // { partId, current, total, percent, name }
+  const [mergeIds, setMergeIds] = useState(null) // null = mode fusion inactif, sinon ids cochés
 
   const selected = collections.find(c => c.id === selectedId) || null
 
@@ -151,6 +152,37 @@ const AudioManagement = ({ setNotification, setConfirmModal }) => {
       }
     })
   }
+
+  // Regroupe les parties des collections cochées dans la première (ordre de la liste).
+  // Les fichiers audio ne bougent pas : seules les fiches des autres collections sont retirées.
+  const handleMerge = () => {
+    const chosen = collections.filter(c => mergeIds.includes(c.id))
+    const [target, ...sources] = chosen
+    setConfirmModal({
+      isOpen: true,
+      type: 'danger',
+      title: 'Fusionner les collections',
+      message: `Les parties de ${sources.length} collection(s) seront déplacées dans « ${target.title} », puis ces collections seront retirées. Aucun fichier audio n'est supprimé.`,
+      onConfirm: async () => {
+        try {
+          const parts = chosen.flatMap(c => c.parts || [])
+          await updateDoc(doc(db, 'audio_collections', target.id), { parts })
+          await Promise.all(sources.map(c => deleteDoc(doc(db, 'audio_collections', c.id))))
+          setMergeIds(null)
+          setSelectedId(target.id)
+          notify('success', 'Collections fusionnées', `${parts.length} partie(s) regroupée(s). Vous pouvez maintenant renommer la collection.`)
+          fetchCollections()
+        } catch (error) {
+          console.error('Error merging audio collections:', error)
+          notify('error', 'Erreur', 'La fusion a échoué. Rechargez la page et vérifiez les collections avant de réessayer.')
+          fetchCollections()
+        }
+      }
+    })
+  }
+
+  const toggleMerge = (id) =>
+    setMergeIds(prev => (prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]))
 
   const runPartsUpdate = async (parts, errorMessage) => {
     try {
@@ -493,16 +525,54 @@ const AudioManagement = ({ setNotification, setConfirmModal }) => {
           <h2 className="text-lg sm:text-xl font-bold text-gray-800">Audiothèque</h2>
           <p className="text-sm text-gray-500">Collections audio (tafsir, conférences…) écoutables sur le site.</p>
         </div>
-        <button
-          onClick={() => { setEditing(null); setFormData(emptyForm); setShowForm(true) }}
-          className="flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm"
-        >
-          <Plus className="w-4 h-4" />
-          Nouvelle collection
-        </button>
+        <div className="flex flex-col sm:flex-row gap-2">
+          {collections.length > 1 && !mergeIds && (
+            <button
+              onClick={() => { resetForm(); setMergeIds([]) }}
+              className="flex items-center justify-center gap-2 px-4 py-2 border border-emerald-600 text-emerald-700 rounded-lg hover:bg-emerald-50 transition-colors text-sm"
+            >
+              <Merge className="w-4 h-4" />
+              Fusionner des collections
+            </button>
+          )}
+          <button
+            onClick={() => { setMergeIds(null); setEditing(null); setFormData(emptyForm); setShowForm(true) }}
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm"
+          >
+            <Plus className="w-4 h-4" />
+            Nouvelle collection
+          </button>
+        </div>
       </div>
 
       {collectionForm}
+
+      {mergeIds && (
+        <div className="mb-4 p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
+          <p className="text-sm text-emerald-900 mb-3">
+            Cochez les collections à regrouper. Leurs parties seront rassemblées, dans l'ordre de la liste, dans la <strong>première collection cochée</strong> ; les autres seront retirées. Les fichiers audio ne sont pas touchés.
+          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => setMergeIds(collections.map(c => c.id))}
+              className="px-3 py-1.5 text-sm text-emerald-700 border border-emerald-300 rounded-lg hover:bg-white transition-colors"
+            >
+              Tout cocher
+            </button>
+            <button
+              onClick={handleMerge}
+              disabled={mergeIds.length < 2}
+              className="flex items-center gap-2 px-4 py-1.5 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm disabled:opacity-50"
+            >
+              <Merge className="w-4 h-4" />
+              Fusionner {mergeIds.length} collection(s)
+            </button>
+            <button onClick={() => setMergeIds(null)} className="px-3 py-1.5 text-sm text-gray-600 hover:bg-white rounded-lg transition-colors">
+              Annuler
+            </button>
+          </div>
+        </div>
+      )}
 
       {collections.length === 0 ? (
         <div className="text-center py-8">
@@ -516,9 +586,16 @@ const AudioManagement = ({ setNotification, setConfirmModal }) => {
             return (
               <button
                 key={item.id}
-                onClick={() => { setSelectedId(item.id); resetForm() }}
-                className="w-full flex items-center gap-4 p-3 border border-gray-200 rounded-xl bg-gray-50 hover:bg-emerald-50 text-left transition-colors"
+                onClick={() => (mergeIds ? toggleMerge(item.id) : (setSelectedId(item.id), resetForm()))}
+                className={`w-full flex items-center gap-4 p-3 border rounded-xl text-left transition-colors ${
+                  mergeIds?.includes(item.id) ? 'border-emerald-500 bg-emerald-50' : 'border-gray-200 bg-gray-50 hover:bg-emerald-50'
+                }`}
               >
+                {mergeIds && (
+                  <span className={`w-5 h-5 flex-shrink-0 flex items-center justify-center rounded border ${mergeIds.includes(item.id) ? 'bg-emerald-600 border-emerald-600 text-white' : 'bg-white border-gray-300'}`}>
+                    {mergeIds.includes(item.id) && <Check className="w-3.5 h-3.5" />}
+                  </span>
+                )}
                 <div className="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-emerald-800 flex items-center justify-center">
                   {item.image ? (
                     <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
@@ -528,7 +605,12 @@ const AudioManagement = ({ setNotification, setConfirmModal }) => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-semibold text-gray-800 truncate">{item.title}</h3>
-                  <p className="text-sm text-gray-500 truncate">{item.author}</p>
+                  <p className="text-sm text-gray-500 truncate">
+                    {item.author}
+                    {mergeIds?.[0] && collections.find(c => mergeIds.includes(c.id))?.id === item.id && (
+                      <span className="ml-2 px-2 py-0.5 text-xs font-semibold bg-emerald-600 text-white rounded-full">Collection conservée</span>
+                    )}
+                  </p>
                   <p className="text-xs text-gray-500 mt-0.5">
                     {(item.parts || []).length} partie(s) · {tracks.length} épisode(s)
                     {item.published === false && <span className="ml-2 px-2 py-0.5 font-semibold bg-gray-200 text-gray-600 rounded-full">Brouillon</span>}
