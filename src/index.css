@@ -75,3 +75,42 @@
 .animation-delay-4000 {
   animation-delay: 4s;
 }
+
+/* Lecteur audio fixe : on réserve sa hauteur en bas de page et on remonte le chatbot */
+body[data-audio-player] {
+  padding-bottom: 68px;
+}
+
+body[data-audio-player] .audio-shift {
+  margin-bottom: 68px;
+}
+
+.audio-seek {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  accent-color: #fde047;
+}
+
+.audio-seek::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: #fde047;
+}
+
+.audio-seek::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 0;
+  border-radius: 9999px;
+  background: #fde047;
+}
+
+.audio-seek::-moz-range-progress {
+  height: 4px;
+  background: #fde047;
+}

@@ -8,6 +8,8 @@ import ProduitsPage from './pages/ProduitsPage'
 import RealisationsPage from './pages/RealisationsPage'
 import LibraryPage from './pages/LibraryPage'
 import RayonDetailPage from './pages/RayonDetailPage'
+import AudiothequePage from './pages/AudiothequePage'
+import AudioCollectionPage from './pages/AudioCollectionPage'
 import ActualitesPage from './pages/ActualitesPage'
 import ActualiteDetailPage from './pages/ActualiteDetailPage'
 import AuteursDiwansPage from './pages/AuteursDiwansPage'
@@ -21,7 +23,9 @@ import PWAInstallBanner from './components/PWAInstallBanner'
 import ScrollToTop from './components/ScrollToTop'
 import AnalyticsTracker from './components/AnalyticsTracker'
 import LaunchGate from './components/LaunchGate'
+import AudioPlayerBar from './components/AudioPlayerBar'
 import { AdminProvider, useAdmin } from './contexts/AdminContext'
+import { AudioPlayerProvider } from './contexts/AudioPlayerContext'
 
 // Composant pour protéger les routes admin
 function ProtectedAdminRoute({ children }) {
@@ -56,6 +60,7 @@ function App() {
       <Router>
         <ScrollToTop />
         <AnalyticsTracker />
+        <AudioPlayerProvider>
         <LaunchGate>
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -68,6 +73,8 @@ function App() {
             <Route path="/realisations" element={<RealisationsPage />} />
             <Route path="/library" element={<LibraryPage />} />
             <Route path="/library/auteurs" element={<AuteursDiwansPage />} />
+            <Route path="/library/audio" element={<AudiothequePage />} />
+            <Route path="/library/audio/:id" element={<AudioCollectionPage />} />
             <Route path="/library/:rayonId" element={<RayonDetailPage />} />
             <Route path="/actualites" element={<ActualitesPage />} />
             <Route path="/actualites/:id" element={<ActualiteDetailPage />} />
@@ -86,7 +93,9 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
           <PWAInstallBanner />
+          <AudioPlayerBar />
         </LaunchGate>
+        </AudioPlayerProvider>
       </Router>
     </AdminProvider>
   )

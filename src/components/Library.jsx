@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Library as LibraryIcon, Sparkles, ArrowRight, Phone, BookOpen, ScrollText, Scale, Languages, Globe, Newspaper, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Library as LibraryIcon, Sparkles, ArrowRight, Phone, BookOpen, ScrollText, Scale, Languages, Globe, Newspaper, ChevronLeft, ChevronRight, Headphones } from 'lucide-react'
 import { useLanguage } from '../contexts/LanguageContext'
 import { getTranslation } from '../translations/translations'
 import { rayonBooks } from '../data/rayonBooks'
@@ -73,7 +73,8 @@ const Library = () => {
   const scrollerRef = useRef(null)
 
   const scroll = (direction) => {
-    scrollerRef.current?.scrollBy({ left: direction * 260, behavior: 'smooth' })
+    const rtl = getComputedStyle(scrollerRef.current).direction === 'rtl'
+    scrollerRef.current.scrollBy({ left: direction * (rtl ? -260 : 260), behavior: 'smooth' })
   }
 
   return (
@@ -145,31 +146,35 @@ const Library = () => {
           </motion.div>
         </div>
 
-        {/* Auteurs & Diwans teaser */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mt-12 relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-50 via-white to-amber-50 border border-emerald-100 p-8 sm:p-12 text-center shadow-sm"
-        >
-          <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-amber-100 rounded-full">
-            <BookOpen className="w-5 h-5 text-amber-600" />
-            <span className="text-sm font-semibold text-amber-800">
-              {t('library.authors.sectionTitle')}
-            </span>
-          </div>
-          <p className={`text-gray-600 max-w-2xl mx-auto mb-6 ${isAr ? 'font-arabic' : ''}`}>
-            {t('library.authors.sectionSubtitle')}
-          </p>
-          <Link
-            to="/library/auteurs"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded-xl shadow-lg transition-colors"
-          >
-            {t('library.authors.cta')}
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </motion.div>
+        {/* Audiothèque + Auteurs & Diwans */}
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[
+            { to: '/library/audio', icon: Headphones, label: t('audio.section'), text: t('audio.teaserText'), cta: t('audio.cta') },
+            { to: '/library/auteurs', icon: BookOpen, label: t('library.authors.sectionTitle'), text: t('library.authors.sectionSubtitle'), cta: t('library.authors.cta') }
+          ].map(({ to, icon: Icon, label, text, cta }) => (
+            <motion.div
+              key={to}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="flex flex-col items-center rounded-3xl bg-gradient-to-br from-emerald-50 via-white to-amber-50 border border-emerald-100 p-8 sm:p-10 text-center shadow-sm"
+            >
+              <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-amber-100 rounded-full">
+                <Icon className="w-5 h-5 text-amber-600" />
+                <span className="text-sm font-semibold text-amber-800">{label}</span>
+              </div>
+              <p className={`text-gray-600 max-w-md mx-auto mb-6 ${isAr ? 'font-arabic' : ''}`}>{text}</p>
+              <Link
+                to={to}
+                className="mt-auto inline-flex items-center gap-2 px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded-xl shadow-lg transition-colors"
+              >
+                {cta}
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   )

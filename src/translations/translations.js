@@ -225,6 +225,26 @@ export const translations = {
       promoText: "Une riche collection d'ouvrages à consulter et télécharger très prochainement, in shā' Allāh."
     },
 
+    // Audiothèque
+    audio: {
+      section: "Audiothèque",
+      title: "Audiothèque",
+      subtitle: "Tafsir, enseignements et conférences à écouter en ligne.",
+      teaserText: "Écoutez le tafsir du Noble Coran et d'autres enseignements, directement sur le site.",
+      cta: "Ouvrir l'audiothèque",
+      listen: "Écouter",
+      resume: "Reprendre l'écoute",
+      playAll: "Écouter depuis le début",
+      episodes: "épisodes",
+      parts: "parties",
+      empty: "Aucun audio disponible pour le moment",
+      emptyPart: "Les épisodes de cette partie arrivent bientôt",
+      backToAudio: "Retour à l'audiothèque",
+      backToLibrary: "Retour à la bibliothèque",
+      notFound: "Cette collection est introuvable",
+      loading: "Chargement..."
+    },
+
     // Calendrier Hijri
     hijriCalendar: {
       title: "Calendrier musulman",
@@ -644,6 +664,26 @@ export const translations = {
       promoText: "مجموعة غنية من الكتب للاطلاع والتحميل قريباً إن شاء الله."
     },
 
+    // Audiothèque
+    audio: {
+      section: "المكتبة الصوتية",
+      title: "المكتبة الصوتية",
+      subtitle: "تفسير ودروس ومحاضرات للاستماع عبر الإنترنت.",
+      teaserText: "استمعوا إلى تفسير القرآن الكريم ودروس أخرى مباشرة على الموقع.",
+      cta: "فتح المكتبة الصوتية",
+      listen: "استماع",
+      resume: "متابعة الاستماع",
+      playAll: "الاستماع من البداية",
+      episodes: "حلقات",
+      parts: "أجزاء",
+      empty: "لا توجد مواد صوتية حالياً",
+      emptyPart: "حلقات هذا الجزء ستتوفر قريباً",
+      backToAudio: "العودة إلى المكتبة الصوتية",
+      backToLibrary: "العودة إلى المكتبة",
+      notFound: "هذه المجموعة غير موجودة",
+      loading: "جارٍ التحميل..."
+    },
+
     // Calendrier Hijri
     hijriCalendar: {
       title: "التقويم الهجري",
@@ -1061,6 +1101,26 @@ export const translations = {
       soon: "Coming soon",
       promoTitle: "The Al Amine library, online soon!",
       promoText: "A rich collection of books to read and download very soon, in shā' Allāh."
+    },
+
+    // Audiothèque
+    audio: {
+      section: "Audio library",
+      title: "Audio library",
+      subtitle: "Tafsir, teachings and lectures to listen to online.",
+      teaserText: "Listen to the tafsir of the Noble Quran and other teachings, directly on the site.",
+      cta: "Open the audio library",
+      listen: "Listen",
+      resume: "Resume listening",
+      playAll: "Listen from the start",
+      episodes: "episodes",
+      parts: "parts",
+      empty: "No audio available at the moment",
+      emptyPart: "The episodes of this part are coming soon",
+      backToAudio: "Back to the audio library",
+      backToLibrary: "Back to the library",
+      notFound: "This collection could not be found",
+      loading: "Loading..."
     },
 
     // Calendrier Hijri
