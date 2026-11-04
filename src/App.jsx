@@ -9,6 +9,8 @@ import RealisationsPage from './pages/RealisationsPage'
 import LibraryPage from './pages/LibraryPage'
 import RayonDetailPage from './pages/RayonDetailPage'
 import AudiothequePage from './pages/AudiothequePage'
+import QuranPage from './pages/QuranPage'
+import QuranChapterPage from './pages/QuranChapterPage'
 import AudioCollectionPage from './pages/AudioCollectionPage'
 import ActualitesPage from './pages/ActualitesPage'
 import ActualiteDetailPage from './pages/ActualiteDetailPage'
@@ -74,6 +76,8 @@ function App() {
             <Route path="/library" element={<LibraryPage />} />
             <Route path="/library/auteurs" element={<AuteursDiwansPage />} />
             <Route path="/library/audio" element={<AudiothequePage />} />
+            <Route path="/library/coran" element={<QuranPage />} />
+            <Route path="/library/coran/:chapterId" element={<QuranChapterPage />} />
             <Route path="/library/audio/:id" element={<AudioCollectionPage />} />
             <Route path="/library/:rayonId" element={<RayonDetailPage />} />
             <Route path="/actualites" element={<ActualitesPage />} />

@@ -245,6 +245,30 @@ export const translations = {
       loading: "Chargement..."
     },
 
+    // Le Noble Coran
+    quran: {
+      section: "Le Noble Coran",
+      title: "Le Noble Coran",
+      subtitle: "Lisez et écoutez les 114 sourates, avec la traduction française de Muhammad Hamidullah.",
+      teaserText: "Lisez les 114 sourates en arabe avec leur traduction, et écoutez-les verset par verset.",
+      cta: "Lire le Coran",
+      search: "Rechercher une sourate (nom ou numéro)",
+      noResult: "Aucune sourate ne correspond à votre recherche",
+      verses: "versets",
+      meccan: "Mecquoise",
+      medinan: "Médinoise",
+      listen: "Écouter la sourate",
+      reciter: "Récitant",
+      back: "Toutes les sourates",
+      backToLibrary: "Retour à la bibliothèque",
+      previous: "Sourate précédente",
+      next: "Sourate suivante",
+      loading: "Chargement...",
+      error: "Impossible de charger le Coran pour le moment. Réessayez dans quelques instants.",
+      translationBy: "Traduction :",
+      credit: "Texte, traduction et récitations fournis par Quran.Foundation"
+    },
+
     // Calendrier Hijri
     hijriCalendar: {
       title: "Calendrier musulman",
@@ -684,6 +708,30 @@ export const translations = {
       loading: "جارٍ التحميل..."
     },
 
+    // Le Noble Coran
+    quran: {
+      section: "القرآن الكريم",
+      title: "القرآن الكريم",
+      subtitle: "اقرأ واستمع إلى السور المئة والأربع عشرة.",
+      teaserText: "اقرأ السور المئة والأربع عشرة واستمع إليها آيةً آية.",
+      cta: "قراءة القرآن",
+      search: "ابحث عن سورة (بالاسم أو الرقم)",
+      noResult: "لا توجد سورة مطابقة لبحثك",
+      verses: "آيات",
+      meccan: "مكية",
+      medinan: "مدنية",
+      listen: "استمع إلى السورة",
+      reciter: "القارئ",
+      back: "كل السور",
+      backToLibrary: "العودة إلى المكتبة",
+      previous: "السورة السابقة",
+      next: "السورة التالية",
+      loading: "جارٍ التحميل...",
+      error: "تعذر تحميل القرآن حالياً. حاول مرة أخرى بعد قليل.",
+      translationBy: "الترجمة:",
+      credit: "النص والتلاوات مقدمة من Quran.Foundation"
+    },
+
     // Calendrier Hijri
     hijriCalendar: {
       title: "التقويم الهجري",
@@ -1121,6 +1169,30 @@ export const translations = {
       backToLibrary: "Back to the library",
       notFound: "This collection could not be found",
       loading: "Loading..."
+    },
+
+    // Le Noble Coran
+    quran: {
+      section: "The Noble Quran",
+      title: "The Noble Quran",
+      subtitle: "Read and listen to the 114 surahs, with the Saheeh International English translation.",
+      teaserText: "Read the 114 surahs in Arabic with their translation, and listen to them verse by verse.",
+      cta: "Read the Quran",
+      search: "Search a surah (name or number)",
+      noResult: "No surah matches your search",
+      verses: "verses",
+      meccan: "Meccan",
+      medinan: "Medinan",
+      listen: "Listen to the surah",
+      reciter: "Reciter",
+      back: "All surahs",
+      backToLibrary: "Back to the library",
+      previous: "Previous surah",
+      next: "Next surah",
+      loading: "Loading...",
+      error: "The Quran could not be loaded right now. Please try again in a moment.",
+      translationBy: "Translation:",
+      credit: "Text, translation and recitations provided by Quran.Foundation"
     },
 
     // Calendrier Hijri

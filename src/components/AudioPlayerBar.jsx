@@ -29,7 +29,7 @@ const AudioPlayerBar = () => {
       />
 
       <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2 flex items-center gap-2 sm:gap-4">
-        <Link to={`/library/audio/${track.collectionId}`} className="flex items-center gap-3 min-w-0 flex-1">
+        <Link to={track.link || `/library/audio/${track.collectionId}`} className="flex items-center gap-3 min-w-0 flex-1">
           <div className="hidden sm:flex w-10 h-10 flex-shrink-0 rounded-lg overflow-hidden bg-emerald-800 items-center justify-center">
             {track.image ? (
               <img src={track.image} alt="" className="w-full h-full object-cover" />

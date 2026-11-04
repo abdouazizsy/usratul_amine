@@ -146,9 +146,10 @@ const Library = () => {
           </motion.div>
         </div>
 
-        {/* Audiothèque + Auteurs & Diwans */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Coran + Audiothèque + Auteurs & Diwans */}
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
+            { to: '/library/coran', icon: ScrollText, label: t('quran.section'), text: t('quran.teaserText'), cta: t('quran.cta') },
             { to: '/library/audio', icon: Headphones, label: t('audio.section'), text: t('audio.teaserText'), cta: t('audio.cta') },
             { to: '/library/auteurs', icon: BookOpen, label: t('library.authors.sectionTitle'), text: t('library.authors.sectionSubtitle'), cta: t('library.authors.cta') }
           ].map(({ to, icon: Icon, label, text, cta }) => (

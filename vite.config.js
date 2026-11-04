@@ -46,6 +46,15 @@ export default defineConfig({
             }
           },
           {
+            // Texte du Coran : lisible hors connexion une fois consulté
+            urlPattern: /\/\.netlify\/functions\/quran\?/i,
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'quran-text',
+              expiration: { maxEntries: 400, maxAgeSeconds: 60 * 60 * 24 * 30 }
+            }
+          },
+          {
             urlPattern: /^https:\/\/res\.cloudinary\.com\/.*/i,
             handler: 'CacheFirst',
             options: {
