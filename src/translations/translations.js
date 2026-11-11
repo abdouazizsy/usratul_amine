@@ -269,6 +269,41 @@ export const translations = {
       credit: "Texte, traduction et récitations fournis par Quran.Foundation"
     },
 
+    // Accréditation presse
+    accreditation: {
+      navTitle: "Accréditation presse",
+      navDesc: "Journalistes : demandez votre accréditation",
+      title: "Accréditation presse",
+      subtitle: "Journalistes, reporters et photographes : demandez votre accréditation pour couvrir nos événements.",
+      eventLabel: "Événement",
+      photo: "Photo d'identité",
+      photoHint: "Photo de face, visage bien visible (JPG ou PNG, 8 Mo maximum).",
+      choosePhoto: "Choisir une photo",
+      changePhoto: "Changer la photo",
+      firstName: "Prénom",
+      lastName: "Nom",
+      media: "Média / organe de presse",
+      mediaType: "Type de média",
+      role: "Fonction",
+      phone: "Téléphone",
+      email: "Email",
+      select: "Choisir…",
+      mediaTypes: { tv: "Télévision", radio: "Radio", print: "Presse écrite", web: "Presse en ligne / Web", agency: "Agence de presse", other: "Autre" },
+      roles: { journalist: "Journaliste / Reporter", camera: "Cameraman / Vidéaste", photographer: "Photographe", technician: "Technicien", other: "Autre" },
+      consent: "J'accepte que ces informations soient utilisées par Usratul Amine pour traiter ma demande d'accréditation.",
+      submit: "Envoyer ma demande",
+      sending: "Envoi en cours…",
+      successTitle: "Demande envoyée",
+      successText: "Merci ! Votre demande d'accréditation a bien été reçue. L'équipe d'Usratul Amine vous contactera pour la confirmer.",
+      another: "Envoyer une autre demande",
+      closedTitle: "Accréditations fermées",
+      closedText: "Les demandes d'accréditation ne sont pas ouvertes pour le moment. Revenez plus tard ou contactez-nous.",
+      errorPhoto: "Ajoutez une photo d'identité.",
+      errorPhotoType: "La photo doit être une image de moins de 8 Mo.",
+      errorSend: "L'envoi a échoué. Vérifiez votre connexion et réessayez.",
+      loading: "Chargement…"
+    },
+
     // Calendrier Hijri
     hijriCalendar: {
       title: "Calendrier musulman",
@@ -732,6 +767,41 @@ export const translations = {
       credit: "النص والتلاوات مقدمة من Quran.Foundation"
     },
 
+    // Accréditation presse
+    accreditation: {
+      navTitle: "اعتماد الصحفيين",
+      navDesc: "الصحفيون: اطلبوا اعتمادكم",
+      title: "اعتماد الصحفيين",
+      subtitle: "الصحفيون والمراسلون والمصورون: اطلبوا اعتمادكم لتغطية فعالياتنا.",
+      eventLabel: "الفعالية",
+      photo: "صورة شخصية",
+      photoHint: "صورة من الأمام والوجه واضح (JPG أو PNG، بحد أقصى 8 ميغابايت).",
+      choosePhoto: "اختيار صورة",
+      changePhoto: "تغيير الصورة",
+      firstName: "الاسم",
+      lastName: "اللقب",
+      media: "المؤسسة الإعلامية",
+      mediaType: "نوع الوسيلة",
+      role: "الوظيفة",
+      phone: "الهاتف",
+      email: "البريد الإلكتروني",
+      select: "اختر…",
+      mediaTypes: { tv: "تلفزيون", radio: "إذاعة", print: "صحافة مكتوبة", web: "صحافة إلكترونية", agency: "وكالة أنباء", other: "أخرى" },
+      roles: { journalist: "صحفي / مراسل", camera: "مصور فيديو", photographer: "مصور فوتوغرافي", technician: "تقني", other: "أخرى" },
+      consent: "أوافق على استخدام أسرة الأمين لهذه المعلومات لمعالجة طلب الاعتماد.",
+      submit: "إرسال الطلب",
+      sending: "جارٍ الإرسال…",
+      successTitle: "تم إرسال الطلب",
+      successText: "شكراً! تم استلام طلب الاعتماد. سيتواصل معكم فريق أسرة الأمين لتأكيده.",
+      another: "إرسال طلب آخر",
+      closedTitle: "الاعتمادات مغلقة",
+      closedText: "طلبات الاعتماد غير مفتوحة حالياً. عودوا لاحقاً أو تواصلوا معنا.",
+      errorPhoto: "أضيفوا صورة شخصية.",
+      errorPhotoType: "يجب أن تكون الصورة أقل من 8 ميغابايت.",
+      errorSend: "فشل الإرسال. تحققوا من الاتصال وحاولوا مرة أخرى.",
+      loading: "جارٍ التحميل…"
+    },
+
     // Calendrier Hijri
     hijriCalendar: {
       title: "التقويم الهجري",
@@ -1193,6 +1263,41 @@ export const translations = {
       error: "The Quran could not be loaded right now. Please try again in a moment.",
       translationBy: "Translation:",
       credit: "Text, translation and recitations provided by Quran.Foundation"
+    },
+
+    // Accréditation presse
+    accreditation: {
+      navTitle: "Press accreditation",
+      navDesc: "Journalists: apply for accreditation",
+      title: "Press accreditation",
+      subtitle: "Journalists, reporters and photographers: apply for accreditation to cover our events.",
+      eventLabel: "Event",
+      photo: "ID photo",
+      photoHint: "Front-facing photo with the face clearly visible (JPG or PNG, 8 MB max).",
+      choosePhoto: "Choose a photo",
+      changePhoto: "Change photo",
+      firstName: "First name",
+      lastName: "Last name",
+      media: "Media outlet",
+      mediaType: "Media type",
+      role: "Role",
+      phone: "Phone",
+      email: "Email",
+      select: "Choose…",
+      mediaTypes: { tv: "Television", radio: "Radio", print: "Print press", web: "Online press / Web", agency: "News agency", other: "Other" },
+      roles: { journalist: "Journalist / Reporter", camera: "Camera operator", photographer: "Photographer", technician: "Technician", other: "Other" },
+      consent: "I agree that Usratul Amine may use this information to process my accreditation request.",
+      submit: "Send my request",
+      sending: "Sending…",
+      successTitle: "Request sent",
+      successText: "Thank you! Your accreditation request has been received. The Usratul Amine team will contact you to confirm it.",
+      another: "Send another request",
+      closedTitle: "Accreditation closed",
+      closedText: "Accreditation requests are not open at the moment. Please come back later or contact us.",
+      errorPhoto: "Please add an ID photo.",
+      errorPhotoType: "The photo must be an image under 8 MB.",
+      errorSend: "Sending failed. Check your connection and try again.",
+      loading: "Loading…"
     },
 
     // Calendrier Hijri

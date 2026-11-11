@@ -30,7 +30,8 @@ import {
   FileText,
   Moon,
   Newspaper,
-  Headphones
+  Headphones,
+  BadgeCheck
 } from 'lucide-react'
 import { collection, addDoc, updateDoc, deleteDoc, doc, getDocs, query, orderBy } from 'firebase/firestore'
 import { db } from '../firebase/config'
@@ -47,6 +48,7 @@ import NotificationToast from './NotificationToast'
 import UserManagement from './UserManagement'
 import SectionsManagement from './SectionsManagement'
 import AudioManagement from './AudioManagement'
+import AccreditationManagement from './AccreditationManagement'
 import Settings from './Settings'
 
 const SEASON_2025_2026_KEYS = new Set(tariqaEvents2025_2026.map(e => `${e.title}|${e.date}`))
@@ -1497,6 +1499,17 @@ const AdminDashboard = () => {
               >
                 <Headphones className="w-5 h-5 flex-shrink-0" />
                 Audiothèque
+              </button>
+              <button
+                onClick={() => setActiveTab('accreditations')}
+                className={`flex-shrink-0 lg:w-full flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2 lg:py-3 rounded-lg transition-colors whitespace-nowrap text-sm lg:text-base ${
+                  activeTab === 'accreditations'
+                    ? 'bg-emerald-100 text-emerald-700'
+                    : 'text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                <BadgeCheck className="w-5 h-5 flex-shrink-0" />
+                Accréditations
               </button>
               <button
                 onClick={() => setActiveTab('calendrier-hijri')}
@@ -3692,6 +3705,18 @@ const AdminDashboard = () => {
                 animate={{ opacity: 1, y: 0 }}
               >
                 <UserManagement 
+                  setNotification={setNotification}
+                  setConfirmModal={setConfirmModal}
+                />
+              </motion.div>
+            )}
+
+            {activeTab === 'accreditations' && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <AccreditationManagement
                   setNotification={setNotification}
                   setConfirmModal={setConfirmModal}
                 />

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, ChevronDown, Calendar, Sparkles, BookOpen, ShoppingBag, ShoppingCart, Award, Moon, Home, Search } from 'lucide-react'
+import { Menu, X, ChevronDown, Calendar, Sparkles, BookOpen, ShoppingBag, ShoppingCart, Award, Moon, Home, Search, BadgeCheck } from 'lucide-react'
 import LanguageSelector from './LanguageSelector'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useCart } from '../contexts/CartContext'
@@ -248,6 +248,18 @@ const Navigation = ({ scrolled }) => {
                           <p className={`text-xs text-gray-500 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('nav.realisationsDesc')}</p>
                         </div>
                       </Link>
+                      <Link
+                        to="/accreditation"
+                        className="flex items-start gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-gold-50 transition-all group"
+                      >
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-500 to-amber-600 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                          <BadgeCheck className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <p className={`font-semibold text-gray-900 group-hover:text-emerald-700 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('accreditation.navTitle')}</p>
+                          <p className={`text-xs text-gray-500 ${language === 'ar' ? 'font-arabic text-right' : ''}`}>{t('accreditation.navDesc')}</p>
+                        </div>
+                      </Link>
                     </div>
                   </motion.div>
                 )}
@@ -314,7 +326,8 @@ const Navigation = ({ scrolled }) => {
                   {/* Liens avec scroll */}
                   {[
                     { id: 'about', key: 'nav.presentation' },
-                    { id: 'contact', key: 'nav.contact' }
+                    { id: 'contact', key: 'nav.contact' },
+                    { id: 'accreditation', key: 'accreditation.navTitle', link: '/accreditation' }
                   ].map((item) => {
                     const linkClassName = `block w-full text-left px-6 py-3 text-emerald-700 hover:bg-emerald-50 hover:text-gold-600 font-medium transition-colors ${
                       language === 'ar' ? 'font-arabic text-right' : ''

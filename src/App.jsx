@@ -10,6 +10,7 @@ import LibraryPage from './pages/LibraryPage'
 import RayonDetailPage from './pages/RayonDetailPage'
 import AudiothequePage from './pages/AudiothequePage'
 import QuranPage from './pages/QuranPage'
+import AccreditationPage from './pages/AccreditationPage'
 import QuranChapterPage from './pages/QuranChapterPage'
 import AudioCollectionPage from './pages/AudioCollectionPage'
 import ActualitesPage from './pages/ActualitesPage'
@@ -82,6 +83,7 @@ function App() {
             <Route path="/library/:rayonId" element={<RayonDetailPage />} />
             <Route path="/actualites" element={<ActualitesPage />} />
             <Route path="/actualites/:id" element={<ActualiteDetailPage />} />
+            <Route path="/accreditation" element={<AccreditationPage />} />
             <Route path="/panier" element={<CartPage />} />
             <Route path="/commande" element={<CheckoutPage />} />
             <Route
