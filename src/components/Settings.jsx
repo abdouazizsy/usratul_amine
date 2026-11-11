@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Lock, Save, Eye, EyeOff, User, Mail, Rocket, AlertTriangle } from 'lucide-react'
+import { Lock, Save, Eye, EyeOff, User, Mail, Rocket, AlertTriangle, Timer } from 'lucide-react'
 import { updatePassword, EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth'
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { auth, db } from '../firebase/config'
@@ -23,6 +23,53 @@ const Settings = ({ setNotification }) => {
   const [launchDate, setLaunchDate] = useState('')
   const [loadingLaunch, setLoadingLaunch] = useState(true)
   const [savingLaunch, setSavingLaunch] = useState(false)
+
+  const [countdown, setCountdown] = useState({
+    enabled: true,
+    title: 'Les 72h de Usratul Amine 2026',
+    shortTitle: '72h 2026',
+    startDate: '',
+    endDate: '',
+    location: ''
+  })
+  const [loadingCountdown, setLoadingCountdown] = useState(true)
+  const [savingCountdown, setSavingCountdown] = useState(false)
+
+  useEffect(() => {
+    getDoc(doc(db, 'settings', 'countdown'))
+      .then(snap => snap.exists() && setCountdown(prev => ({ ...prev, ...snap.data() })))
+      .catch(error => console.error('Error fetching countdown settings:', error))
+      .finally(() => setLoadingCountdown(false))
+  }, [])
+
+  const handleSaveCountdown = async (e) => {
+    e.preventDefault()
+    if (countdown.enabled && (!countdown.title.trim() || !countdown.startDate)) {
+      setNotification({ isOpen: true, type: 'error', title: 'Erreur', message: "Indiquez le titre et la date de début de l'événement." })
+      return
+    }
+    if (countdown.endDate && countdown.startDate && countdown.endDate <= countdown.startDate) {
+      setNotification({ isOpen: true, type: 'error', title: 'Erreur', message: 'La date de fin doit être après la date de début.' })
+      return
+    }
+    setSavingCountdown(true)
+    try {
+      await setDoc(doc(db, 'settings', 'countdown'), countdown)
+      setNotification({
+        isOpen: true,
+        type: 'success',
+        title: 'Compte à rebours enregistré',
+        message: countdown.enabled
+          ? "Le compte à rebours s'affiche sur la page d'accueil."
+          : "Le compte à rebours est masqué sur la page d'accueil."
+      })
+    } catch (error) {
+      console.error('Error saving countdown settings:', error)
+      setNotification({ isOpen: true, type: 'error', title: 'Erreur', message: "Impossible d'enregistrer le compte à rebours." })
+    } finally {
+      setSavingCountdown(false)
+    }
+  }
 
   useEffect(() => {
     const fetchLaunchSettings = async () => {
@@ -284,6 +331,96 @@ const Settings = ({ setNotification }) => {
             {loading ? 'Modification...' : 'Modifier le mot de passe'}
           </button>
         </form>
+      </motion.div>
+
+      {/* Compte à rebours de la page d'accueil */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mt-8 p-6 bg-gray-50 rounded-lg"
+      >
+        <h3 className="text-lg font-semibold text-gray-800 mb-1 flex items-center gap-2">
+          <Timer className="w-5 h-5" />
+          Compte à rebours de la page d'accueil
+        </h3>
+        <p className="text-sm text-gray-500 mb-4">
+          Affiché à gauche de la page d'accueil (ordinateur et mobile). Il indique « En cours » pendant l'événement puis disparaît tout seul.
+        </p>
+
+        {loadingCountdown ? (
+          <div className="text-gray-500 text-sm">Chargement...</div>
+        ) : (
+          <form onSubmit={handleSaveCountdown} className="space-y-4">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={countdown.enabled}
+                onChange={(e) => setCountdown({ ...countdown, enabled: e.target.checked })}
+                className="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+              />
+              <span className="text-sm font-medium text-gray-700">Afficher le compte à rebours</span>
+            </label>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Titre</label>
+                <input
+                  type="text"
+                  value={countdown.title}
+                  onChange={(e) => setCountdown({ ...countdown, title: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Titre court (mobile)</label>
+                <input
+                  type="text"
+                  value={countdown.shortTitle}
+                  onChange={(e) => setCountdown({ ...countdown, shortTitle: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  maxLength={20}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Début de l'événement</label>
+                <input
+                  type="datetime-local"
+                  value={countdown.startDate}
+                  onChange={(e) => setCountdown({ ...countdown, startDate: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Fin (optionnel, 72h après le début par défaut)</label>
+                <input
+                  type="datetime-local"
+                  value={countdown.endDate}
+                  onChange={(e) => setCountdown({ ...countdown, endDate: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                />
+              </div>
+              <div className="sm:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">Lieu (optionnel)</label>
+                <input
+                  type="text"
+                  value={countdown.location}
+                  onChange={(e) => setCountdown({ ...countdown, location: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  placeholder="ex: Tivaouane"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={savingCountdown}
+              className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Save className="w-4 h-4" />
+              {savingCountdown ? 'Enregistrement...' : 'Enregistrer'}
+            </button>
+          </form>
+        )}
       </motion.div>
 
       {/* Lancement du site / compte à rebours */}
