@@ -120,7 +120,8 @@ const AccreditationManagement = ({ setNotification, setConfirmModal }) => {
     })
   }
 
-  const publicLink = `${window.location.origin}/accreditation`
+  // Toujours l'adresse publique, même quand l'admin est ouvert en local
+  const publicLink = 'https://usratulamine.sn/accreditation'
   const copyLink = () => {
     navigator.clipboard?.writeText(publicLink)
       .then(() => notify('success', 'Lien copié', 'Vous pouvez le partager aux journalistes.'))
