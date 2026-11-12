@@ -5,7 +5,7 @@ import {
 } from 'lucide-react'
 import { collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '../firebase/config'
-import { DEFAULT_TEMPLATES, MEDIA_TYPES, ROLES, STATUSES, fillTemplate, labelOf, toWhatsAppNumber } from '../utils/accreditation'
+import { ACCREDITATION_DEFAULTS, DEFAULT_TEMPLATES, MEDIA_TYPES, ROLES, STATUSES, accreditationWindow, fillTemplate, formatDakarDateTime, labelOf, toWhatsAppNumber } from '../utils/accreditation'
 
 const formatDate = (value) => {
   const date = value?.toDate ? value.toDate() : value ? new Date(value) : null
@@ -38,7 +38,7 @@ const AccreditationManagement = ({ setNotification, setConfirmModal }) => {
   const [zoomed, setZoomed] = useState(null)
   const [settings, setSettings] = useState({
     open: false,
-    eventName: 'Les 72h de Usratul Amine 2026',
+    ...ACCREDITATION_DEFAULTS,
     approvedTemplate: DEFAULT_TEMPLATES.approved,
     rejectedTemplate: DEFAULT_TEMPLATES.rejected
   })
@@ -49,7 +49,18 @@ const AccreditationManagement = ({ setNotification, setConfirmModal }) => {
   useEffect(() => {
     fetchItems()
     getDoc(doc(db, 'settings', 'accreditation'))
-      .then(snap => snap.exists() && setSettings(prev => ({ ...prev, ...snap.data() })))
+      .then(snap => {
+        if (!snap.exists()) return
+        const data = snap.data()
+        // Message enregistré avec l'ancienne phrase par défaut : on y ajoute la remise du badge
+        if (data.approvedTemplate) {
+          data.approvedTemplate = data.approvedTemplate.replace(
+            "muni de votre carte de presse ou d'une pièce d'identité.",
+            "muni de votre carte de presse ou d'une pièce d'identité pour récupérer votre badge."
+          )
+        }
+        setSettings(prev => ({ ...prev, ...data }))
+      })
       .catch(error => console.error('Error fetching accreditation settings:', error))
   }, [])
 
@@ -68,8 +79,12 @@ const AccreditationManagement = ({ setNotification, setConfirmModal }) => {
     e.preventDefault()
     setSavingSettings(true)
     try {
+      if (settings.opensAt && settings.closesAt && settings.closesAt <= settings.opensAt) {
+        notify('error', 'Dates incohérentes', "La clôture doit être après l'ouverture.")
+        return
+      }
       await setDoc(doc(db, 'settings', 'accreditation'), settings)
-      notify('success', 'Paramètres enregistrés', settings.open ? 'Le formulaire est ouvert aux journalistes.' : 'Le formulaire est fermé.')
+      notify('success', 'Paramètres enregistrés', settings.open ? 'Le formulaire s’ouvrira et se fermera automatiquement aux dates choisies.' : 'Le formulaire est fermé.')
     } catch (error) {
       console.error('Error saving accreditation settings:', error)
       notify('error', 'Erreur', "Impossible d'enregistrer les paramètres.")
@@ -164,10 +179,10 @@ const AccreditationManagement = ({ setNotification, setConfirmModal }) => {
               onChange={(e) => setSettings({ ...settings, open: e.target.checked })}
               className="w-4 h-4 text-emerald-600 rounded"
             />
-            Formulaire ouvert
+            Accréditations activées
           </label>
           <div className="flex-1">
-            <label className="block text-xs font-medium text-gray-600 mb-1">Événement concerné</label>
+            <label className="block text-xs font-medium text-gray-600 mb-1">Événement (grand titre de la page)</label>
             <input
               type="text"
               value={settings.eventName}
@@ -184,6 +199,38 @@ const AccreditationManagement = ({ setNotification, setConfirmModal }) => {
             Enregistrer
           </button>
         </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label className="block text-xs font-medium text-gray-600 mb-1">Ouverture des demandes (heure de Dakar)</label>
+            <input
+              type="datetime-local"
+              value={settings.opensAt || ''}
+              onChange={(e) => setSettings({ ...settings, opensAt: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-600 mb-1">Clôture des demandes (heure de Dakar)</label>
+            <input
+              type="datetime-local"
+              value={settings.closesAt || ''}
+              onChange={(e) => setSettings({ ...settings, closesAt: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+            />
+          </div>
+        </div>
+        <p className="text-xs text-gray-600">
+          Statut actuel du formulaire :{' '}
+          <strong>
+            {{
+              open: 'ouvert aux journalistes',
+              upcoming: `ouvrira le ${formatDakarDateTime(settings.opensAt, 'fr', 'à')}`,
+              ended: `clos depuis le ${formatDakarDateTime(settings.closesAt, 'fr', 'à')}`,
+              closed: 'fermé (accréditations désactivées)'
+            }[accreditationWindow(settings)]}
+          </strong>
+          {' '}— calculé d'après les réglages ci-dessus ; cliquez sur « Enregistrer » pour les appliquer au site.
+        </p>
         <details className="text-sm">
           <summary className="cursor-pointer font-medium text-gray-700">Messages envoyés aux journalistes (WhatsApp / email)</summary>
           <div className="mt-3 grid grid-cols-1 lg:grid-cols-2 gap-3">

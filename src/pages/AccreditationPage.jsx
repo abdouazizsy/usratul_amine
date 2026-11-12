@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { BadgeCheck, Camera, CheckCircle, Lock, Send } from 'lucide-react'
+import { BadgeCheck, CalendarClock, Camera, CheckCircle, Lock, Send } from 'lucide-react'
 import { addDoc, collection, doc, getDoc } from 'firebase/firestore'
 import { db } from '../firebase/config'
 import Navigation from '../components/Navigation'
@@ -9,7 +9,7 @@ import Chatbot from '../components/Chatbot'
 import { useLanguage } from '../contexts/LanguageContext'
 import { getTranslation } from '../translations/translations'
 import { uploadImageToCloudinary } from '../utils/cloudinaryUpload'
-import { MAX_PHOTO_BYTES, MEDIA_TYPES, ROLES } from '../utils/accreditation'
+import { ACCREDITATION_DEFAULTS, MAX_PHOTO_BYTES, MEDIA_TYPES, ROLES, accreditationWindow, formatDakarDateTime } from '../utils/accreditation'
 
 const emptyForm = { firstName: '', lastName: '', media: '', mediaType: '', role: '', phone: '', email: '', consent: false }
 
@@ -25,10 +25,31 @@ const AccreditationPage = () => {
   const [error, setError] = useState('')
   const [sending, setSending] = useState(false)
   const [sent, setSent] = useState(false)
+  const [now, setNow] = useState(() => new Date())
+
+  // Le formulaire s'ouvre et se ferme tout seul aux heures prévues, même page ouverte
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 30000)
+    return () => clearInterval(timer)
+  }, [])
+
+  const windowState = accreditationWindow(settings, now)
+  // Formulaire désactivé mais ouverture annoncée : on affiche les dates plutôt qu'un message vague
+  const announcesPeriod = windowState === 'closed' && settings?.closesAt && now < new Date(`${settings.closesAt}:00Z`)
+  const fillDates = (text) => text
+    .replace('{start}', formatDakarDateTime(settings?.opensAt, language, t('accreditation.at')))
+    .replace('{end}', formatDakarDateTime(settings?.closesAt, language, t('accreditation.at')))
 
   useEffect(() => {
     getDoc(doc(db, 'settings', 'accreditation'))
-      .then(snap => setSettings(snap.exists() ? snap.data() : { open: false }))
+      .then(snap => {
+        const data = snap.exists() ? snap.data() : { open: false }
+        setSettings({
+          ...data,
+          opensAt: data.opensAt || ACCREDITATION_DEFAULTS.opensAt,
+          closesAt: data.closesAt || ACCREDITATION_DEFAULTS.closesAt
+        })
+      })
       .catch(err => {
         console.error('Error fetching accreditation settings:', err)
         setSettings({ open: false })
@@ -53,6 +74,10 @@ const AccreditationPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (accreditationWindow(settings) !== 'open') {
+      setNow(new Date())
+      return
+    }
     if (!photoFile) {
       setError(t('accreditation.errorPhoto'))
       return
@@ -127,7 +152,9 @@ const AccreditationPage = () => {
               <BadgeCheck className="w-4 h-4" />
               {t('accreditation.navTitle')}
             </p>
-            <h1 className={`text-4xl font-bold text-gray-900 mb-3 ${isAr ? 'font-arabic' : 'font-elegant'}`}>{t('accreditation.title')}</h1>
+            <h1 className={`text-4xl font-bold text-gray-900 mb-3 ${isAr ? 'font-arabic' : 'font-elegant'}`}>
+              {settings?.eventName || t('accreditation.title')}
+            </h1>
             <p className={`text-gray-600 ${isAr ? 'font-arabic' : ''}`}>{t('accreditation.subtitle')}</p>
           </div>
 
@@ -142,7 +169,19 @@ const AccreditationPage = () => {
                 {t('accreditation.another')}
               </button>
             </motion.div>
-          ) : !settings?.open ? (
+          ) : windowState === 'upcoming' || announcesPeriod ? (
+            <div className="text-center bg-white border border-emerald-200 rounded-2xl p-10">
+              <CalendarClock className="w-12 h-12 text-emerald-600 mx-auto mb-4" />
+              <h2 className="text-xl font-bold text-gray-900 mb-2">{t('accreditation.upcomingTitle')}</h2>
+              <p className={`text-gray-600 ${isAr ? 'font-arabic' : ''}`}>{fillDates(t('accreditation.periodText'))}</p>
+            </div>
+          ) : windowState === 'ended' ? (
+            <div className="text-center bg-white border border-gray-200 rounded-2xl p-10">
+              <Lock className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+              <h2 className="text-xl font-bold text-gray-900 mb-2">{t('accreditation.endedTitle')}</h2>
+              <p className={`text-gray-600 ${isAr ? 'font-arabic' : ''}`}>{fillDates(t('accreditation.endedText'))}</p>
+            </div>
+          ) : windowState === 'closed' ? (
             <div className="text-center bg-white border border-gray-200 rounded-2xl p-10">
               <Lock className="w-12 h-12 text-gray-300 mx-auto mb-4" />
               <h2 className="text-xl font-bold text-gray-900 mb-2">{t('accreditation.closedTitle')}</h2>
@@ -150,10 +189,10 @@ const AccreditationPage = () => {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-sm space-y-5">
-              {settings.eventName && (
-                <div className="px-4 py-3 bg-emerald-50 rounded-xl">
-                  <p className="text-xs font-semibold text-emerald-700">{t('accreditation.eventLabel')}</p>
-                  <p className="font-bold text-emerald-900">{settings.eventName}</p>
+              {settings.closesAt && (
+                <div className={`flex items-center gap-2 px-4 py-3 bg-emerald-50 rounded-xl text-sm font-semibold text-emerald-900 ${isAr ? 'font-arabic' : ''}`}>
+                  <CalendarClock className="w-4 h-4 flex-shrink-0 text-emerald-700" />
+                  {fillDates(t('accreditation.openUntil'))}
                 </div>
               )}
 
