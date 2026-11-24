@@ -9,7 +9,7 @@ import Chatbot from '../components/Chatbot'
 import { useLanguage } from '../contexts/LanguageContext'
 import { getTranslation } from '../translations/translations'
 import { uploadImageToCloudinary } from '../utils/cloudinaryUpload'
-import { ACCREDITATION_DEFAULTS, MAX_PHOTO_BYTES, MEDIA_TYPES, ROLES, accreditationWindow, formatDakarDateTime } from '../utils/accreditation'
+import { ACCREDITATION_DEFAULTS, MAX_PHOTO_BYTES, shrinkPhoto, MEDIA_TYPES, ROLES, accreditationWindow, formatDakarDateTime } from '../utils/accreditation'
 
 const emptyForm = { firstName: '', lastName: '', media: '', mediaType: '', role: '', phone: '', email: '', consent: false }
 
@@ -63,7 +63,9 @@ const AccreditationPage = () => {
     const file = e.target.files?.[0]
     e.target.value = ''
     if (!file) return
-    if (!file.type.startsWith('image/') || file.size > MAX_PHOTO_BYTES) {
+    // Les photos HEIC d'iPhone n'ont parfois pas de type : on se fie alors à l'extension
+    const isImage = file.type.startsWith('image/') || /\.(jpe?g|png|heic|heif|webp)$/i.test(file.name)
+    if (!isImage || file.size > 25 * 1024 * 1024) {
       setError(t('accreditation.errorPhotoType'))
       return
     }
@@ -84,8 +86,12 @@ const AccreditationPage = () => {
     }
     setSending(true)
     setError('')
+    let step = 'photo'
     try {
-      const photo = await uploadImageToCloudinary(photoFile, 'usratul-amine/accreditations')
+      const resized = await shrinkPhoto(photoFile)
+      if (resized.size > MAX_PHOTO_BYTES) throw new Error('photo trop lourde')
+      const photo = await uploadImageToCloudinary(resized, 'usratul-amine/accreditations')
+      step = 'save'
       const { consent, ...fields } = form
       await addDoc(collection(db, 'accreditations'), {
         ...Object.fromEntries(Object.entries(fields).map(([k, v]) => [k, v.trim()])),
@@ -102,8 +108,9 @@ const AccreditationPage = () => {
       setPhotoPreview(null)
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } catch (err) {
-      console.error('Error sending accreditation:', err)
-      setError(t('accreditation.errorSend'))
+      console.error(`Error sending accreditation (${step}):`, err)
+      // Le détail technique entre parenthèses permet de savoir quelle étape a échoué
+      setError(`${t('accreditation.errorSend')} (${step === 'photo' ? 'photo' : 'enregistrement'} : ${err.code || err.message})`)
     } finally {
       setSending(false)
     }

@@ -105,3 +105,21 @@ export const formatDakarDateTime = (value, language, atWord) => {
     : `${hours}:${minutes}`
   return `${day} ${atWord} ${time}`
 }
+
+// Réduit une photo (souvent 3 à 5 Mo sur téléphone) à 1200 px max en JPEG avant l'envoi.
+// En cas d'échec (format non lisible par le navigateur), la photo d'origine est envoyée.
+export const shrinkPhoto = async (file, maxSize = 1200, quality = 0.85) => {
+  try {
+    const bitmap = await createImageBitmap(file)
+    const scale = Math.min(1, maxSize / Math.max(bitmap.width, bitmap.height))
+    const canvas = document.createElement('canvas')
+    canvas.width = Math.round(bitmap.width * scale)
+    canvas.height = Math.round(bitmap.height * scale)
+    canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height)
+    bitmap.close?.()
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', quality))
+    return blob ? new File([blob], 'photo.jpg', { type: 'image/jpeg' }) : file
+  } catch {
+    return file
+  }
+}
